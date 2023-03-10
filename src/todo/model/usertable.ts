@@ -1,12 +1,7 @@
 import {Model, DataTypes} from 'sequelize';
 import db from '../../config/database.config';
+import { User } from '../../interfaces/User';
 
-interface User {
-
-    id: string,
-    email: string,
-    password: string,
-}
 
 export class UserTableInstance extends Model<User> {
   password: any;

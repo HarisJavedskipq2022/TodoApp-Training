@@ -1,7 +1,7 @@
 import express, {  } from "express";
 import db from "./config/database.config";
 import 'dotenv/config';            
-import router from "./todo/route";                       
+import todoRouter from "./todo/route";                       
 
 
 //  Connection to database
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(router)
+app.use("/api/v1/", todoRouter);
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);

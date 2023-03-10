@@ -1,12 +1,6 @@
 import {Model, DataTypes} from 'sequelize';
 import db from '../../config/database.config';
-
-interface TodoAttributes {
-
-    id: string,
-    title: string,
-    completed: boolean
-}
+import { TodoAttributes } from '../../interfaces/Attributes';
 
 export class TodoInstance extends Model<TodoAttributes> {}
 

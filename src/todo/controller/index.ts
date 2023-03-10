@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import 'dotenv/config';                                       
-import { v4 as uuidv4 } from "uuid";                          
+import uuid from "../../utils/uuid";                       
 import { TodoInstance } from "../model/todo";
 import { UserTableInstance } from "../model/usertable";
 import * as bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";     
+import * as jwt from "jsonwebtoken";                          
                    
 
 class TodoController {
   async create(req: Request,  res: Response) {
-    const id = uuidv4();
+    const id = uuid.generate();
     try {
       const record = await TodoInstance.create({ ...req.body, id });
       return res.json({ record, msg: "Successfully created todo" });
@@ -54,7 +54,6 @@ class TodoController {
 
   async readUsers(req: Request, res: Response) {
     try {
-      const { id } = req.params;
       const record = await UserTableInstance.findAll({});
       return res.json(record);
     } catch (e) {
@@ -144,7 +143,7 @@ class TodoController {
   }
 
   async signup(req: Request, res: Response) {
-    const id = uuidv4();
+    const id = uuid.generate();
 
     const { email, password } = req.body;
 

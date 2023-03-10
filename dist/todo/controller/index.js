@@ -31,9 +31,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
-const uuid_1 = require("uuid");
+const uuid_1 = __importDefault(require("../../utils/uuid"));
 const todo_1 = require("../model/todo");
 const usertable_1 = require("../model/usertable");
 const bcrypt = __importStar(require("bcrypt"));
@@ -41,7 +44,7 @@ const jwt = __importStar(require("jsonwebtoken"));
 class TodoController {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = (0, uuid_1.v4)();
+            const id = uuid_1.default.generate();
             try {
                 const record = yield todo_1.TodoInstance.create(Object.assign(Object.assign({}, req.body), { id }));
                 return res.json({ record, msg: "Successfully created todo" });
@@ -91,7 +94,6 @@ class TodoController {
     readUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.params;
                 const record = yield usertable_1.UserTableInstance.findAll({});
                 return res.json(record);
             }
@@ -179,7 +181,7 @@ class TodoController {
     }
     signup(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = (0, uuid_1.v4)();
+            const id = uuid_1.default.generate();
             const { email, password } = req.body;
             const user = yield usertable_1.UserTableInstance.findOne({ where: { email: email } });
             if (user) {
