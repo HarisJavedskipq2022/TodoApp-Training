@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import 'dotenv/config';                                       
-import uuid from "../../utils/uuid";                       
+import uuid from "../../infrastructure/utils/uuid";                       
 import { TodoInstance } from "../model/todo";
 import { UserTableInstance } from "../model/usertable";
 import * as bcrypt from "bcrypt";
