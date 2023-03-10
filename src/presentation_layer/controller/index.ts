@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import 'dotenv/config';                                       
 import uuid from "../../infrastructure/utils/uuid";                       
-import { TodoInstance } from "../model/todo";
-import { UserTableInstance } from "../model/usertable";
+import { TodoModel } from "../../domain/model/Todo";
+import { UserModel } from "../../domain/model/User";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";                          
                    
@@ -11,7 +11,7 @@ class TodoController {
   async create(req: Request,  res: Response) {
     const id = uuid.generate();
     try {
-      const record = await TodoInstance.create({ ...req.body, id });
+      const record = await TodoModel.create({ ...req.body, id });
       return res.json({ record, msg: "Successfully created todo" });
     } catch (e) {
       return res.json({
@@ -27,7 +27,7 @@ class TodoController {
       const limit = (req.query.limit as number | undefined) || 10;
       const offset = req.query.offset as number | undefined;
 
-      const records = await TodoInstance.findAll({ where: {}, limit, offset });
+      const records = await TodoModel.findAll({ where: {}, limit, offset });
       return res.json(records);
     } catch (e) {
       return res.json({
@@ -41,7 +41,7 @@ class TodoController {
   async readByID(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
+      const record = await TodoModel.findOne({ where: { id } });
       return res.json(record);
     } catch (e) {
       return res.json({
@@ -54,7 +54,7 @@ class TodoController {
 
   async readUsers(req: Request, res: Response) {
     try {
-      const record = await UserTableInstance.findAll({});
+      const record = await TodoModel.findAll({});
       return res.json(record);
     } catch (e) {
       return res.json({
@@ -67,7 +67,7 @@ class TodoController {
 
   async deleteUsers(req: Request, res: Response) {
     const { id } = req.params;
-    const user = await UserTableInstance.findOne({ where: { id } });
+    const user = await UserModel.findOne({ where: { id } });
     if (!user) {
       return res.json({ msg: "user does not exist" });
     }
@@ -80,7 +80,7 @@ class TodoController {
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
+      const record = await TodoModel.findOne({ where: { id } });
 
       if (!record) {
         return res.json({ msg: "record not found" });
@@ -102,7 +102,7 @@ class TodoController {
   async updateTodo(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
+      const record = await TodoModel.findOne({ where: { id } });
 
       if (!record) {
         return res.json({ msg: "record not found" });
@@ -125,7 +125,7 @@ class TodoController {
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const record = await TodoInstance.findOne({ where: { id } });
+      const record = await TodoModel.findOne({ where: { id } });
 
       if (!record) {
         return res.json({ msg: "record does not exist" });
@@ -147,7 +147,7 @@ class TodoController {
 
     const { email, password } = req.body;
 
-    const user = await UserTableInstance.findOne({ where: { email: email } });
+    const user = await UserModel.findOne({ where: { email: email } });
 
     if (user) {
       return res.json({ msg: "user already exists" });
@@ -157,7 +157,7 @@ class TodoController {
     const salt = await bcrypt.genSalt(saltrounds);
     const hashedpassword = await bcrypt.hash(password, salt);
 
-    const newUser = await UserTableInstance.create({
+    const newUser = await UserModel.create({
       email: email,
       password: hashedpassword,
       id,
@@ -169,14 +169,14 @@ class TodoController {
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const user = await UserTableInstance.findOne({ where: { email: email } });
+    const user = await UserModel.findOne({ where: { email: email } });
 
     if (!user) {
       return res.json({ msg: "Invalid credentials" });
     }
 
     try {
-      const validatePassword = await bcrypt.compare(password, user.password)
+      const validatePassword = await bcrypt.compare(password, user.password as string)
       
       if (!validatePassword) {
         res.send({ msg: "invalid credentials" });

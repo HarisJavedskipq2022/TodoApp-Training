@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const database_config_1 = __importDefault(require("./config/database.config"));
 require("dotenv/config");
-const route_1 = __importDefault(require("./todo/route"));
-//  Connection to database
+const route_1 = __importDefault(require("./presentation_layer/route"));
 database_config_1.default.sync().then(() => {
     console.log("database is connected");
 });

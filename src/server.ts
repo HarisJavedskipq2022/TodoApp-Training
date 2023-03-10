@@ -3,9 +3,6 @@ import db from "./config/database.config";
 import 'dotenv/config';            
 import todoRouter from './presentation_layer/route'                     
 
-
-//  Connection to database
-
 db.sync().then(() => {
   console.log("database is connected");
 });
