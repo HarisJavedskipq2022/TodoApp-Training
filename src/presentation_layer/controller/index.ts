@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import 'dotenv/config';                                       
 import uuid from "../../infrastructure/utils/uuid";                       
+import { TodoFactory } from "../../domain/factory/TodoFactory";
+import { UserFactory } from "../../domain/factory/UserFactory";
 import { TodoModel } from "../../domain/model/Todo";
 import { UserModel } from "../../domain/model/User";
 import * as bcrypt from "bcrypt";
@@ -11,7 +13,7 @@ class TodoController {
   async create(req: Request,  res: Response) {
     const id = uuid.generate();
     try {
-      const record = await TodoModel.create({ ...req.body, id });
+      const record = await TodoFactory.createTodo({ ...req.body, id });
       return res.json({ record, msg: "Successfully created todo" });
     } catch (e) {
       return res.json({

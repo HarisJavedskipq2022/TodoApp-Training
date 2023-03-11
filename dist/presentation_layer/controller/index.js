@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 const uuid_1 = __importDefault(require("../../infrastructure/utils/uuid"));
+const TodoFactory_1 = require("../../domain/factory/TodoFactory");
 const Todo_1 = require("../../domain/model/Todo");
 const User_1 = require("../../domain/model/User");
 const bcrypt = __importStar(require("bcrypt"));
@@ -46,7 +47,7 @@ class TodoController {
         return __awaiter(this, void 0, void 0, function* () {
             const id = uuid_1.default.generate();
             try {
-                const record = yield Todo_1.TodoModel.create(Object.assign(Object.assign({}, req.body), { id }));
+                const record = yield TodoFactory_1.TodoFactory.createTodo(Object.assign(Object.assign({}, req.body), { id }));
                 return res.json({ record, msg: "Successfully created todo" });
             }
             catch (e) {

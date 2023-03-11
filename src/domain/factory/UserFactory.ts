@@ -1,15 +1,27 @@
-import { User } from "../entity/user";
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import { User } from '../entity/user';
 
 export class UserFactory {
-  static create({
-    id,
-    email,
-    password
-  }: {
-    id: string;
-    email: string;
-    password: string;
-  }): User {
-    return new User(id, password, email);
+  static createModel(sequelize: Sequelize) {
+    return sequelize.define<Model>('usertable', {
+      id: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    });
+  }
+
+  static createUser(data: { id: string, name: string; email: string }): User {
+    const { id, name, email } = data;
+    return new User(id, name, email);
   }
 }
