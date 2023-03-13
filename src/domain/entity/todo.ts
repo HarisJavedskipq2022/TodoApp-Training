@@ -5,4 +5,3 @@ export class Todo {
       public readonly completed: boolean,
     ) {}
   }
-  
