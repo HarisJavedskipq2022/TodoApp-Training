@@ -13,7 +13,7 @@ class TodoController {
   async create(req: Request,  res: Response) {
     const id = uuid.generate();
     try {
-      const record = await TodoFactory.createTodo({ ...req.body, id });
+      const record = TodoFactory.createTodo({ ...req.body, id });
       return res.json({ record, msg: "Successfully created todo" });
     } catch (e) {
       return res.json({

@@ -23,7 +23,7 @@ class TodoFactory {
         });
     }
     static createTodo(data) {
-        const { id, title, completed = false } = data;
+        const { id, title, completed } = data;
         return new todo_1.Todo(id, title, completed);
     }
 }

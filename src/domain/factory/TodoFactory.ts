@@ -21,8 +21,8 @@ export class TodoFactory {
     });
   }
 
-  static createTodo(data: {id: string, title: string; completed?: boolean }): Todo {
-    const {id, title, completed = false } = data;
+  static createTodo(data: {id: string, title: string; completed: boolean }): Todo {
+    const {id, title, completed } = data;
     return new Todo(id, title, completed);
   }
 }
