@@ -13,7 +13,7 @@ database_config_1.default.sync().then(() => {
 const port = process.env.PORT;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use('/api/v1/', route_1.default);
+app.use('/api/v1/todo/', route_1.default);
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);
 });

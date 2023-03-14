@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/api/v1/', todoRouter);
+app.use('/api/v1/todo/', todoRouter);
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
