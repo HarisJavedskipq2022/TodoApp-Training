@@ -6,8 +6,9 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { UserModel } from "../domain/model/User";
 
-class TodoService {
-    async getAllTodos(req: Request, res: Response) {
+export class TodoService {
+    
+    async createTodos(req: Request, res: Response) {
         const id = uuid.generate();
 
         try {
@@ -38,7 +39,7 @@ class TodoService {
         }
     }
 
-    async readByID(req: Request, res: Response) {
+    async readById(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const record = await TodoModel.findOne({ where: { id } });
@@ -54,7 +55,7 @@ class TodoService {
 
     async readUsers(req: Request, res: Response) {
         try {
-            const record = await TodoModel.findAll({});
+            const record = await UserModel.findAll({});
             return res.json(record);
         } catch (e) {
             return res.json({
@@ -190,16 +191,4 @@ class TodoService {
             res.status(500).send();
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
-
-export default new TodoService();

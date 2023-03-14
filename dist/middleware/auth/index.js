@@ -30,7 +30,6 @@ class authMiddleware {
         this.authorize = (req, res, next) => {
             try {
                 const token = req.header("Authorization");
-                console.log(token);
                 const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
                 req.body.user = decode;
                 next();

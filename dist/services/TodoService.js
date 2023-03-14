@@ -35,6 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TodoService = void 0;
 const Todo_1 = require("../domain/model/Todo");
 const TodoFactory_1 = require("../domain/factory/TodoFactory");
 const uuid_1 = __importDefault(require("../infrastructure/utils/uuid"));
@@ -42,7 +43,7 @@ const bcrypt = __importStar(require("bcrypt"));
 const jwt = __importStar(require("jsonwebtoken"));
 const User_1 = require("../domain/model/User");
 class TodoService {
-    getAllTodos(req, res) {
+    createTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = uuid_1.default.generate();
             try {
@@ -75,7 +76,7 @@ class TodoService {
             }
         });
     }
-    readByID(req, res) {
+    readById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
@@ -94,7 +95,7 @@ class TodoService {
     readUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const record = yield Todo_1.TodoModel.findAll({});
+                const record = yield User_1.UserModel.findAll({});
                 return res.json(record);
             }
             catch (e) {
@@ -220,4 +221,4 @@ class TodoService {
         });
     }
 }
-exports.default = new TodoService();
+exports.TodoService = TodoService;

@@ -1,8 +1,9 @@
 import express from 'express';
 import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
-import TodoController from '../controller';
+import * as controller from '../controller';
 import authMiddleware from '../../middleware/auth';
+
 
 const router = express.Router();
 
@@ -11,17 +12,17 @@ router.post(
 	authMiddleware.authorize,
 	TodoValidator.checkCreateTodo(),
 	Middleware.handleValidationError,
-	TodoController.create
+	controller.createTodo
 );
 
 router.post(
 	'/signup',
-	TodoController.signup
+	controller.signup
 )
 
 router.post(
 	'/login',
-	TodoController.login
+	controller.login
 )
 
 router.get(
@@ -29,13 +30,13 @@ router.get(
 	authMiddleware.authorize,
 	TodoValidator.checkReadTodo(),
 	Middleware.handleValidationError,
-	TodoController.readPagination
+	controller.readPagination
 );
 
 router.get(
 	'/getusers',
 	authMiddleware.authorize,
-	TodoController.readUsers
+	controller.readUsers
 )
 
 router.get(
@@ -43,7 +44,7 @@ router.get(
 	authMiddleware.authorize,
 	TodoValidator.checkIdParam(),
 	Middleware.handleValidationError,
-	TodoController.readByID
+	controller.readById
 );
 
 router.put(
@@ -51,29 +52,29 @@ router.put(
 	authMiddleware.authorize,
 	TodoValidator.checkIdParam(),
 	Middleware.handleValidationError,
-	TodoController.update
+	controller.updateCompleted
 );
 
-router.put(
-	'/updatetodo/:id',
-	authMiddleware.authorize,
-	TodoValidator.checkIdParam(),
-	Middleware.handleValidationError,
-	TodoController.updateTodo
-);
+// router.put(
+// 	'/updatetodo/:id',
+// 	authMiddleware.authorize,
+// 	TodoValidator.checkIdParam(),
+// 	Middleware.handleValidationError,
+// 	controller.updateTodo
+// );
 
 router.delete(
 	'/delete/:id',
 	authMiddleware.authorize,
 	TodoValidator.checkIdParam(),
 	Middleware.handleValidationError,
-	TodoController.delete
+	controller.deleteTodo
 );
 
 router.delete(
 	'/deleteuser/:id',
 	authMiddleware.authorize,
-	TodoController.deleteUsers
+	controller.deleteUser
 )
 
 export default router;
