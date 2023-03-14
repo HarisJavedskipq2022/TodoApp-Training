@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { User } from '../entity/user';
-import db from '../../config/database.config';
+import db from '../../infrastructure/utils/database.config';
 
 export class UserModel extends Model<User> {
   password: string | undefined;

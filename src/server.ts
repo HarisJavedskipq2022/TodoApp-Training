@@ -1,5 +1,5 @@
-import express, {  } from "express";
-import db from "./config/database.config";
+import express from "express";
+import db from "./infrastructure/utils/database.config";
 import 'dotenv/config';            
 import todoRouter from './presentation_layer/route'                     
 
