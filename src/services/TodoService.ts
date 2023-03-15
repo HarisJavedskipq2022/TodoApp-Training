@@ -1,10 +1,10 @@
-import { TodoModel } from "../domain/model/Todo";
-import { TodoFactory } from "../domain/factory/TodoFactory";
+import { TodoModel } from "../infrastructure/domain/model/Todo";
+import { TodoFactory } from "../infrastructure/domain/factory/TodoFactory";
 import uuid from "../utils/uuid";
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { UserModel } from "../domain/model/User";
+import { UserModel } from "../infrastructure/domain/model/User";
 
 export class TodoService {
     

@@ -39,13 +39,7 @@ router.get('/read', auth_1.default.authorize, validator_1.default.checkReadTodo(
 router.get('/getusers', auth_1.default.authorize, controller.readUsers);
 router.get('/read/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, controller.readById);
 router.put('/update/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, controller.updateCompleted);
-// router.put(
-// 	'/updatetodo/:id',
-// 	authMiddleware.authorize,
-// 	TodoValidator.checkIdParam(),
-// 	Middleware.handleValidationError,
-// 	controller.updateTodo
-// );
+router.put('/updatetodo/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, controller.updateTodo);
 router.delete('/delete/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, controller.deleteTodo);
 router.delete('/deleteuser/:id', auth_1.default.authorize, controller.deleteUser);
 exports.default = router;

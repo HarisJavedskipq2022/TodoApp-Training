@@ -36,12 +36,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoService = void 0;
-const Todo_1 = require("../domain/model/Todo");
-const TodoFactory_1 = require("../domain/factory/TodoFactory");
+const Todo_1 = require("../infrastructure/domain/model/Todo");
+const TodoFactory_1 = require("../infrastructure/domain/factory/TodoFactory");
 const uuid_1 = __importDefault(require("../utils/uuid"));
 const bcrypt = __importStar(require("bcrypt"));
 const jwt = __importStar(require("jsonwebtoken"));
-const User_1 = require("../domain/model/User");
+const User_1 = require("../infrastructure/domain/model/User");
 class TodoService {
     createTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

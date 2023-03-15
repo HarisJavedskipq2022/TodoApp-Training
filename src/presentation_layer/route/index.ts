@@ -55,13 +55,13 @@ router.put(
 	controller.updateCompleted
 );
 
-// router.put(
-// 	'/updatetodo/:id',
-// 	authMiddleware.authorize,
-// 	TodoValidator.checkIdParam(),
-// 	Middleware.handleValidationError,
-// 	controller.updateTodo
-// );
+router.put(
+	'/updatetodo/:id',
+	authMiddleware.authorize,
+	TodoValidator.checkIdParam(),
+	Middleware.handleValidationError,
+	controller.updateTodo
+);
 
 router.delete(
 	'/delete/:id',

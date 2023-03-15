@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { Todo } from '../entity/todo';
-import db from '../../config/database.config';
+import db from '../../../config/database.config';
 
 export class TodoModel extends Model<Todo> {}
      TodoModel.init(
