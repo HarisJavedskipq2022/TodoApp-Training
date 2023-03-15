@@ -6,6 +6,9 @@ class User {
         this.id = id;
         this.password = password;
         this.email = email;
+        this.id = id,
+            this.password = password,
+            this.email = email;
     }
 }
 exports.User = User;

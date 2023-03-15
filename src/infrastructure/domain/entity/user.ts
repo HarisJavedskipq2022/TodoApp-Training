@@ -1,7 +1,11 @@
 export class User {
   constructor(
-    public readonly id: string,
-    public readonly password: string,
-    public readonly email: string
-  ) {}
+    public id: string,
+    public password: string,
+    public email: string
+  ) {
+      this.id = id,
+      this.password = password,
+      this.email = email
+  }
 }

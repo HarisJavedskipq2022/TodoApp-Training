@@ -1,7 +1,11 @@
 export class Todo {
-    constructor(
-      public readonly id: string,
-      public readonly title: string,
-      public readonly completed: boolean,
-    ) {}
+  constructor(
+    public id: string,
+    public title: string,
+    public completed: boolean
+  ) {
+    this.id = id;
+    this.title = title;
+    this.completed = completed;
   }
+}

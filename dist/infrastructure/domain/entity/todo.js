@@ -6,6 +6,9 @@ class Todo {
         this.id = id;
         this.title = title;
         this.completed = completed;
+        this.id = id;
+        this.title = title;
+        this.completed = completed;
     }
 }
 exports.Todo = Todo;
