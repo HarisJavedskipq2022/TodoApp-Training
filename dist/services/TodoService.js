@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoService = void 0;
 const Todo_1 = require("../domain/model/Todo");
 const TodoFactory_1 = require("../domain/factory/TodoFactory");
-const uuid_1 = __importDefault(require("../infrastructure/utils/uuid"));
+const uuid_1 = __importDefault(require("../utils/uuid"));
 const bcrypt = __importStar(require("bcrypt"));
 const jwt = __importStar(require("jsonwebtoken"));
 const User_1 = require("../domain/model/User");

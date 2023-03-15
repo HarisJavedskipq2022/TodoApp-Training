@@ -1,6 +1,6 @@
 import { TodoModel } from "../domain/model/Todo";
 import { TodoFactory } from "../domain/factory/TodoFactory";
-import uuid from "../infrastructure/utils/uuid";
+import uuid from "../utils/uuid";
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
