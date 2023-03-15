@@ -10,11 +10,11 @@ class TodoValidator {
                 .withMessage('The value should be UUID v4'),
             (0, express_validator_1.body)('title')
                 .notEmpty()
-                .withMessage('The title value should not be empty'),
+                .withMessage('The title value is empty, it should not be empty'),
             (0, express_validator_1.body)('completed')
                 .optional()
                 .isBoolean()
-                .withMessage('The value should be boolean')
+                .withMessage('Incorrect value, the value should be a boolean')
                 .isIn([0, false])
                 .withMessage('The value should be 0 or false'),
         ];

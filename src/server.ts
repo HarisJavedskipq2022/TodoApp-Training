@@ -1,15 +1,13 @@
 import express from "express";
-import db from "./config/database.config";
 import 'dotenv/config';            
-import todoRouter from './presentation_layer/route'                     
-
-db.sync().then(() => {
-  console.log("database is connected");
-});
+import todoRouter from './presentation_layer/route'         
+import { connectionToDb } from "./utils/connection";           
 
 const port = process.env.PORT;
 const app = express();
 
+
+connectionToDb();
 app.use(express.json());
 
 app.use('/api/v1/todo/', todoRouter);
