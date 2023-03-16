@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import { User } from '../entity/user';
+import { User } from '../entity/UserEntity';
 import db from '../../../config/database.config';
 
 export class UserModel extends Model<User> {

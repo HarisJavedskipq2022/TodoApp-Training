@@ -1,5 +1,5 @@
 import { TodoModel } from "../infrastructure/domain/model/Todo";
-import { TodoFactory } from "../infrastructure/domain/factory/TodoFactory";
+import { Todo } from "../infrastructure/domain/entity/TodoEntity";
 import uuid from "../utils/uuid";
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
@@ -12,7 +12,7 @@ export class TodoService {
         const id = uuid.generate();
 
         try {
-            const record = TodoFactory.createTodo({ ...req.body, id });
+            const record = Todo.todoFactory({ ...req.body, id });
             return res.json({ record, msg: "Successfully created todo" });
         } catch (e) {
             return res.json({
