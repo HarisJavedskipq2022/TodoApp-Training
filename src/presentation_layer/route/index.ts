@@ -1,80 +1,73 @@
 import express from 'express';
 import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
-import * as controller from '../controller';
+import ControllerInstance from "../controller";
 import authMiddleware from '../../middleware/auth';
 
 
 const router = express.Router();
 
 router.post(
-	'/create',
-	authMiddleware.authorize,
-	TodoValidator.checkCreateTodo(),
-	Middleware.handleValidationError,
-	controller.createTodo
+    '/create',
+    authMiddleware.authorize,
+    TodoValidator.checkCreateTodo(),
+    Middleware.handleValidationError,
+    ControllerInstance.createTodos
 );
 
 router.post(
-	'/signup',
-	controller.signup
+    '/signup',
+    ControllerInstance.signup
 )
 
 router.post(
-	'/login',
-	controller.login
+    '/login',
+    ControllerInstance.login
 )
 
 router.get(
-	'/read',
-	authMiddleware.authorize,
-	TodoValidator.checkReadTodo(),
-	Middleware.handleValidationError,
-	controller.readPagination
+    '/readusers',
+    // authMiddleware.authorize,
+    TodoValidator.checkReadTodo(),
+    Middleware.handleValidationError,
+    ControllerInstance.readUsers
 );
 
 router.get(
-	'/getusers',
-	authMiddleware.authorize,
-	controller.readUsers
+    '/read',
+    authMiddleware.authorize,
+    ControllerInstance.readTodos
 )
 
 router.get(
-	'/read/:id',
-	authMiddleware.authorize,
-	TodoValidator.checkIdParam(),
-	Middleware.handleValidationError,
-	controller.readById
+    '/read/:id',
+    // authMiddleware.authorize,
+    TodoValidator.checkIdParam(),
+    Middleware.handleValidationError,
+    ControllerInstance.readById
 );
 
 router.put(
-	'/update/:id',
-	authMiddleware.authorize,
-	TodoValidator.checkIdParam(),
-	Middleware.handleValidationError,
-	controller.updateCompleted
+    '/update/:id',
+    // authMiddleware.authorize,
+    TodoValidator.checkIdParam(),
+    Middleware.handleValidationError,
+    ControllerInstance.update
 );
 
-router.put(
-	'/updatetodo/:id',
-	authMiddleware.authorize,
-	TodoValidator.checkIdParam(),
-	Middleware.handleValidationError,
-	controller.updateTodo
+
+router.delete(
+    '/deletetodo/:id',
+    authMiddleware.authorize,
+    TodoValidator.checkIdParam(),
+    Middleware.handleValidationError,
+    ControllerInstance.deleteTodoById
 );
 
 router.delete(
-	'/delete/:id',
-	authMiddleware.authorize,
-	TodoValidator.checkIdParam(),
-	Middleware.handleValidationError,
-	controller.deleteTodo
-);
-
-router.delete(
-	'/deleteuser/:id',
-	authMiddleware.authorize,
-	controller.deleteUser
+    '/deleteuser/:id',
+    authMiddleware.authorize,
+    ControllerInstance.deleteUsers
 )
 
 export default router;
