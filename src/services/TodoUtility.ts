@@ -4,25 +4,30 @@ import {User} from "../infrastructure/domain/entity/UserEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
 import {Auth} from "./bcrypt";
-
+import TodoRepository from "../infrastructure/repositories/TodoRepository";
 
 const prisma = new PrismaClient();
+const todoRepository = new TodoRepository(prisma);
 
-class TodoUtility {
+class TodoService {
     async createTodoItem(title: string, completed: boolean) {
         const id = uuid.generate();
         const newTodoData = {id, title, completed};
         const newTodo = Todo.todoFactory(newTodoData);
-        return prisma.todo.create({data: {...newTodo}});
+        return todoRepository.createTodoItem({...newTodo});
     }
 
     async findAllTodos(limit: number = 10, offset: number = 0) {
-        return prisma.todo.findMany({take: limit, skip: offset});
+        try {
+            return await todoRepository.findManyTodos(limit, offset);
+        } catch (e) {
+            throw new Error('Failed to find all todo items')
+        }
     }
 
     async readById(id: string) {
         try {
-            return await prisma.todo.findUnique({where: {id: id}});
+            return await todoRepository.findUniqueTodo(id);
         } catch (e) {
             throw new Error('Failed to read todo');
         }
@@ -30,7 +35,7 @@ class TodoUtility {
 
     async readUsers() {
         try {
-            return await prisma.user.findMany({});
+            return await todoRepository.findManyUsers();
         } catch (e) {
             throw new Error('Users not found');
         }
@@ -45,25 +50,22 @@ class TodoUtility {
     }
 
     async deleteTodoById(id: string) {
-        const record = await prisma.todo.findUnique({where: {id}});
+        const record = await todoRepository.findUniqueTodo(id);
 
         if (!record) {
             throw new Error('Record not found');
         }
 
-        return prisma.todo.delete({where: {id: id}});
+        return todoRepository.deleteTodo(id);
     }
 
     async updateById(id: string) {
-        const record = await prisma.todo.findUnique({where: {id}});
+        const record = await todoRepository.findUniqueTodo(id);
 
         if (!record) {
             throw new Error('Record not found');
         } else {
-            return prisma.todo.update({
-                where: {id: id},
-                data: {completed: !record.completed},
-            });
+            return await todoRepository.updateTodo(id, !record.completed);
         }
     }
 
@@ -115,7 +117,7 @@ class TodoUtility {
         const secretKey = process.env.JWT_SECRET_KEY as string;
         return Auth.sign({id: user.id, email: user.email}, secretKey);
     }
-
 }
 
-export default new TodoUtility;
+export default new TodoService
+;

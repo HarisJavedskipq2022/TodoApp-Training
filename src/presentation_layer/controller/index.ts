@@ -1,11 +1,11 @@
 import {Request, Response} from "express";
-import TodoUtility from "../../services/TodoUtility";
+import TodoService from "../../services/TodoUtility";
 
 class ControllerInstance {
     async createTodos(req: Request, res: Response) {
         const {title, completed}: { title: string, completed: boolean } = req.body
         try {
-            const record = await TodoUtility.createTodoItem(title, completed)
+            const record = await TodoService.createTodoItem(title, completed)
             return res.json({record, msg: "Successfully created todo"});
 
         } catch (e) {
@@ -22,7 +22,7 @@ class ControllerInstance {
             const limit = (req.query.limit as number | undefined) || 10;
             const offset = req.query.offset as number | undefined;
 
-            const records = await TodoUtility.findAllTodos(limit, offset);
+            const records = await TodoService.findAllTodos(limit, offset);
             return res.json(records);
         } catch (e) {
             return res.json({
@@ -36,7 +36,7 @@ class ControllerInstance {
     async readById(req: Request, res: Response) {
         try {
             const {id} = req.params;
-            const record = await TodoUtility.readById(id);
+            const record = await TodoService.readById(id);
             return res.json(record);
         } catch (e) {
             return res.status(500).json({
@@ -48,7 +48,7 @@ class ControllerInstance {
 
     async readUsers(req: Request, res: Response) {
         try {
-            const record = await TodoUtility.readUsers();
+            const record = await TodoService.readUsers();
             return res.json(record);
         } catch (e) {
             return res.status(500).json({
@@ -61,7 +61,7 @@ class ControllerInstance {
     async deleteUsers(req: Request, res: Response) {
         try {
             const {id} = req.params;
-            const deletedUser = await TodoUtility.deleteUserById(id);
+            const deletedUser = await TodoService.deleteUserById(id);
             return res.json({user: deletedUser});
         } catch (e) {
             return res.json({
@@ -73,7 +73,7 @@ class ControllerInstance {
     async deleteTodoById(req: Request, res: Response) {
         try {
             const {id} = req.params;
-            const deletedRecord = await TodoUtility.deleteTodoById(id);
+            const deletedRecord = await TodoService.deleteTodoById(id);
             return res.json({record: deletedRecord});
         } catch (e) {
             return res.status(500).json({
@@ -86,7 +86,7 @@ class ControllerInstance {
     async update(req: Request, res: Response) {
         try {
             const {id} = req.params;
-            const updatedRecord = await TodoUtility.updateById(id);
+            const updatedRecord = await TodoService.updateById(id);
             return res.json({record: updatedRecord});
         } catch (e) {
             return res.status(500).json({
@@ -100,7 +100,7 @@ class ControllerInstance {
         const {email, password}: { email: string, password: string } = req.body;
 
         try {
-            const newUser = await TodoUtility.signUp(email, password);
+            const newUser = await TodoService.signUp(email, password);
             console.log({newUser})
 
             return res.json({newUser, msg: 'User successfully signed up'});
@@ -113,7 +113,7 @@ class ControllerInstance {
         const {email, password}: { email: string, password: string } = req.body;
 
         try {
-            const token = await TodoUtility.loginUser(email, password);
+            const token = await TodoService.loginUser(email, password);
             res.json({msg: "successfully logged in"});
 
             console.log({token})
