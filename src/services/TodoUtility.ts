@@ -42,11 +42,11 @@ class TodoService {
     }
 
     async deleteUserById(id: string) {
-        const user = await prisma.user.findUnique({where: {id: id}});
+        const user = await todoRepository.findUserbyId(id);
         if (!user) {
             throw new Error('User does not exist');
         }
-        return prisma.user.delete({where: {id: id}});
+        return todoRepository.deleteUser(id);
     }
 
     async deleteTodoById(id: string) {
@@ -73,11 +73,7 @@ class TodoService {
 
         const id = uuid.generate();
         const newUserData = {id, email, password};
-        const finduser = await prisma.user.findUnique({
-            where: {
-                email: newUserData.email
-            }
-        });
+        const finduser = await todoRepository.findUserByEmail(newUserData.email);
 
         if (finduser) {
             throw new Error("User already exists");
@@ -87,28 +83,16 @@ class TodoService {
 
         const hashedPassword = await Auth.hashPassword(createdUser.password);
 
-
-        return prisma.user.create({
-            data: {
-                email: createdUser.email,
-                password: hashedPassword,
-                id
-            },
-        });
+        return todoRepository.createUser(id, email, hashedPassword);
     }
 
     async loginUser(email: string, password: string): Promise<string> {
-        const user = await prisma.user.findUnique({where: {email}});
+        const user = await todoRepository.findUserByEmail(email);
 
         if (!user) {
             throw new Error('User not found');
         }
-
-        console.log({password})
-
         const validatePassword = await Auth.comparePassword(password, user.password);
-
-        console.log({validatePassword})
 
         if (!validatePassword) {
             throw new Error('Invalid credentials');

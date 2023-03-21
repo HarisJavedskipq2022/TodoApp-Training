@@ -19,7 +19,11 @@ class TodoRepository {
     }
 
     async deleteTodo(id: string) {
-        return this.prisma.todo.delete({where: {id: id}})
+        return this.prisma.todo.delete({where: {id}})
+    }
+
+    async deleteUser(id: string) {
+        return this.prisma.user.delete({where: {id}})
     }
 
     async updateTodo(id: string, completed: boolean) {
@@ -29,12 +33,20 @@ class TodoRepository {
         });
     }
 
-    async findUniqueUser(email: string) {
+    async findUserByEmail(email: string) {
         return this.prisma.user.findUnique({where: {email}})
+    }
+
+    async findUserbyId(id: string) {
+        return this.prisma.user.findUnique({where: {id}})
     }
 
     async findManyUsers() {
         return this.prisma.user.findMany()
+    }
+
+    async createUser(id: string, email: string, password: string) {
+        return this.prisma.user.create({data: {id, email, password}})
     }
 }
 
