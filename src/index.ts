@@ -12,14 +12,13 @@ let connectDb = connectionToDb();
 app.use(express.json());
 
 const a = program.parse(process.argv);
-console.log({a})
-const port: number = Number(a.args[0]) || 5000;
+const port = Number(a.args[0]) || process.env.PORT;
 app.use('/api/v1/todo/', todoRouter);
-
+program.option('-p, --port <number>', 'port number')
 
 // const logger = program.option('-p, --port <number>', 'port number');
 // console.log({logger})
-program.parse(process.argv);
+// program.parse(process.argv);
 
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);

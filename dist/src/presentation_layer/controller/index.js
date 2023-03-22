@@ -1,4 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13,12 +25,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const TodoUtility_1 = __importDefault(require("../../services/TodoUtility"));
-class ControllerInstance {
+const inversify_1 = require("inversify");
+let ControllerInstance = class ControllerInstance {
+    constructor(todoService) {
+        this.todoService = todoService;
+    }
     createTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { title, completed } = req.body;
             try {
-                const record = yield TodoUtility_1.default.createTodoItem(title, completed);
+                const record = yield this.todoService.createTodoItem(title, completed);
                 return res.json({ record, msg: "Successfully created todo" });
             }
             catch (e) {
@@ -35,7 +51,7 @@ class ControllerInstance {
             try {
                 const limit = req.query.limit || 10;
                 const offset = req.query.offset;
-                const records = yield TodoUtility_1.default.findAllTodos(limit, offset);
+                const records = yield this.todoService.findAllTodos(limit, offset);
                 return res.json(records);
             }
             catch (e) {
@@ -51,7 +67,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const record = yield TodoUtility_1.default.readById(id);
+                const record = yield this.todoService.readById(id);
                 return res.json(record);
             }
             catch (e) {
@@ -65,7 +81,7 @@ class ControllerInstance {
     readUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const record = yield TodoUtility_1.default.readUsers();
+                const record = yield this.todoService.readUsers();
                 return res.json(record);
             }
             catch (e) {
@@ -80,7 +96,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const deletedUser = yield TodoUtility_1.default.deleteUserById(id);
+                const deletedUser = yield this.todoService.deleteUserById(id);
                 return res.json({ user: deletedUser });
             }
             catch (e) {
@@ -94,7 +110,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const deletedRecord = yield TodoUtility_1.default.deleteTodoById(id);
+                const deletedRecord = yield this.todoService.deleteTodoById(id);
                 return res.json({ record: deletedRecord });
             }
             catch (e) {
@@ -109,7 +125,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const updatedRecord = yield TodoUtility_1.default.updateById(id);
+                const updatedRecord = yield this.todoService.updateById(id);
                 return res.json({ record: updatedRecord });
             }
             catch (e) {
@@ -124,7 +140,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                const newUser = yield TodoUtility_1.default.signUp(email, password);
+                const newUser = yield this.todoService.signUp(email, password);
                 console.log({ newUser });
                 return res.json({ newUser, msg: 'User successfully signed up' });
             }
@@ -137,7 +153,7 @@ class ControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                const token = yield TodoUtility_1.default.loginUser(email, password);
+                const token = yield this.todoService.loginUser(email, password);
                 res.json({ msg: "successfully logged in" });
                 console.log({ token });
             }
@@ -146,5 +162,10 @@ class ControllerInstance {
             }
         });
     }
-}
-exports.default = new ControllerInstance();
+};
+ControllerInstance = __decorate([
+    (0, inversify_1.injectable)(),
+    __param(0, (0, inversify_1.inject)('TodoService')),
+    __metadata("design:paramtypes", [TodoUtility_1.default])
+], ControllerInstance);
+exports.default = ControllerInstance;

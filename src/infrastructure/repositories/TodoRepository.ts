@@ -1,6 +1,8 @@
 import {PrismaClient} from '@prisma/client';
 import {Todo} from "../domain/entity/TodoEntity";
+import {injectable} from "inversify";
 
+@injectable()
 class TodoRepository {
 
     constructor(private readonly prisma: PrismaClient) {

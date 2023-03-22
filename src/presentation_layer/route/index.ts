@@ -3,26 +3,28 @@ import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
 import ControllerInstance from "../controller";
 import authMiddleware from '../../middleware/auth';
-
+import {container} from "../../inversify.config";
 
 const router = express.Router();
+
+const controller = container.get<ControllerInstance>(ControllerInstance)
 
 router.post(
     '/create',
     authMiddleware.authorize,
     TodoValidator.checkCreateTodo(),
     Middleware.handleValidationError,
-    ControllerInstance.createTodos
+    controller.createTodos
 );
 
 router.post(
     '/signup',
-    ControllerInstance.signup
+    controller.signup
 )
 
 router.post(
     '/login',
-    ControllerInstance.login
+    controller.login
 )
 
 router.get(
@@ -30,13 +32,13 @@ router.get(
     // authMiddleware.authorize,
     TodoValidator.checkReadTodo(),
     Middleware.handleValidationError,
-    ControllerInstance.readUsers
+    controller.readUsers
 );
 
 router.get(
     '/read',
     authMiddleware.authorize,
-    ControllerInstance.readTodos
+    controller.readTodos
 )
 
 router.get(
@@ -44,7 +46,7 @@ router.get(
     // authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    ControllerInstance.readById
+    controller.readById
 );
 
 router.put(
@@ -52,7 +54,7 @@ router.put(
     // authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    ControllerInstance.update
+    controller.update
 );
 
 
@@ -61,13 +63,13 @@ router.delete(
     authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    ControllerInstance.deleteTodoById
+    controller.deleteTodoById
 );
 
 router.delete(
     '/deleteuser/:id',
     authMiddleware.authorize,
-    ControllerInstance.deleteUsers
+    controller.deleteUsers
 )
 
 export default router;
