@@ -1,6 +1,7 @@
+import "reflect-metadata";
 import express from "express";
 import 'dotenv/config';
-import todoRouter from './presentation_layer/route'
+import router from "./presentation_layer/route";
 import {connectionToDb} from "./utils/connection";
 import {Command} from 'commander';
 
@@ -13,7 +14,7 @@ app.use(express.json());
 
 const a = program.parse(process.argv);
 const port = Number(a.args[0]) || process.env.PORT;
-app.use('/api/v1/todo/', todoRouter);
+app.use('/api/v1/todo/', router);
 program.option('-p, --port <number>', 'port number')
 
 // const logger = program.option('-p, --port <number>', 'port number');

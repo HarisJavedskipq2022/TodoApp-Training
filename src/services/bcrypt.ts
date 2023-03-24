@@ -15,6 +15,4 @@ export class Auth {
     static sign(payload: object, key: string): string {
         return jwt.sign(payload, key);
     }
-
-
 }
