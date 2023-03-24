@@ -7,4 +7,3 @@ export default function generateTodo() {
       completed: faker.datatype.boolean(),
     };
   }
-
