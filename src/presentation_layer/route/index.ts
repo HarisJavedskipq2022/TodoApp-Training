@@ -14,7 +14,7 @@ const userController = container.get<UserControllerInstance>(UserControllerInsta
 
 router.post(
     '/create',
-    // authMiddleware.authorize,
+    authMiddleware.authorize,
     TodoValidator.checkCreateTodo(),
     Middleware.handleValidationError,
     todoController.createTodos
@@ -37,8 +37,8 @@ router.post(
 
 router.get(
     '/getusers',
-    // authMiddleware.authorize,
-    // TodoValidator.checkReadTodo(),
+    authMiddleware.authorize,
+    TodoValidator.checkReadTodo(),
     Middleware.handleValidationError,
     userController.readUsers
 );
@@ -51,7 +51,7 @@ router.get(
 
 router.get(
     '/read/:id',
-    // authMiddleware.authorize,
+    authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
     todoController.readById
@@ -59,7 +59,7 @@ router.get(
 
 router.put(
     '/update/:id',
-    // authMiddleware.authorize,
+    authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
     todoController.update

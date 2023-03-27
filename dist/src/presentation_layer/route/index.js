@@ -13,25 +13,16 @@ const inversify_config_1 = require("../../../inversify.config");
 const router = express_1.default.Router();
 const todoController = inversify_config_1.container.get(TodoController_1.default);
 const userController = inversify_config_1.container.get(UserController_1.default);
-router.post('/create', 
-// authMiddleware.authorize,
-validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidationError, todoController.createTodos);
+router.post('/create', auth_1.default.authorize, validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidationError, todoController.createTodos);
 router.post('/createfaker', todoController.createTodosFaker);
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
-router.get('/getusers', 
-// authMiddleware.authorize,
-// TodoValidator.checkReadTodo(),
-ValidationError_1.default.handleValidationError, userController.readUsers);
+router.get('/getusers', auth_1.default.authorize, validator_1.default.checkReadTodo(), ValidationError_1.default.handleValidationError, userController.readUsers);
 router.get('/read', 
 // authMiddleware.authorize,
 todoController.readTodos);
-router.get('/read/:id', 
-// authMiddleware.authorize,
-validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.readById);
-router.put('/update/:id', 
-// authMiddleware.authorize,
-validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.update);
+router.get('/read/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.readById);
+router.put('/update/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.update);
 router.delete('/deletetodo/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.deleteTodoById);
 router.delete('/deleteuser/:id', auth_1.default.authorize, userController.deleteUsers);
 exports.default = router;
