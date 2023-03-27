@@ -1,36 +1,39 @@
+import { User } from './../../infrastructure/domain/entity/UserEntity';
 import express from 'express';
 import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
-import TodoController from '../controller/TodoController';
-import UserController from '../controller/UserController';
 import authMiddleware from '../../middleware/auth';
-// import {container} from "../../../inversify.config";
+import TodoControllerInstance from '../controller/TodoController';
+import UserControllerInstance from '../controller/UserController';
+import {container} from '../../../inversify.config'
+
 
 const router = express.Router();
 
-// const controller = container.get<ControllerInstance>(ControllerInstance)
+const todoController = container.get<TodoControllerInstance>(TodoControllerInstance)
+const userController = container.get<UserControllerInstance>(UserControllerInstance)
 
 router.post(
     '/create',
     // authMiddleware.authorize,
     TodoValidator.checkCreateTodo(),
     Middleware.handleValidationError,
-    TodoController.createTodos
+    todoController.createTodos
 );
 
 router.post(
     '/createfaker',
-    TodoController.createTodosFaker
+    todoController.createTodosFaker
 )
 
 router.post(
     '/signup',
-    UserController.signup
+    userController.signup
 )
 
 router.post(
     '/login',
-    UserController.login
+    userController.login
 )
 
 router.get(
@@ -38,13 +41,13 @@ router.get(
     // authMiddleware.authorize,
     TodoValidator.checkReadTodo(),
     Middleware.handleValidationError,
-    UserController.readUsers
+    userController.readUsers
 );
 
 router.get(
     '/read',
     // authMiddleware.authorize,
-    TodoController.readTodos
+    todoController.readTodos
 )
 
 router.get(
@@ -52,7 +55,7 @@ router.get(
     // authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    TodoController.readById
+    todoController.readById
 );
 
 router.put(
@@ -60,7 +63,7 @@ router.put(
     // authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    TodoController.update
+    todoController.update
 );
 
 
@@ -69,13 +72,13 @@ router.delete(
     authMiddleware.authorize,
     TodoValidator.checkIdParam(),
     Middleware.handleValidationError,
-    TodoController.deleteTodoById
+    todoController.deleteTodoById
 );
 
 router.delete(
     '/deleteuser/:id',
     authMiddleware.authorize,
-    UserController.deleteUsers
+    userController.deleteUsers
 )
 
 export default router;

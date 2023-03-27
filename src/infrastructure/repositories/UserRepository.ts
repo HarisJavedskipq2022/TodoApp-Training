@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { injectable, inject } from "inversify"
+import TodoService from "../../services/TodoUtility";
 import { User } from "../domain/entity/UserEntity";
 
 const prisma = new PrismaClient();
 
+@injectable()
 class UserRepository {
 
     constructor() { }

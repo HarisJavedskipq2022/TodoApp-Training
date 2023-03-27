@@ -1,4 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13,16 +25,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const TodoUtility_1 = __importDefault(require("../../../services/TodoUtility"));
-// import {inject, injectable} from "inversify";
-const todoService = new TodoUtility_1.default();
-class TodoControllerInstance {
-    constructor() {
-    }
-    createTodos(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+const inversify_1 = require("inversify");
+// const todoService = new TodoService();
+let TodoControllerInstance = class TodoControllerInstance {
+    constructor(todoService) {
+        this.todoService = todoService;
+        this.createTodos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, completed } = req.body;
             try {
-                const record = yield todoService.createTodoItem(title, completed);
+                const record = yield this.todoService.createTodoItem(title, completed);
                 return res.json({ record, msg: "Successfully created todo" });
             }
             catch (e) {
@@ -33,11 +44,9 @@ class TodoControllerInstance {
                 });
             }
         });
-    }
-    createTodosFaker(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.createTodosFaker = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const record = yield todoService.createTodoFaker();
+                const record = yield this.todoService.createTodoFaker();
                 return res.json({ record, msg: "Successfully created todo" });
             }
             catch (e) {
@@ -48,13 +57,11 @@ class TodoControllerInstance {
                 });
             }
         });
-    }
-    readTodos(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.readTodos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const limit = req.query.limit || 10;
                 const offset = req.query.offset;
-                const records = yield todoService.findAllTodos(limit, offset);
+                const records = yield this.todoService.findAllTodos(limit, offset);
                 return res.json(records);
             }
             catch (e) {
@@ -65,12 +72,10 @@ class TodoControllerInstance {
                 });
             }
         });
-    }
-    readById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.readById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const record = yield todoService.readById(id);
+                const record = yield this.todoService.readById(id);
                 return res.json(record);
             }
             catch (e) {
@@ -80,12 +85,10 @@ class TodoControllerInstance {
                 });
             }
         });
-    }
-    deleteTodoById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.deleteTodoById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const deletedRecord = yield todoService.deleteTodoById(id);
+                const deletedRecord = yield this.todoService.deleteTodoById(id);
                 return res.json({ record: deletedRecord });
             }
             catch (e) {
@@ -95,12 +98,10 @@ class TodoControllerInstance {
                 });
             }
         });
-    }
-    update(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.update = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const updatedRecord = yield todoService.updateById(id);
+                const updatedRecord = yield this.todoService.updateById(id);
                 return res.json({ record: updatedRecord });
             }
             catch (e) {
@@ -111,5 +112,10 @@ class TodoControllerInstance {
             }
         });
     }
-}
-exports.default = new TodoControllerInstance();
+};
+TodoControllerInstance = __decorate([
+    (0, inversify_1.injectable)(),
+    __param(0, (0, inversify_1.inject)('TodoService')),
+    __metadata("design:paramtypes", [TodoUtility_1.default])
+], TodoControllerInstance);
+exports.default = TodoControllerInstance;

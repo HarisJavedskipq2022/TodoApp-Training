@@ -1,4 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13,13 +25,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserUtility_1 = __importDefault(require("../../../services/UserUtility"));
-const userService = new UserUtility_1.default();
-class UserControllerInstance {
-    constructor() { }
+const inversify_1 = require("inversify");
+// const userService = new UserService();
+let UserControllerInstance = class UserControllerInstance {
+    constructor(userService) {
+        this.userService = userService;
+    }
     readUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const record = yield userService.readUsers();
+                const record = yield this.userService.readUsers();
                 return res.json(record);
             }
             catch (e) {
@@ -34,7 +49,7 @@ class UserControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const deletedUser = yield userService.deleteUserById(id);
+                const deletedUser = yield this.userService.deleteUserById(id);
                 return res.json({ user: deletedUser });
             }
             catch (e) {
@@ -48,7 +63,7 @@ class UserControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                const newUser = yield userService.signUp(email, password);
+                const newUser = yield this.userService.signUp(email, password);
                 console.log({ newUser });
                 return res.json({ newUser, msg: 'User successfully signed up' });
             }
@@ -61,7 +76,7 @@ class UserControllerInstance {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                const token = yield userService.loginUser(email, password);
+                const token = yield this.userService.loginUser(email, password);
                 console.log({ token });
                 res.json({ msg: "successfully logged in" });
                 console.log({ token });
@@ -71,5 +86,10 @@ class UserControllerInstance {
             }
         });
     }
-}
-exports.default = new UserControllerInstance();
+};
+UserControllerInstance = __decorate([
+    (0, inversify_1.injectable)(),
+    __param(0, (0, inversify_1.inject)('UserService')),
+    __metadata("design:paramtypes", [UserUtility_1.default])
+], UserControllerInstance);
+exports.default = UserControllerInstance;

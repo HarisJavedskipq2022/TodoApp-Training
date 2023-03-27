@@ -6,30 +6,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const validator_1 = __importDefault(require("../validator"));
 const ValidationError_1 = __importDefault(require("../../middleware/ValidationError"));
+const auth_1 = __importDefault(require("../../middleware/auth"));
 const TodoController_1 = __importDefault(require("../controller/TodoController"));
 const UserController_1 = __importDefault(require("../controller/UserController"));
-const auth_1 = __importDefault(require("../../middleware/auth"));
-// import {container} from "../../../inversify.config";
+const inversify_config_1 = require("../../../inversify.config");
 const router = express_1.default.Router();
-// const controller = container.get<ControllerInstance>(ControllerInstance)
+const todoController = inversify_config_1.container.get(TodoController_1.default);
+const userController = inversify_config_1.container.get(UserController_1.default);
 router.post('/create', 
 // authMiddleware.authorize,
-validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidationError, TodoController_1.default.createTodos);
-router.post('/createfaker', TodoController_1.default.createTodosFaker);
-router.post('/signup', UserController_1.default.signup);
-router.post('/login', UserController_1.default.login);
+validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidationError, todoController.createTodos);
+router.post('/createfaker', todoController.createTodosFaker);
+router.post('/signup', userController.signup);
+router.post('/login', userController.login);
 router.get('/readusers', 
 // authMiddleware.authorize,
-validator_1.default.checkReadTodo(), ValidationError_1.default.handleValidationError, UserController_1.default.readUsers);
+validator_1.default.checkReadTodo(), ValidationError_1.default.handleValidationError, userController.readUsers);
 router.get('/read', 
 // authMiddleware.authorize,
-TodoController_1.default.readTodos);
+todoController.readTodos);
 router.get('/read/:id', 
 // authMiddleware.authorize,
-validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, TodoController_1.default.readById);
+validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.readById);
 router.put('/update/:id', 
 // authMiddleware.authorize,
-validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, TodoController_1.default.update);
-router.delete('/deletetodo/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, TodoController_1.default.deleteTodoById);
-router.delete('/deleteuser/:id', auth_1.default.authorize, UserController_1.default.deleteUsers);
+validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.update);
+router.delete('/deletetodo/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.deleteTodoById);
+router.delete('/deleteuser/:id', auth_1.default.authorize, userController.deleteUsers);
 exports.default = router;

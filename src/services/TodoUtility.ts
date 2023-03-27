@@ -2,12 +2,15 @@ import { Todo } from "../infrastructure/domain/entity/TodoEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
 import TodoRepository from "../infrastructure/repositories/TodoRepository";
-// import {inject, injectable} from "inversify";
+import {inject, injectable} from "inversify";
 import generateTodo from "../utils/faker";
 
-const todoRepository = new TodoRepository();
+
+// const todoRepository = new TodoRepository();
+
+@injectable()
 class TodoService {
-    constructor() {
+    constructor(@inject('TodoRepository') private todoRepository:TodoRepository ) {
     }
 
     async createTodoFaker() {
@@ -17,7 +20,7 @@ class TodoService {
         }
         const createdTodos = await Promise.all(
           todos.map(async (todoItem) => {
-            return await todoRepository.createTodoItem({
+            return await this.todoRepository.createTodoItem({
               title: todoItem.title,
               completed: todoItem.completed,
               id: todoItem.id
@@ -32,12 +35,12 @@ class TodoService {
         const id = uuid.generate();
         const newTodoData = { id, title, completed };
         const newTodo = Todo.todoFactory(newTodoData);
-        return todoRepository.createTodoItem({ ...newTodo });
+        return this.todoRepository.createTodoItem({ ...newTodo });
     }
 
     async findAllTodos(limit: number = 10, offset: number = 0) {
         try {
-            return await todoRepository.findManyTodos(limit, offset);
+            return await this.todoRepository.findManyTodos(limit, offset);
         } catch (e) {
             throw new Error('Failed to find all todo items')
         }
@@ -45,34 +48,33 @@ class TodoService {
 
     async readById(id: string) {
         try {
-            return await todoRepository.findUniqueTodo(id);
+            return await this.todoRepository.findUniqueTodo(id);
         } catch (e) {
             throw new Error('Failed to read todo');
         }
     }
 
     async deleteTodoById(id: string) {
-        const record = await todoRepository.findUniqueTodo(id);
+        const record = await this.todoRepository.findUniqueTodo(id);
 
         if (!record) {
             throw new Error('Record not found');
         }
 
-        return todoRepository.deleteTodo(id);
+        return this.todoRepository.deleteTodo(id);
     }
 
     async updateById(id: string) {
-        const record = await todoRepository.findUniqueTodo(id);
+        const record = await this.todoRepository.findUniqueTodo(id);
 
         if (!record) {
             throw new Error('Record not found');
         } else {
-            return await todoRepository.updateTodo(id, !record.completed);
+            return await this.todoRepository.updateTodo(id, !record.completed);
         }
     }
 
     
 }
 
-export default TodoService
-    ;
+export default TodoService;

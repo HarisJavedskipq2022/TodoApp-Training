@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import UserService from "../../../services/UserUtility";
+import {injectable, inject} from "inversify";
 
+// const userService = new UserService();
 
-const userService = new UserService();
-
-
+@injectable()
 class UserControllerInstance {
-    constructor() { }
+    constructor(@inject('UserService') private userService: UserService) { }
 
 
     async readUsers(req: Request, res: Response) {
         try {
-            const record = await userService.readUsers();
+            const record = await this.userService.readUsers();
             return res.json(record);
         } catch (e) {
             return res.status(500).json({
@@ -24,7 +24,7 @@ class UserControllerInstance {
     async deleteUsers(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const deletedUser = await userService.deleteUserById(id);
+            const deletedUser = await this.userService.deleteUserById(id);
             return res.json({ user: deletedUser });
         } catch (e) {
             return res.json({
@@ -37,7 +37,7 @@ class UserControllerInstance {
         const { email, password }: { email: string, password: string } = req.body;
 
         try {
-            const newUser = await userService.signUp(email, password);
+            const newUser = await this.userService.signUp(email, password);
 
             console.log({ newUser })
 
@@ -51,7 +51,7 @@ class UserControllerInstance {
         const { email, password }: { email: string, password: string } = req.body;
 
         try {
-            const token = await userService.loginUser(email, password);
+            const token = await this.userService.loginUser(email, password);
 
             console.log({ token })
             res.json({ msg: "successfully logged in" });
@@ -65,4 +65,4 @@ class UserControllerInstance {
 }
 
 
-export default new UserControllerInstance();
+export default UserControllerInstance

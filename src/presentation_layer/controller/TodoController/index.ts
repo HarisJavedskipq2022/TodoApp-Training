@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
 import TodoService from "../../../services/TodoUtility";
-// import {inject, injectable} from "inversify";
+import { inject, injectable } from "inversify";
 
-const todoService = new TodoService();
+// const todoService = new TodoService();
 
+@injectable()
 class TodoControllerInstance {
-    constructor() {
+    constructor(@inject('TodoService') private todoService: TodoService) {
     }
 
-    async createTodos(req: Request, res: Response) {
+    createTodos = async (req: Request, res: Response) => {
         const { title, completed }: { title: string, completed: boolean } = req.body
         try {
-            const record = await todoService.createTodoItem(title, completed)
+            const record = await this.todoService.createTodoItem(title, completed)
             return res.json({ record, msg: "Successfully created todo" });
 
         } catch (e) {
@@ -23,28 +24,28 @@ class TodoControllerInstance {
         }
     }
 
-    async createTodosFaker(req: Request, res: Response) {
-         
-            try {
-                const record = await todoService.createTodoFaker()
-                return res.json({ record, msg: "Successfully created todo" });
-    
-            } catch (e) {
-                return res.json({
-                    msg: "failed to create todo",
-                    status: 500,
-                    route: "/create",
-                });
-        
-            }
-        }
+    createTodosFaker = async (req: Request, res: Response) => {
 
-    async readTodos(req: Request, res: Response) {
+        try {
+            const record = await this.todoService.createTodoFaker()
+            return res.json({ record, msg: "Successfully created todo" });
+
+        } catch (e) {
+            return res.json({
+                msg: "failed to create todo",
+                status: 500,
+                route: "/create",
+            });
+
+        }
+    }
+
+    readTodos = async (req: Request, res: Response) => {
         try {
             const limit = (req.query.limit as number | undefined) || 10;
             const offset = req.query.offset as number | undefined;
 
-            const records = await todoService.findAllTodos(limit, offset);
+            const records = await this.todoService.findAllTodos(limit, offset);
             return res.json(records);
         } catch (e) {
             return res.json({
@@ -55,10 +56,10 @@ class TodoControllerInstance {
         }
     }
 
-    async readById(req: Request, res: Response) {
+    readById = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const record = await todoService.readById(id);
+            const record = await this.todoService.readById(id);
             return res.json(record);
         } catch (e) {
             return res.status(500).json({
@@ -70,10 +71,10 @@ class TodoControllerInstance {
 
 
 
-    async deleteTodoById(req: Request, res: Response) {
+    deleteTodoById = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const deletedRecord = await todoService.deleteTodoById(id);
+            const deletedRecord = await this.todoService.deleteTodoById(id);
             return res.json({ record: deletedRecord });
         } catch (e) {
             return res.status(500).json({
@@ -83,10 +84,10 @@ class TodoControllerInstance {
         }
     }
 
-    async update(req: Request, res: Response) {
+    update = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const updatedRecord = await todoService.updateById(id);
+            const updatedRecord = await this.todoService.updateById(id);
             return res.json({ record: updatedRecord });
         } catch (e) {
             return res.status(500).json({
@@ -95,8 +96,6 @@ class TodoControllerInstance {
             });
         }
     }
-
-
 }
 
-export default new TodoControllerInstance()
+export default TodoControllerInstance
