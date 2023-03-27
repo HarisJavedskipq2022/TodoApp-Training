@@ -18,9 +18,7 @@ router.post('/createfaker', todoController.createTodosFaker);
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
 router.get('/getusers', auth_1.default.authorize, validator_1.default.checkReadTodo(), ValidationError_1.default.handleValidationError, userController.readUsers);
-router.get('/read', 
-// authMiddleware.authorize,
-todoController.readTodos);
+router.get('/read', auth_1.default.authorize, todoController.readTodos);
 router.get('/read/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.readById);
 router.put('/update/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.update);
 router.delete('/deletetodo/:id', auth_1.default.authorize, validator_1.default.checkIdParam(), ValidationError_1.default.handleValidationError, todoController.deleteTodoById);

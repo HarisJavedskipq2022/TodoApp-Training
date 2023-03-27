@@ -45,7 +45,7 @@ router.get(
 
 router.get(
     '/read',
-    // authMiddleware.authorize,
+    authMiddleware.authorize,
     todoController.readTodos
 )
 
