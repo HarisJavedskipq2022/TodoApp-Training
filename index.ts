@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import 'dotenv/config';
-import router from "./presentation_layer/route";
+import router from "./src/presentation_layer/route";
 import {Command} from 'commander';
 
 const program = new Command();
