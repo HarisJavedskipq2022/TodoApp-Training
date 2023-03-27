@@ -1,4 +1,3 @@
-import { User } from './../../infrastructure/domain/entity/UserEntity';
 import express from 'express';
 import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
@@ -37,9 +36,9 @@ router.post(
 )
 
 router.get(
-    '/readusers',
+    '/getusers',
     // authMiddleware.authorize,
-    TodoValidator.checkReadTodo(),
+    // TodoValidator.checkReadTodo(),
     Middleware.handleValidationError,
     userController.readUsers
 );

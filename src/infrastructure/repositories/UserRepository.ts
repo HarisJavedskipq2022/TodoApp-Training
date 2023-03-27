@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { injectable, inject } from "inversify"
-import TodoService from "../../services/TodoUtility";
+import { injectable} from "inversify"
 import { User } from "../domain/entity/UserEntity";
 
 const prisma = new PrismaClient();
@@ -8,7 +7,7 @@ const prisma = new PrismaClient();
 @injectable()
 class UserRepository {
 
-    constructor() { }
+    constructor() {}
 
 
     async deleteUser(id: string) {

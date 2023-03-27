@@ -2,16 +2,13 @@ import "reflect-metadata";
 import express from "express";
 import 'dotenv/config';
 import router from "./presentation_layer/route";
-import {connectionToDb} from "./utils/connection";
 import {Command} from 'commander';
 
 const program = new Command();
 // const port: number = program.port;
 const app = express();
 
-let connectDb = connectionToDb();
-app.use(express.json());
-
+app.use(express.json())
 const a = program.parse(process.argv);
 const port = Number(a.args[0]) || process.env.PORT;
 app.use('/api/v1/todo/', router);

@@ -19,9 +19,10 @@ validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidatio
 router.post('/createfaker', todoController.createTodosFaker);
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
-router.get('/readusers', 
+router.get('/getusers', 
 // authMiddleware.authorize,
-validator_1.default.checkReadTodo(), ValidationError_1.default.handleValidationError, userController.readUsers);
+// TodoValidator.checkReadTodo(),
+ValidationError_1.default.handleValidationError, userController.readUsers);
 router.get('/read', 
 // authMiddleware.authorize,
 todoController.readTodos);

@@ -28,17 +28,15 @@ class UserService {
         return this.userRepository.deleteUser(id);
     }
 
-    async signUp(email: string, password: string) {
+    signUp = async (email: string, password: string) => {
 
         const id = uuid.generate();
-        const newUserData = { id, email, password };
-        const finduser = await this.userRepository.findUserByEmail(newUserData.email);
+        const createdUser = User.userFactory({id, email, password})
+        const finduser = await this.userRepository.findUserByEmail(createdUser.email);
 
         if (finduser) {
             throw new Error("User already exists");
         }
-
-        const createdUser = User.userFactory(newUserData);
 
         const hashedPassword = await Auth.hashPassword(createdUser.password);
 

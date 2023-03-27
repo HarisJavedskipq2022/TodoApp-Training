@@ -34,6 +34,16 @@ const inversify_1 = require("inversify");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
+        this.signUp = (email, password) => __awaiter(this, void 0, void 0, function* () {
+            const id = uuid_1.default.generate();
+            const createdUser = UserEntity_1.User.userFactory({ id, email, password });
+            const finduser = yield this.userRepository.findUserByEmail(createdUser.email);
+            if (finduser) {
+                throw new Error("User already exists");
+            }
+            const hashedPassword = yield bcrypt_1.Auth.hashPassword(createdUser.password);
+            return this.userRepository.createUser(createdUser, hashedPassword);
+        });
     }
     readUsers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -52,19 +62,6 @@ let UserService = class UserService {
                 throw new Error('User does not exist');
             }
             return this.userRepository.deleteUser(id);
-        });
-    }
-    signUp(email, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const id = uuid_1.default.generate();
-            const newUserData = { id, email, password };
-            const finduser = yield this.userRepository.findUserByEmail(newUserData.email);
-            if (finduser) {
-                throw new Error("User already exists");
-            }
-            const createdUser = UserEntity_1.User.userFactory(newUserData);
-            const hashedPassword = yield bcrypt_1.Auth.hashPassword(createdUser.password);
-            return this.userRepository.createUser(createdUser, hashedPassword);
         });
     }
     loginUser(email, password) {

@@ -30,11 +30,10 @@ const inversify_1 = require("inversify");
 let UserControllerInstance = class UserControllerInstance {
     constructor(userService) {
         this.userService = userService;
-    }
-    readUsers(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.readUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const record = yield this.userService.readUsers();
+                console.log({ record });
                 return res.json(record);
             }
             catch (e) {
@@ -44,9 +43,7 @@ let UserControllerInstance = class UserControllerInstance {
                 });
             }
         });
-    }
-    deleteUsers(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.deleteUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
                 const deletedUser = yield this.userService.deleteUserById(id);
@@ -58,22 +55,17 @@ let UserControllerInstance = class UserControllerInstance {
                 });
             }
         });
-    }
-    signup(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.signup = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
                 const newUser = yield this.userService.signUp(email, password);
-                console.log({ newUser });
                 return res.json({ newUser, msg: 'User successfully signed up' });
             }
             catch (error) {
                 return res.status(400).json({ error: "user already exists" });
             }
         });
-    }
-    login(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.login = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
                 const token = yield this.userService.loginUser(email, password);

@@ -1,6 +1,8 @@
+import { body } from 'express-validator';
 import { Request, Response } from "express";
 import UserService from "../../../services/UserUtility";
 import {injectable, inject} from "inversify";
+
 
 // const userService = new UserService();
 
@@ -9,9 +11,12 @@ class UserControllerInstance {
     constructor(@inject('UserService') private userService: UserService) { }
 
 
-    async readUsers(req: Request, res: Response) {
+    readUsers = async (req: Request, res: Response) => {
         try {
             const record = await this.userService.readUsers();
+
+            console.log({record})
+
             return res.json(record);
         } catch (e) {
             return res.status(500).json({
@@ -21,7 +26,7 @@ class UserControllerInstance {
         }
     }
 
-    async deleteUsers(req: Request, res: Response) {
+    deleteUsers = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
             const deletedUser = await this.userService.deleteUserById(id);
@@ -33,13 +38,12 @@ class UserControllerInstance {
         }
     }
 
-    async signup(req: Request, res: Response) {
-        const { email, password }: { email: string, password: string } = req.body;
+    signup = async (req: Request, res: Response) => {
+
+        const {email, password} = req.body
 
         try {
             const newUser = await this.userService.signUp(email, password);
-
-            console.log({ newUser })
 
             return res.json({ newUser, msg: 'User successfully signed up' });
         } catch (error) {
@@ -47,7 +51,7 @@ class UserControllerInstance {
         }
     }
 
-    async login(req: Request, res: Response) {
+    login = async (req: Request, res: Response) => {
         const { email, password }: { email: string, password: string } = req.body;
 
         try {
