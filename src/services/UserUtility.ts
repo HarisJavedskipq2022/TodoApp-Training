@@ -3,7 +3,7 @@ import uuid from "../utils/uuid";
 import "dotenv/config";
 import { Auth } from "./bcrypt";
 import UserRepository from "../infrastructure/repositories/UserRepository";
-import {inject, injectable} from "inversify";
+import { inject, injectable } from "inversify";
 
 @injectable()
 class UserService {
@@ -29,7 +29,7 @@ class UserService {
     signUp = async (email: string, password: string) => {
 
         const id = uuid.generate();
-        const createdUser = User.userFactory({id, email, password})
+        const createdUser = User.userFactory({ id, email, password })
         const finduser = await this.userRepository.findUserByEmail(createdUser.email);
 
         if (finduser) {
