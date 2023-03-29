@@ -5,8 +5,6 @@ import { Auth } from "./bcrypt";
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import {inject, injectable} from "inversify";
 
-// const userRepository = new UserRepository();
-
 @injectable()
 class UserService {
     constructor(@inject('UserRepository') private userRepository: UserRepository) {

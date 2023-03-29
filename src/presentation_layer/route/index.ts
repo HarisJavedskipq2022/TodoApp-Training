@@ -4,7 +4,7 @@ import Middleware from '../../middleware/ValidationError';
 import authMiddleware from '../../middleware/auth';
 import TodoControllerInstance from '../controller/TodoController';
 import UserControllerInstance from '../controller/UserController';
-import {container} from '../../../inversify.config'
+import { container } from '../../../inversify.config'
 
 
 const router = express.Router();

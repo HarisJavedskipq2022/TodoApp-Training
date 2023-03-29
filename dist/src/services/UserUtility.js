@@ -30,7 +30,6 @@ require("dotenv/config");
 const bcrypt_1 = require("./bcrypt");
 const UserRepository_1 = __importDefault(require("../infrastructure/repositories/UserRepository"));
 const inversify_1 = require("inversify");
-// const userRepository = new UserRepository();
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;

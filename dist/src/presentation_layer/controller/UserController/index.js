@@ -26,7 +26,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserUtility_1 = __importDefault(require("../../../services/UserUtility"));
 const inversify_1 = require("inversify");
-// const userService = new UserService();
 let UserControllerInstance = class UserControllerInstance {
     constructor(userService) {
         this.userService = userService;

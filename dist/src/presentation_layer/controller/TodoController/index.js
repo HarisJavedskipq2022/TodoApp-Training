@@ -26,7 +26,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const TodoUtility_1 = __importDefault(require("../../../services/TodoUtility"));
 const inversify_1 = require("inversify");
-// const todoService = new TodoService();
 let TodoControllerInstance = class TodoControllerInstance {
     constructor(todoService) {
         this.todoService = todoService;

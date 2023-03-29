@@ -1,13 +1,10 @@
-import { body } from 'express-validator';
 import { Request, Response } from "express";
 import UserService from "../../../services/UserUtility";
-import {injectable, inject} from "inversify";
-
-
-// const userService = new UserService();
+import { injectable, inject } from "inversify";
 
 @injectable()
 class UserControllerInstance {
+    
     constructor(@inject('UserService') private userService: UserService) { }
 
 
@@ -15,7 +12,7 @@ class UserControllerInstance {
         try {
             const record = await this.userService.readUsers();
 
-            console.log({record})
+            console.log({ record })
 
             return res.json(record);
         } catch (e) {
@@ -40,7 +37,7 @@ class UserControllerInstance {
 
     signup = async (req: Request, res: Response) => {
 
-        const {email, password} = req.body
+        const { email, password }: {email: string, password: string} = req.body
 
         try {
             const newUser = await this.userService.signUp(email, password);
@@ -65,8 +62,6 @@ class UserControllerInstance {
             res.status(401).json({ error: "invalid credentials" });
         }
     }
-
 }
-
 
 export default UserControllerInstance

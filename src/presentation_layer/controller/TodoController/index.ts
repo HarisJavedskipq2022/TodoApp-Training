@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import TodoService from "../../../services/TodoUtility";
 import { inject, injectable } from "inversify";
 
-// const todoService = new TodoService();
 
 @injectable()
 class TodoControllerInstance {
