@@ -30,7 +30,7 @@ require("dotenv/config");
 const TodoRepository_1 = __importDefault(require("../infrastructure/repositories/TodoRepository"));
 const inversify_1 = require("inversify");
 const faker_1 = __importDefault(require("../utils/faker"));
-// const todoRepository = new TodoRepository();
+const createTodoCommand_1 = require("../infrastructure/commandbus/createTodoCommand");
 let TodoService = class TodoService {
     constructor(todoRepository) {
         this.todoRepository = todoRepository;
@@ -57,6 +57,12 @@ let TodoService = class TodoService {
             const newTodoData = { id, title, completed };
             const newTodo = TodoEntity_1.Todo.todoFactory(newTodoData);
             return this.todoRepository.createTodoItem(Object.assign({}, newTodo));
+        });
+    }
+    createTodoItemCommand(todo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const command = new createTodoCommand_1.CreateTodoCommand(todo);
+            return this.todoRepository.execute(command);
         });
     }
     findAllTodos(limit = 10, offset = 0) {

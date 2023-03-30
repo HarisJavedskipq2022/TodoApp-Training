@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import {injectable} from "inversify"
 import { Todo } from "../domain/entity/TodoEntity";
+import { Command } from "../commandbus/command";
 
 const prisma = new PrismaClient();
 
@@ -10,6 +11,9 @@ class TodoRepository {
 
     constructor() {
     }
+    async execute(command: Command): Promise<any> {
+        return command.execute(this);
+      }
 
     async createTodoItem(todo: Todo) {
         return prisma.todo.create({ data: { ...todo } });

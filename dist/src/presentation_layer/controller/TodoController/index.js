@@ -43,6 +43,19 @@ let TodoControllerInstance = class TodoControllerInstance {
                 });
             }
         });
+        this.CreateTodoCommand = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const record = yield this.todoService.createTodoItemCommand(req.body);
+                return res.json({ record, msg: "Successfully created todo" });
+            }
+            catch (e) {
+                return res.json({
+                    msg: "failed to create todo by command",
+                    status: 500,
+                    route: "/createbycommand",
+                });
+            }
+        });
         this.createTodosFaker = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const record = yield this.todoService.createTodoFaker();

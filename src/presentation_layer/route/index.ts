@@ -21,6 +21,10 @@ router.post(
 );
 
 router.post(
+    '/createbycommand',
+    todoController.CreateTodoCommand);                                                                                                                                                                                  
+
+router.post(
     '/createfaker',
     todoController.createTodosFaker
 )

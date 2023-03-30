@@ -4,9 +4,8 @@ import "dotenv/config";
 import TodoRepository from "../infrastructure/repositories/TodoRepository";
 import {inject, injectable} from "inversify";
 import generateTodo from "../utils/faker";
+import { CreateTodoCommand } from "../infrastructure/commandbus/createTodoCommand";
 
-
-// const todoRepository = new TodoRepository();
 
 @injectable()
 class TodoService {
@@ -37,6 +36,11 @@ class TodoService {
         const newTodo = Todo.todoFactory(newTodoData);
         return this.todoRepository.createTodoItem({ ...newTodo });
     }
+
+    async createTodoItemCommand(todo: Todo) {
+        const command = new CreateTodoCommand(todo);
+        return this.todoRepository.execute(command);
+      }
 
     async findAllTodos(limit: number = 10, offset: number = 0) {
         try {

@@ -14,6 +14,7 @@ const router = express_1.default.Router();
 const todoController = inversify_config_1.container.get(TodoController_1.default);
 const userController = inversify_config_1.container.get(UserController_1.default);
 router.post('/create', auth_1.default.authorize, validator_1.default.checkCreateTodo(), ValidationError_1.default.handleValidationError, todoController.createTodos);
+router.post('/createbycommand', todoController.CreateTodoCommand);
 router.post('/createfaker', todoController.createTodosFaker);
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
