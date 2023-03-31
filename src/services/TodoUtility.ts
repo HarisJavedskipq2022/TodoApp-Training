@@ -1,3 +1,4 @@
+import { CommandExecutor } from './../infrastructure/commandbus/commandExecutor';
 import { Todo } from "../infrastructure/domain/entity/TodoEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
@@ -15,7 +16,7 @@ class TodoService {
 
     async createTodoFaker() {
         const todos = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
             todos.push(generateTodo());
         }
         const createdTodos = await Promise.all(
@@ -40,8 +41,10 @@ class TodoService {
 
     async createTodoItemCommand(todo: Todo) {
         const command = new CreateTodoCommand(todo);
-        return this.todoRepository.execute(command);
-    }
+        const commandExecutor = new CommandExecutor(new TodoRepository());
+        return commandExecutor.execute(command);
+      }
+      
 
     async findAllTodos(limit: number = 10, offset: number = 0) {
         try {
@@ -53,7 +56,8 @@ class TodoService {
 
     async findTodosCommand(todo: Todo) {
         const command = new FindTodoCommand(todo);
-        return this.todoRepository.execute(command);
+        const commandExecutor = new CommandExecutor(new TodoRepository());
+        return commandExecutor.execute(command);
     
     }
 
@@ -84,8 +88,6 @@ class TodoService {
             return await this.todoRepository.updateTodo(id, !record.completed);
         }
     }
-
-
 }
 
 export default TodoService;

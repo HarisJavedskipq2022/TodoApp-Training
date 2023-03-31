@@ -24,11 +24,11 @@ class TodoControllerInstance {
     }
 
     CreateTodoCommand = async (req: Request, res: Response) => {
-        try{
+        try {
             const record = await this.todoService.createTodoItemCommand(req.body)
             return res.json({ record, msg: "Successfully created todo" });
         }
-        catch(e){
+        catch (e) {
             return res.json({
                 msg: "failed to create todo by command",
                 status: 500,
@@ -38,14 +38,14 @@ class TodoControllerInstance {
     }
 
     findTodoCommand = async (req: Request, res: Response) => {
-        try{     
+        try {
             const record = await this.todoService.findTodosCommand(req.body)
             return res.json({ record, msg: "Successfully found todos" });
         }
-        catch(e){
+        catch (e) {
             return res.json({
                 msg: "failed to find todos by command",
-                status: 500,        
+                status: 500,
                 route: "/findbycommand",
             });
         }
