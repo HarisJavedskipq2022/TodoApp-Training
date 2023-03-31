@@ -24,11 +24,6 @@ const prisma = new client_1.PrismaClient();
 let TodoRepository = class TodoRepository {
     constructor() {
     }
-    execute(command) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return command.execute(this);
-        });
-    }
     createTodoItem(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             return prisma.todo.create({ data: Object.assign({}, todo) });

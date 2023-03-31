@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const commandExecutor_1 = require("./../infrastructure/commandbus/commandExecutor");
 const TodoEntity_1 = require("../infrastructure/domain/entity/TodoEntity");
 const uuid_1 = __importDefault(require("../utils/uuid"));
 require("dotenv/config");
@@ -39,7 +40,7 @@ let TodoService = class TodoService {
     createTodoFaker() {
         return __awaiter(this, void 0, void 0, function* () {
             const todos = [];
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 15; i++) {
                 todos.push((0, faker_1.default)());
             }
             const createdTodos = yield Promise.all(todos.map((todoItem) => __awaiter(this, void 0, void 0, function* () {
@@ -63,7 +64,8 @@ let TodoService = class TodoService {
     createTodoItemCommand(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             const command = new createTodoCommand_1.CreateTodoCommand(todo);
-            return this.todoRepository.execute(command);
+            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.default());
+            return commandExecutor.execute(command);
         });
     }
     findAllTodos(limit = 10, offset = 0) {
@@ -79,7 +81,8 @@ let TodoService = class TodoService {
     findTodosCommand(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             const command = new findTodoCommand_1.FindTodoCommand(todo);
-            return this.todoRepository.execute(command);
+            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.default());
+            return commandExecutor.execute(command);
         });
     }
     readById(id) {
