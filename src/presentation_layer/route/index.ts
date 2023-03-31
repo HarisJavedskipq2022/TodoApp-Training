@@ -54,6 +54,11 @@ router.get(
 )
 
 router.get(
+    '/findbycommand',
+    todoController.findTodoCommand
+)
+
+router.get(
     '/read/:id',
     authMiddleware.authorize,
     TodoValidator.checkIdParam(),

@@ -30,6 +30,7 @@ require("dotenv/config");
 const bcrypt_1 = require("./bcrypt");
 const UserRepository_1 = __importDefault(require("../infrastructure/repositories/UserRepository"));
 const inversify_1 = require("inversify");
+const jwt_1 = require("./jwt");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -74,7 +75,7 @@ let UserService = class UserService {
                 throw new Error('Invalid credentials');
             }
             const secretKey = process.env.JWT_SECRET_KEY;
-            return bcrypt_1.Auth.sign({ id: user.id, email: user.email }, secretKey);
+            return jwt_1.Jwt.sign({ id: user.id, email: user.email }, secretKey);
         });
     }
 };

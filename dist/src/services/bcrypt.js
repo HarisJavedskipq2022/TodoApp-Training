@@ -34,7 +34,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Auth = void 0;
 const bcrypt = __importStar(require("bcrypt"));
-const jwt = __importStar(require("jsonwebtoken"));
 class Auth {
     static hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -45,9 +44,6 @@ class Auth {
     }
     static comparePassword(password, hashedPassword) {
         return bcrypt.compare(password, hashedPassword);
-    }
-    static sign(payload, key) {
-        return jwt.sign(payload, key);
     }
 }
 exports.Auth = Auth;

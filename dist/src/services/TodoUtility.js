@@ -31,6 +31,7 @@ const TodoRepository_1 = __importDefault(require("../infrastructure/repositories
 const inversify_1 = require("inversify");
 const faker_1 = __importDefault(require("../utils/faker"));
 const createTodoCommand_1 = require("../infrastructure/commandbus/createTodoCommand");
+const findTodoCommand_1 = require("./../infrastructure/commandbus/findTodoCommand");
 let TodoService = class TodoService {
     constructor(todoRepository) {
         this.todoRepository = todoRepository;
@@ -73,6 +74,12 @@ let TodoService = class TodoService {
             catch (e) {
                 throw new Error('Failed to find all todo items');
             }
+        });
+    }
+    findTodosCommand(todo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const command = new findTodoCommand_1.FindTodoCommand(todo);
+            return this.todoRepository.execute(command);
         });
     }
     readById(id) {

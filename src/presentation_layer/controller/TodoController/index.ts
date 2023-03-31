@@ -37,6 +37,19 @@ class TodoControllerInstance {
         }
     }
 
+    findTodoCommand = async (req: Request, res: Response) => {
+        try{     
+            const record = await this.todoService.findTodosCommand(req.body)
+            return res.json({ record, msg: "Successfully found todos" });
+        }
+        catch(e){
+            return res.json({
+                msg: "failed to find todos by command",
+                status: 500,        
+                route: "/findbycommand",
+            });
+        }
+    }
 
     createTodosFaker = async (req: Request, res: Response) => {
 

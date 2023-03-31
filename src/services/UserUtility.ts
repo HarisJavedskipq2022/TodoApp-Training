@@ -4,6 +4,7 @@ import "dotenv/config";
 import { Auth } from "./bcrypt";
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import { inject, injectable } from "inversify";
+import { Jwt } from "./jwt";
 
 @injectable()
 class UserService {
@@ -54,7 +55,7 @@ class UserService {
         }
 
         const secretKey = process.env.JWT_SECRET_KEY as string;
-        return Auth.sign({ id: user.id, email: user.email }, secretKey);
+        return Jwt.sign({ id: user.id, email: user.email }, secretKey);
     }
 }
 

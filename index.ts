@@ -5,7 +5,6 @@ import router from "./src/presentation_layer/route";
 import {Command} from 'commander';
 
 const program = new Command();
-// const port: number = program.port;
 const app = express();
 
 app.use(express.json())
@@ -14,9 +13,6 @@ const port = Number(a.args[0]) || process.env.PORT;
 app.use('/api/v1/todo/', router);
 program.option('-p, --port <number>', 'port number')
 
-// const logger = program.option('-p, --port <number>', 'port number');
-// console.log({logger})
-// program.parse(process.argv);
 
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);

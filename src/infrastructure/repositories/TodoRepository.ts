@@ -11,7 +11,7 @@ class TodoRepository {
 
     constructor() {
     }
-    async execute(command: Command): Promise<any> {
+    async execute(command: Command) {
         return command.execute(this);
       }
 

@@ -56,6 +56,19 @@ let TodoControllerInstance = class TodoControllerInstance {
                 });
             }
         });
+        this.findTodoCommand = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const record = yield this.todoService.findTodosCommand(req.body);
+                return res.json({ record, msg: "Successfully found todos" });
+            }
+            catch (e) {
+                return res.json({
+                    msg: "failed to find todos by command",
+                    status: 500,
+                    route: "/findbycommand",
+                });
+            }
+        });
         this.createTodosFaker = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const record = yield this.todoService.createTodoFaker();
