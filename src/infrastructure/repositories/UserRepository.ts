@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { injectable} from "inversify"
-import { User } from "../domain/entity/UserEntity";
+import { User } from "../../domain/entity/UserEntity";
 
 const prisma = new PrismaClient();
 
