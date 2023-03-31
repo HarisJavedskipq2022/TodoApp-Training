@@ -1,4 +1,4 @@
-import { Todo } from "../domain/entity/TodoEntity";
+import { Todo } from "../../domain/entity/TodoEntity";
 import { Command } from "./command";
 import TodoRepository from "../repositories/TodoRepository";
 

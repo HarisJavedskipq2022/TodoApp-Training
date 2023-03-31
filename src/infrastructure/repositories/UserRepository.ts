@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import { injectable} from "inversify"
+import { PrismaClient } from "@prisma/client";                          
+import { injectable } from "inversify"                                  
 import { User } from "../../domain/entity/UserEntity";
 
 const prisma = new PrismaClient();
@@ -7,13 +7,11 @@ const prisma = new PrismaClient();
 @injectable()
 class UserRepository {
 
-    constructor() {}
-
+    constructor() { }
 
     async deleteUser(id: string) {
         return prisma.user.delete({ where: { id } })
     }
-
 
     async findUserByEmail(email: string) {
         return prisma.user.findUnique({ where: { email } })
