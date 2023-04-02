@@ -3,9 +3,12 @@ import express from "express";
 import 'dotenv/config';
 import router from "./src/presentation_layer/route";
 import {Command} from 'commander';
+import { connectionToDb } from "./src/utils/connection";
 
 const program = new Command();
 const app = express();
+
+connectionToDb();
 
 app.use(express.json())
 const a = program.parse(process.argv);

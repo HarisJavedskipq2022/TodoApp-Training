@@ -29,5 +29,8 @@ class Jwt {
     static sign(payload, key) {
         return jwt.sign(payload, key);
     }
+    static verify(token, key) {
+        return jwt.verify(token, key);
+    }
 }
 exports.Jwt = Jwt;

@@ -1,5 +1,5 @@
 import { Command } from "./command";
-import TodoRepository from "../repositories/TodoRepository";
+import {TodoRepository} from "../repositories/TodoRepository";
 
 
 export class CommandExecutor {

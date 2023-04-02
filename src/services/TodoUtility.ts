@@ -1,8 +1,8 @@
 import { CommandExecutor } from './../infrastructure/commandbus/commandExecutor';
-import { Todo } from "../infrastructure/domain/entity/TodoEntity";
+import { Todo } from "../domain/entity/TodoEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
-import TodoRepository from "../infrastructure/repositories/TodoRepository";
+import {TodoRepository} from "../infrastructure/repositories/TodoRepository";
 import { inject, injectable } from "inversify";
 import generateTodo from "../utils/faker";
 import { CreateTodoCommand } from "../infrastructure/commandbus/createTodoCommand";
@@ -10,6 +10,7 @@ import { FindTodoCommand } from './../infrastructure/commandbus/findTodoCommand'
 
 
 @injectable()
+
 class TodoService {
     constructor(@inject('TodoRepository') private todoRepository: TodoRepository) {
     }

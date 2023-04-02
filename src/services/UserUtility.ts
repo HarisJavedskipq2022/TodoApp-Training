@@ -1,12 +1,13 @@
-import { User } from "../infrastructure/domain/entity/UserEntity";
+import { User } from "../domain/entity/UserEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
 import { Auth } from "./bcrypt";
-import UserRepository from "../infrastructure/repositories/UserRepository";
+import {UserRepository} from "../infrastructure/repositories/UserRepository";
 import { inject, injectable } from "inversify";
 import { Jwt } from "./jwt";
 
 @injectable()
+
 class UserService {
     constructor(@inject('UserRepository') private userRepository: UserRepository) {
     }
@@ -27,7 +28,7 @@ class UserService {
         return this.userRepository.deleteUser(id);
     }
 
-    signUp = async (email: string, password: string) => {
+     async signUp (email: string, password: string) {
 
         const id = uuid.generate();
         const createdUser = User.userFactory({ id, email, password })

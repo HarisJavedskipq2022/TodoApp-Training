@@ -25,10 +25,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commandExecutor_1 = require("./../infrastructure/commandbus/commandExecutor");
-const TodoEntity_1 = require("../infrastructure/domain/entity/TodoEntity");
+const TodoEntity_1 = require("../domain/entity/TodoEntity");
 const uuid_1 = __importDefault(require("../utils/uuid"));
 require("dotenv/config");
-const TodoRepository_1 = __importDefault(require("../infrastructure/repositories/TodoRepository"));
+const TodoRepository_1 = require("../infrastructure/repositories/TodoRepository");
 const inversify_1 = require("inversify");
 const faker_1 = __importDefault(require("../utils/faker"));
 const createTodoCommand_1 = require("../infrastructure/commandbus/createTodoCommand");
@@ -64,7 +64,7 @@ let TodoService = class TodoService {
     createTodoItemCommand(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             const command = new createTodoCommand_1.CreateTodoCommand(todo);
-            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.default());
+            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.TodoRepository());
             return commandExecutor.execute(command);
         });
     }
@@ -81,7 +81,7 @@ let TodoService = class TodoService {
     findTodosCommand(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             const command = new findTodoCommand_1.FindTodoCommand(todo);
-            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.default());
+            const commandExecutor = new commandExecutor_1.CommandExecutor(new TodoRepository_1.TodoRepository());
             return commandExecutor.execute(command);
         });
     }
@@ -119,6 +119,6 @@ let TodoService = class TodoService {
 TodoService = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)('TodoRepository')),
-    __metadata("design:paramtypes", [TodoRepository_1.default])
+    __metadata("design:paramtypes", [TodoRepository_1.TodoRepository])
 ], TodoService);
 exports.default = TodoService;

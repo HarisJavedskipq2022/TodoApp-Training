@@ -24,26 +24,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const UserEntity_1 = require("../infrastructure/domain/entity/UserEntity");
+const UserEntity_1 = require("../domain/entity/UserEntity");
 const uuid_1 = __importDefault(require("../utils/uuid"));
 require("dotenv/config");
 const bcrypt_1 = require("./bcrypt");
-const UserRepository_1 = __importDefault(require("../infrastructure/repositories/UserRepository"));
+const UserRepository_1 = require("../infrastructure/repositories/UserRepository");
 const inversify_1 = require("inversify");
 const jwt_1 = require("./jwt");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
-        this.signUp = (email, password) => __awaiter(this, void 0, void 0, function* () {
-            const id = uuid_1.default.generate();
-            const createdUser = UserEntity_1.User.userFactory({ id, email, password });
-            const finduser = yield this.userRepository.findUserByEmail(createdUser.email);
-            if (finduser) {
-                throw new Error("User already exists");
-            }
-            const hashedPassword = yield bcrypt_1.Auth.hashPassword(createdUser.password);
-            return this.userRepository.createUser(createdUser, hashedPassword);
-        });
     }
     readUsers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -64,6 +54,18 @@ let UserService = class UserService {
             return this.userRepository.deleteUser(id);
         });
     }
+    signUp(email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = uuid_1.default.generate();
+            const createdUser = UserEntity_1.User.userFactory({ id, email, password });
+            const finduser = yield this.userRepository.findUserByEmail(createdUser.email);
+            if (finduser) {
+                throw new Error("User already exists");
+            }
+            const hashedPassword = yield bcrypt_1.Auth.hashPassword(createdUser.password);
+            return this.userRepository.createUser(createdUser, hashedPassword);
+        });
+    }
     loginUser(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userRepository.findUserByEmail(email);
@@ -82,6 +84,6 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)('UserRepository')),
-    __metadata("design:paramtypes", [UserRepository_1.default])
+    __metadata("design:paramtypes", [UserRepository_1.UserRepository])
 ], UserService);
 exports.default = UserService;

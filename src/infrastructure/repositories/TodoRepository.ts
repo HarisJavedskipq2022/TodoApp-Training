@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 
 @injectable()
-class TodoRepository {
+export class TodoRepository {
 
     constructor() {
     }
@@ -35,8 +35,6 @@ class TodoRepository {
     }
 
 }
-
-export default TodoRepository;
 
 
 

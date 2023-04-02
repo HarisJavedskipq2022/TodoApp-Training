@@ -18,6 +18,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TodoRepository = void 0;
 const client_1 = require("@prisma/client");
 const inversify_1 = require("inversify");
 const prisma = new client_1.PrismaClient();
@@ -57,4 +58,4 @@ TodoRepository = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], TodoRepository);
-exports.default = TodoRepository;
+exports.TodoRepository = TodoRepository;

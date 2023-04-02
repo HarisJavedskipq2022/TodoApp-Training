@@ -5,7 +5,7 @@ import { User } from "../../domain/entity/UserEntity";
 const prisma = new PrismaClient();
 
 @injectable()
-class UserRepository {
+export class UserRepository {
 
     constructor() { }
 
@@ -29,5 +29,3 @@ class UserRepository {
         return prisma.user.create({ data: { ...user, password } })
     }
 }
-
-export default UserRepository;
