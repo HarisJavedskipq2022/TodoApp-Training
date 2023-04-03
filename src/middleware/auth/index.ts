@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import "dotenv/config";
 import { Jwt } from "../../services/jwt";
 
-class authMiddleware {
-    authorize = (req: Request, res: Response, next: NextFunction) => {
+export class authMiddleware {
+    static authorize = (req: Request, res: Response, next: NextFunction) => {
         try {
             const token: string | any = req.header("Authorization");
 
@@ -17,5 +17,3 @@ class authMiddleware {
         }
     };
 }
-
-export default new authMiddleware();

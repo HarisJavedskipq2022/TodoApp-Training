@@ -87,7 +87,7 @@ let TodoControllerInstance = class TodoControllerInstance {
                 const limit = req.query.limit || 10;
                 const offset = req.query.offset;
                 const records = yield this.todoService.findAllTodos(limit, offset);
-                return res.json(records);
+                return res.json({ records });
             }
             catch (e) {
                 return res.json({
@@ -104,8 +104,9 @@ let TodoControllerInstance = class TodoControllerInstance {
                 return res.json(record);
             }
             catch (e) {
-                return res.status(500).json({
+                return res.json({
                     msg: "failed to get todo by Id",
+                    status: 500,
                     route: '/read/:id',
                 });
             }

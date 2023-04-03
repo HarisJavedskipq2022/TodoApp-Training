@@ -1,23 +1,34 @@
 "use strict";
-// import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-// import { UserModel } from '../infrastructure/domain/model/User';
-//
-// export const googleStrategy = new GoogleStrategy({
-//     clientID: process.env.GOOGLE_CLIENT_ID as string,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-//     callbackURL: '/auth/google/callback',
-// }, async (accessToken, refreshToken, profile, done) => {
-//     const existingUser = await UserModel.findOne({ where: { googleId: profile.id } });
-//
-//     if (existingUser) {
-//         return done(null, existingUser);
+// import passport from 'passport';
+// import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
+// import 'dotenv/config';
+// import { PrismaClient } from '@prisma/client';
+// import { User } from '../domain/entity/UserEntity';
+// const prisma = new PrismaClient();
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.CLIENT_ID as string,
+//       clientSecret: process.env.CLIENT_SECRET as string,
+//       callbackURL: process.env.CALLBACK_URL as string,
+//     },
+//     async (accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) => {
+//       try {
+//         const user = await prisma.user.findUnique({ where: { googleId: profile.id } });
+//         if (!user) {
+//           await prisma.user.create({ data: { googleId: profile.id } });
+//         }
+//         done(null, profile);
+//       } catch (err) {
+//         done(err);
+//       }
 //     }
-//
-//     const newUser = await UserModel.create({
-//         username: profile.displayName,
-//         email: profile.emails?.[0].value,
-//         googleId: profile.id,
-//     });
-//
-//     return done(null, newUser);
+//   )
+// );
+// //passport deserialization
+// passport.serializeUser<any, any>((user: User, done: any) => {
+//     done(null, user);
+// });
+// passport.deserializeUser<any, any>((user: User, done: any) => {
+//   done(null, user);
 // });

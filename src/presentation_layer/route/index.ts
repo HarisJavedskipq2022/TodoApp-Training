@@ -1,7 +1,7 @@
 import express from 'express';
 import TodoValidator from '../validator'
 import Middleware from '../../middleware/ValidationError';
-import authMiddleware from '../../middleware/auth';
+import {authMiddleware} from '../../middleware/auth';
 import TodoControllerInstance from '../controller/TodoController';
 import UserControllerInstance from '../controller/UserController';
 import { container } from '../../../inversify.config'

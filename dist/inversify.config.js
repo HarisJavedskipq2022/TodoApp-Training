@@ -9,8 +9,10 @@ const TodoRepository_1 = require("./src/infrastructure/repositories/TodoReposito
 const UserRepository_1 = require("./src/infrastructure/repositories/UserRepository");
 const TodoUtility_1 = __importDefault(require("./src/services/TodoUtility"));
 const UserUtility_1 = __importDefault(require("./src/services/UserUtility"));
-exports.container = new container_1.Container({ autoBindInjectable: true,
-    defaultScope: "Singleton" });
+exports.container = new container_1.Container({
+    autoBindInjectable: true,
+    defaultScope: "Singleton"
+});
 exports.container.bind('TodoService').to(TodoUtility_1.default);
 exports.container.bind('TodoRepository').to(TodoRepository_1.TodoRepository);
 exports.container.bind('UserRepository').to(UserRepository_1.UserRepository);
