@@ -71,8 +71,6 @@ describe("TodoController", () => {
         });
         todoRepositoryStub.deleteTodo.resolves();
         yield todoController.deleteTodoById(req, res);
-        console.log('findUniqueTodo called with:', todoRepositoryStub.findUniqueTodo.getCall(0).args);
-        console.log('deleteTodo called with:', todoRepositoryStub.deleteTodo.getCall(0).args);
         (0, chai_1.expect)(todoRepositoryStub.findUniqueTodo.callCount).to.equal(1);
         (0, chai_1.expect)(todoRepositoryStub.findUniqueTodo.calledWith(mockTodoId)).to.be.true;
         (0, chai_1.expect)(todoRepositoryStub.deleteTodo.callCount).to.equal(1);
