@@ -2,14 +2,14 @@ import { User } from "../domain/entity/UserEntity";
 import uuid from "../utils/uuid";
 import "dotenv/config";
 import { Auth } from "./bcrypt";
-import {UserRepository} from "../infrastructure/repositories/UserRepository";
+import {IUserRepository} from "../domain/interfaces/UserInterface";
 import { inject, injectable } from "inversify";
 import { Jwt } from "./jwt";
 
 @injectable()
 
 class UserService {
-    constructor(@inject('UserRepository') private userRepository: UserRepository) {
+    constructor(@inject('UserRepository') private userRepository: IUserRepository) {
     }
 
     async readUsers() {

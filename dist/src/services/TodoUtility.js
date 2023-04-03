@@ -119,6 +119,6 @@ let TodoService = class TodoService {
 TodoService = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)('TodoRepository')),
-    __metadata("design:paramtypes", [TodoRepository_1.TodoRepository])
+    __metadata("design:paramtypes", [Object])
 ], TodoService);
 exports.default = TodoService;

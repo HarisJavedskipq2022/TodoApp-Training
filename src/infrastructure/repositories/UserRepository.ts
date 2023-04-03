@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";                          
 import { injectable } from "inversify"                                  
 import { User } from "../../domain/entity/UserEntity";
+import { IUserRepository } from "../../domain/interfaces/UserInterface";
 
 const prisma = new PrismaClient();
 
 @injectable()
-export class UserRepository {
+export class UserRepository implements IUserRepository {
 
     constructor() { }
 

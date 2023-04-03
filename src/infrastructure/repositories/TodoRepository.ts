@@ -1,12 +1,12 @@
+import { ITodoRepository } from "../../domain/interfaces/TodoInterface";
 import { PrismaClient } from "@prisma/client";                              
 import {injectable} from "inversify"                                        
 import {Todo} from "../../domain/entity/TodoEntity";
 
 const prisma = new PrismaClient();
 
-
 @injectable()
-export class TodoRepository {
+export class TodoRepository implements ITodoRepository {
 
     constructor() {
     }

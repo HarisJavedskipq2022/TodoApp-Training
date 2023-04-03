@@ -28,7 +28,6 @@ const UserEntity_1 = require("../domain/entity/UserEntity");
 const uuid_1 = __importDefault(require("../utils/uuid"));
 require("dotenv/config");
 const bcrypt_1 = require("./bcrypt");
-const UserRepository_1 = require("../infrastructure/repositories/UserRepository");
 const inversify_1 = require("inversify");
 const jwt_1 = require("./jwt");
 let UserService = class UserService {
@@ -84,6 +83,6 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, inversify_1.injectable)(),
     __param(0, (0, inversify_1.inject)('UserRepository')),
-    __metadata("design:paramtypes", [UserRepository_1.UserRepository])
+    __metadata("design:paramtypes", [Object])
 ], UserService);
 exports.default = UserService;
