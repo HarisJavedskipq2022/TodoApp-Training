@@ -7,7 +7,6 @@ class UserControllerInstance {
     
     constructor(@inject('UserService') private userService: UserService) { }
 
-
     readUsers = async (req: Request, res: Response) => {
         try {
             const record = await this.userService.readUsers();
