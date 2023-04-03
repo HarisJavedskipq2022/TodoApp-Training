@@ -33,7 +33,6 @@ export class TodoRepository implements ITodoRepository {
             data: { completed },
         });
     }
-
 }
 
 

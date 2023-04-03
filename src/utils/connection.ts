@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
-export async function connectionToDb(): Promise<void> {
+export async function connectionToDb() {
     
     prisma.$connect().then(() => { 
     console.log("Connected to database");
