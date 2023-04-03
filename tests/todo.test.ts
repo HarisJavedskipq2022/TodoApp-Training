@@ -76,6 +76,7 @@ describe("TodoController", () => {
             updated: new Date(),
             created: new Date(),
         });
+
         todoRepositoryStub.deleteTodo.resolves();
     
         await todoController.deleteTodoById(req, res);
@@ -91,5 +92,4 @@ describe("TodoController", () => {
         sinon.assert.calledWith(todoRepositoryStub.deleteTodo, mockTodoId);
         
     });
-    
 })
