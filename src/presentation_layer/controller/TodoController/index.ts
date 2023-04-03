@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import TodoService from "../../../services/TodoUtility";
 import { inject, injectable } from "inversify";
 
-
 @injectable()
 class TodoControllerInstance {
     constructor(@inject('TodoService') private todoService: TodoService) {
     }
 
-    createTodos = async (req: Request, res: Response) => {
+    createTodos = async (req: Request, res: Response) =>  {
         const { title, completed }: { title: string, completed: boolean } = req.body
         try {
             const record = await this.todoService.createTodoItem(title, completed)
@@ -73,7 +72,7 @@ class TodoControllerInstance {
             const offset = req.query.offset as number | undefined;
 
             const records = await this.todoService.findAllTodos(limit, offset);
-            return res.json(records);
+            return res.json({records});
         } catch (e) {
             return res.json({
                 msg: 'failed to read todo',
@@ -89,13 +88,13 @@ class TodoControllerInstance {
             const record = await this.todoService.readById(id);
             return res.json(record);
         } catch (e) {
-            return res.status(500).json({
+            return res.json({
                 msg: "failed to get todo by Id",
+                status: 500,
                 route: '/read/:id',
             });
         }
     }
-
 
     deleteTodoById = async (req: Request, res: Response) => {
         try {
