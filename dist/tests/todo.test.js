@@ -15,15 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const chai_1 = require("chai");
 const sinon_1 = __importDefault(require("sinon"));
-const TodoUtility_1 = __importDefault(require("../src/services/TodoUtility"));
+const TodoUtility_1 = __importDefault(require("../src/application/services/TodoUtility"));
 const TodoRepository_1 = require("../src/infrastructure/repositories/TodoRepository");
-const TodoController_1 = __importDefault(require("../src/presentation_layer/controller/TodoController"));
-const uuid_1 = __importDefault(require("../src/utils/uuid"));
+const TodoController_1 = __importDefault(require("../src/http/controller/TodoController"));
+const uuid_1 = __importDefault(require("../src/infrastructure/utils/uuid"));
 describe("TodoController", () => {
     afterEach(() => {
         sinon_1.default.restore();
     });
-    it("should create a todo and return success message", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should create a todo", () => __awaiter(void 0, void 0, void 0, function* () {
         const todoRepositoryStub = sinon_1.default.createStubInstance(TodoRepository_1.TodoRepository);
         const todoService = new TodoUtility_1.default(todoRepositoryStub);
         const todoController = new TodoController_1.default(todoService);

@@ -7,8 +7,8 @@ exports.container = void 0;
 const container_1 = require("inversify/lib/container/container");
 const TodoRepository_1 = require("./src/infrastructure/repositories/TodoRepository");
 const UserRepository_1 = require("./src/infrastructure/repositories/UserRepository");
-const TodoUtility_1 = __importDefault(require("./src/services/TodoUtility"));
-const UserUtility_1 = __importDefault(require("./src/services/UserUtility"));
+const TodoUtility_1 = __importDefault(require("./src/application/services/TodoUtility"));
+const UserUtility_1 = __importDefault(require("./src/application/services/UserUtility"));
 exports.container = new container_1.Container({
     autoBindInjectable: true,
     defaultScope: "Singleton"

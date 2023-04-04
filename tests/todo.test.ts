@@ -2,10 +2,10 @@ import "reflect-metadata"
 import { expect } from "chai";
 import sinon from "sinon";
 import { Request, Response } from "express";
-import TodoService from "../src/services/TodoUtility";
+import TodoService from "../src/application/services/TodoUtility";
 import { TodoRepository } from "../src/infrastructure/repositories/TodoRepository";
-import TodoControllerInstance from "../src/presentation_layer/controller/TodoController";
-import uuid from "../src/utils/uuid";
+import TodoControllerInstance from "../src/http/controller/TodoController";
+import uuid from "../src/infrastructure/utils/uuid";
 
 
 describe("TodoController", () => {
@@ -13,7 +13,7 @@ describe("TodoController", () => {
     sinon.restore();
   });
 
-  it("should create a todo and return success message", async () => {
+  it("should create a todo", async () => {
 
     const todoRepositoryStub = sinon.createStubInstance(TodoRepository);
     const todoService = new TodoService(todoRepositoryStub as any);

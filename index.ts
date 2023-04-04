@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import express from "express";
 import 'dotenv/config';
-import router from "./src/presentation_layer/route";
+import router from "./src/http/route";
 import {Command} from 'commander';
-import { connectionToDb } from "./src/utils/connection";
-
+import {connectionToDb} from "./src/infrastructure/utils/connection";
 const program = new Command();
+
 const app = express();
 
 connectionToDb();

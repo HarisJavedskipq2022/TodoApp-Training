@@ -1,4 +1,4 @@
-import { User } from "../entity/UserEntity";
+import {User} from '../entity/UserEntity';
 
 export interface IUserRepository {
     deleteUser(id: string): Promise<User>;
