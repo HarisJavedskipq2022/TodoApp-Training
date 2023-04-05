@@ -5,8 +5,8 @@ import TodoService from './src/application/services/TodoUtility'
 import UserService from './src/application/services/UserUtility'
 
 export const container = new Container({
-    autoBindInjectable: true,
-    defaultScope: "Singleton"
+      autoBindInjectable: true,
+      defaultScope: 'Singleton',
 })
 
 container.bind<TodoService>('TodoService').to(TodoService)

@@ -5,7 +5,7 @@ services:
             container_name: postgres
             hostname: postgres
             ports:
-                  - 5432:5432
+                  - ${POSTGRES_PORT}:${POSTGRES_PORT}
             environment:
                   POSTGRES_USER: ${POSTGRES_USER}
                   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -20,7 +20,7 @@ services:
             depends_on:
                   - postgres
             ports:
-                  - '5555:80'
+                  - ${PG_ADMIN_PORT}
             environment:
                   PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
                   PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
