@@ -18,7 +18,7 @@ describe('TodoController', () => {
             const todoController = new TodoControllerInstance(todoService)
 
             const mockRecord = {
-                  id: uuid.generate(),
+                  id: uuid(),
                   title: 'Test Todo',
                   completed: false,
                   updated: new Date(),
@@ -48,7 +48,7 @@ describe('TodoController', () => {
             const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
             const todoService = new TodoService(todoRepositoryStub as any)
             const todoController = new TodoControllerInstance(todoService)
-            const mockTodoId = uuid.generate()
+            const mockTodoId = uuid()
 
             const req = {
                   params: {

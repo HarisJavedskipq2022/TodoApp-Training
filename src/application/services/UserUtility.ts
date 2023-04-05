@@ -27,7 +27,7 @@ class UserService {
       }
 
       async signUp(email: string, password: string) {
-            const id = uuid.generate()
+            const id = uuid()
             const createdUser = User.userFactory({ id, email, password })
             const finduser = await this.userRepository.findUserByEmail(createdUser.email)
 

@@ -31,7 +31,7 @@ class TodoService {
       }
 
       async createTodoItem(title: string, completed: boolean) {
-            const id = uuid.generate()
+            const id = uuid()
             const newTodoData = { id, title, completed }
             const newTodo = Todo.todoFactory(newTodoData)
             return this.todoRepository.createTodoItem({ ...newTodo })
