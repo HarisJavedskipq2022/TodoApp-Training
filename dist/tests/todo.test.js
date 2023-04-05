@@ -19,17 +19,17 @@ const TodoUtility_1 = __importDefault(require("../src/application/services/TodoU
 const TodoRepository_1 = require("../src/infrastructure/repositories/TodoRepository");
 const TodoController_1 = __importDefault(require("../src/http/controller/TodoController"));
 const uuid_1 = __importDefault(require("../src/infrastructure/utils/uuid"));
-describe("TodoController", () => {
+describe('TodoController', () => {
     afterEach(() => {
         sinon_1.default.restore();
     });
-    it("should create a todo", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should create a todo', () => __awaiter(void 0, void 0, void 0, function* () {
         const todoRepositoryStub = sinon_1.default.createStubInstance(TodoRepository_1.TodoRepository);
         const todoService = new TodoUtility_1.default(todoRepositoryStub);
         const todoController = new TodoController_1.default(todoService);
         const mockRecord = {
             id: uuid_1.default.generate(),
-            title: "Test Todo",
+            title: 'Test Todo',
             completed: false,
             updated: new Date(),
             created: new Date(),
@@ -45,10 +45,10 @@ describe("TodoController", () => {
         (0, chai_1.expect)(todoRepositoryStub.createTodoItem.calledOnce).to.be.true;
         sinon_1.default.assert.calledWithMatch(res.json, {
             record: mockRecord,
-            msg: "Successfully created todo",
+            msg: 'Successfully created todo',
         });
     }));
-    it("should delete a todo", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should delete a todo', () => __awaiter(void 0, void 0, void 0, function* () {
         const todoRepositoryStub = sinon_1.default.createStubInstance(TodoRepository_1.TodoRepository);
         const todoService = new TodoUtility_1.default(todoRepositoryStub);
         const todoController = new TodoController_1.default(todoService);
@@ -64,7 +64,7 @@ describe("TodoController", () => {
         };
         todoRepositoryStub.findUniqueTodo.resolves({
             id: mockTodoId,
-            title: "Test Todo",
+            title: 'Test Todo',
             completed: false,
             updated: new Date(),
             created: new Date(),

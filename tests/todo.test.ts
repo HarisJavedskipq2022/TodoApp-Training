@@ -1,86 +1,83 @@
-import "reflect-metadata"
-import { expect } from "chai";
-import sinon from "sinon";
-import { Request, Response } from "express";
-import TodoService from "../src/application/services/TodoUtility";
-import { TodoRepository } from "../src/infrastructure/repositories/TodoRepository";
-import TodoControllerInstance from "../src/http/controller/TodoController";
-import uuid from "../src/infrastructure/utils/uuid";
+import 'reflect-metadata'
+import { expect } from 'chai'
+import sinon from 'sinon'
+import { Request, Response } from 'express'
+import TodoService from '../src/application/services/TodoUtility'
+import { TodoRepository } from '../src/infrastructure/repositories/TodoRepository'
+import TodoControllerInstance from '../src/http/controller/TodoController'
+import uuid from '../src/infrastructure/utils/uuid'
 
+describe('TodoController', () => {
+      afterEach(() => {
+            sinon.restore()
+      })
 
-describe("TodoController", () => {
-  afterEach(() => {
-    sinon.restore();
-  });
+      it('should create a todo', async () => {
+            const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
+            const todoService = new TodoService(todoRepositoryStub as any)
+            const todoController = new TodoControllerInstance(todoService)
 
-  it("should create a todo", async () => {
+            const mockRecord = {
+                  id: uuid.generate(),
+                  title: 'Test Todo',
+                  completed: false,
+                  updated: new Date(),
+                  created: new Date(),
+            }
 
-    const todoRepositoryStub = sinon.createStubInstance(TodoRepository);
-    const todoService = new TodoService(todoRepositoryStub as any);
-    const todoController = new TodoControllerInstance(todoService);
+            const req = {
+                  body: mockRecord,
+            } as Request
 
-    const mockRecord = {
-      id: uuid.generate(),
-      title: "Test Todo",
-      completed: false,
-      updated: new Date(),
-      created: new Date(),
-    };
+            const res = {
+                  json: sinon.spy(),
+            } as unknown as Response
 
-    const req = {
-      body: mockRecord,
-    } as Request;
+            todoRepositoryStub.createTodoItem.resolves(mockRecord)
 
-    const res = {
-      json: sinon.spy(),
-    } as unknown as Response;
+            await todoController.createTodos(req, res)
 
-    todoRepositoryStub.createTodoItem.resolves(mockRecord);
+            expect(todoRepositoryStub.createTodoItem.calledOnce).to.be.true
+            sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
+                  record: mockRecord,
+                  msg: 'Successfully created todo',
+            })
+      })
 
-    await todoController.createTodos(req, res);
+      it('should delete a todo', async () => {
+            const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
+            const todoService = new TodoService(todoRepositoryStub as any)
+            const todoController = new TodoControllerInstance(todoService)
+            const mockTodoId = uuid.generate()
 
-    expect(todoRepositoryStub.createTodoItem.calledOnce).to.be.true;
-    sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
-      record: mockRecord,
-      msg: "Successfully created todo",
-    });
-  });
+            const req = {
+                  params: {
+                        id: mockTodoId,
+                  },
+            } as unknown as Request
 
-  it("should delete a todo", async () => {
+            const res = {
+                  json: sinon.spy(),
+                  status: sinon.stub().returnsThis(),
+            } as unknown as Response
 
-    const todoRepositoryStub = sinon.createStubInstance(TodoRepository);
-    const todoService = new TodoService(todoRepositoryStub as any);
-    const todoController = new TodoControllerInstance(todoService);
-    const mockTodoId = uuid.generate();
+            todoRepositoryStub.findUniqueTodo.resolves({
+                  id: mockTodoId,
+                  title: 'Test Todo',
+                  completed: false,
+                  updated: new Date(),
+                  created: new Date(),
+            })
 
-    const req = {
-      params: {
-        id: mockTodoId,
-      },
-    } as unknown as Request;
+            todoRepositoryStub.deleteTodo.resolves()
 
-    const res = {
-      json: sinon.spy(),
-      status: sinon.stub().returnsThis(),
-    } as unknown as Response;
+            await todoController.deleteTodoById(req, res)
 
-    todoRepositoryStub.findUniqueTodo.resolves({
-      id: mockTodoId,
-      title: "Test Todo",
-      completed: false,
-      updated: new Date(),
-      created: new Date(),
-    });
-
-    todoRepositoryStub.deleteTodo.resolves();
-
-    await todoController.deleteTodoById(req, res);
-
-    expect(todoRepositoryStub.findUniqueTodo.callCount).to.equal(1);
-    expect(todoRepositoryStub.findUniqueTodo.calledWith(mockTodoId)).to.be.true;
-    expect(todoRepositoryStub.deleteTodo.callCount).to.equal(1);
-    expect(todoRepositoryStub.deleteTodo.calledWith(mockTodoId)).to.be.true;
-    sinon.assert.calledWith(todoRepositoryStub.findUniqueTodo, mockTodoId);
-    sinon.assert.calledWith(todoRepositoryStub.deleteTodo, mockTodoId);
-  });
-});
+            expect(todoRepositoryStub.findUniqueTodo.callCount).to.equal(1)
+            expect(todoRepositoryStub.findUniqueTodo.calledWith(mockTodoId)).to.be.true
+            expect(todoRepositoryStub.deleteTodo.callCount).to.equal(1)
+            expect(todoRepositoryStub.deleteTodo.calledWith(mockTodoId)).to.be.true
+            sinon.assert.calledWith(todoRepositoryStub.findUniqueTodo, mockTodoId)
+            sinon.assert.calledWith(todoRepositoryStub.deleteTodo, mockTodoId)
+      })
+})

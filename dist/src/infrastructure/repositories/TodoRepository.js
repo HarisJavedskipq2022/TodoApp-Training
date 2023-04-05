@@ -23,8 +23,7 @@ const client_1 = require("@prisma/client");
 const inversify_1 = require("inversify");
 const prisma = new client_1.PrismaClient();
 let TodoRepository = class TodoRepository {
-    constructor() {
-    }
+    constructor() { }
     createTodoItem(todo) {
         return __awaiter(this, void 0, void 0, function* () {
             return prisma.todo.create({ data: Object.assign({}, todo) });
