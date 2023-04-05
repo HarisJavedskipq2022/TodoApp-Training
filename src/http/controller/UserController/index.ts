@@ -3,7 +3,7 @@ import UserService from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 
 @injectable()
-class UserControllerInstance {
+export class UserControllerInstance {
       constructor(@inject('UserService') private userService: UserService) {}
 
       read = async (req: Request, res: Response) => {
@@ -53,5 +53,3 @@ class UserControllerInstance {
             }
       }
 }
-
-export default UserControllerInstance

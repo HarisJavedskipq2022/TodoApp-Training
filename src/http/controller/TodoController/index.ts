@@ -3,7 +3,7 @@ import TodoService from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 
 @injectable()
-class TodoControllerInstance {
+export class TodoControllerInstance {
       constructor(@inject('TodoService') private todoService: TodoService) {}
 
       create = async (req: Request, res: Response) => {
@@ -115,5 +115,3 @@ class TodoControllerInstance {
             }
       }
 }
-
-export default TodoControllerInstance
