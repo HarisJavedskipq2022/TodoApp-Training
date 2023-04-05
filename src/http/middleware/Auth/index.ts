@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import 'dotenv/config'
+import config from '../../../../config'
 import { Jwt } from '../../../application/services/jwt'
 
 export class authMiddleware {
@@ -7,7 +7,7 @@ export class authMiddleware {
             try {
                   const token: string | any = req.header('Authorization')
 
-                  const decode = Jwt.verify(token, process.env.JWT_SECRET_KEY as string)
+                  const decode = Jwt.verify(token, config.jwtSecretKey)
                   req.body.user = decode
 
                   next()

@@ -1,6 +1,6 @@
 import { User } from '../../domain/entity/UserEntity'
 import uuid from '../../infrastructure/utils/uuid'
-import 'dotenv/config'
+import config from '../../../config'
 import { Auth } from './bcrypt'
 import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
@@ -52,7 +52,7 @@ class UserService {
                   throw new Error('Invalid credentials')
             }
 
-            const secretKey = process.env.JWT_SECRET_KEY as string
+            const secretKey = config.jwtSecretKey
             const expiresIn = '1h'
             return Jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn })
       }
