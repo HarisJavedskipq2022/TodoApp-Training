@@ -16,12 +16,12 @@ router.post(
       authMiddleware.authorize,
       TodoValidator.checkCreateTodo(),
       Middleware.handleValidationError,
-      todoController.createTodos
+      todoController.create
 )
 
-router.post('/createbycommand', todoController.CreateTodoCommand)
+router.post('/createbycommand', todoController.CreateByCommand)
 
-router.post('/createfaker', todoController.createTodosFaker)
+router.post('/createfaker', todoController.create)
 
 router.post('/signup', userController.signup)
 
@@ -32,12 +32,12 @@ router.get(
       authMiddleware.authorize,
       TodoValidator.checkReadTodo(),
       Middleware.handleValidationError,
-      userController.readUsers
+      userController.read
 )
 
-router.get('/gettodos', authMiddleware.authorize, todoController.readTodos)
+router.get('/gettodos', authMiddleware.authorize, todoController.read)
 
-router.get('/findbycommand', todoController.findTodoCommand)
+router.get('/findbycommand', todoController.findByCommand)
 
 router.get(
       '/read/:id',
@@ -60,9 +60,9 @@ router.delete(
       authMiddleware.authorize,
       TodoValidator.checkIdParam(),
       Middleware.handleValidationError,
-      todoController.deleteTodoById
+      todoController.deleteById
 )
 
-router.delete('/deleteuser/:id', authMiddleware.authorize, userController.deleteUsers)
+router.delete('/deleteuser/:id', authMiddleware.authorize, userController.delete)
 
 export default router

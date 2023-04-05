@@ -6,15 +6,15 @@ import { Command } from 'commander'
 import { connectionToDb } from './src/infrastructure/utils/connection'
 import SlackNotify from 'slack-notify'
 
-const slack = SlackNotify(config.slackWebHookUrl)
+// const slack = SlackNotify(config.slackWebHookUrl)
 
-slack.send('Hello!')
-      .then(() => {
-            console.log('done!')
-      })
-      .catch((err) => {
-            console.error(err)
-      })
+// slack.send('Hello!')
+//       .then(() => {
+//             console.log('done!')
+//       })
+//       .catch((err) => {
+//             console.error(err)
+//       })
 
 const app = express()
 const program = new Command()

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import config from '../../../../config'
-import { Jwt } from '../../../application/services/jwt'
+import { Jwt } from '../../../infrastructure/services/jwt'
 
 export class authMiddleware {
       static authorize = (req: Request, res: Response, next: NextFunction) => {

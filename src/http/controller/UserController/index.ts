@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import UserService from '../../../application/services/UserUtility'
+import UserService from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 
 @injectable()
 class UserControllerInstance {
       constructor(@inject('UserService') private userService: UserService) {}
 
-      readUsers = async (req: Request, res: Response) => {
+      read = async (req: Request, res: Response) => {
             try {
                   const record = await this.userService.readUsers()
                   return res.json(record)
@@ -18,7 +18,7 @@ class UserControllerInstance {
             }
       }
 
-      deleteUsers = async (req: Request, res: Response) => {
+      delete = async (req: Request, res: Response) => {
             try {
                   const { id } = req.params
                   const deletedUser = await this.userService.deleteUserById(id)

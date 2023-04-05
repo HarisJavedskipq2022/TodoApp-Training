@@ -1,8 +1,8 @@
 import { Container } from 'inversify/lib/container/container'
 import { TodoRepository } from './src/infrastructure/repositories/TodoRepository'
 import { UserRepository } from './src/infrastructure/repositories/UserRepository'
-import TodoService from './src/application/services/TodoUtility'
-import UserService from './src/application/services/UserUtility'
+import TodoService from './src/application/services/TodoService'
+import UserService from './src/application/services/UserService'
 
 export const container = new Container({
       autoBindInjectable: true,

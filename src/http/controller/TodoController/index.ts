@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import TodoService from '../../../application/services/TodoUtility'
+import TodoService from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 
 @injectable()
 class TodoControllerInstance {
       constructor(@inject('TodoService') private todoService: TodoService) {}
 
-      createTodos = async (req: Request, res: Response) => {
+      create = async (req: Request, res: Response) => {
             const { title, completed }: { title: string; completed: boolean } = req.body
             try {
                   const record = await this.todoService.createTodoItem(title, completed)
@@ -20,7 +20,7 @@ class TodoControllerInstance {
             }
       }
 
-      CreateTodoCommand = async (req: Request, res: Response) => {
+      CreateByCommand = async (req: Request, res: Response) => {
             try {
                   const record = await this.todoService.createTodoItemCommand(req.body)
                   return res.json({ record, msg: 'Successfully created todo' })
@@ -33,7 +33,7 @@ class TodoControllerInstance {
             }
       }
 
-      findTodoCommand = async (req: Request, res: Response) => {
+      findByCommand = async (req: Request, res: Response) => {
             try {
                   const record = await this.todoService.findTodosCommand(req.body)
                   return res.json({ record, msg: 'Successfully found todos' })
@@ -46,7 +46,7 @@ class TodoControllerInstance {
             }
       }
 
-      createTodosFaker = async (req: Request, res: Response) => {
+      createByFaker = async (req: Request, res: Response) => {
             try {
                   const record = await this.todoService.createTodoFaker()
                   return res.json({ record, msg: 'Successfully created todo' })
@@ -59,7 +59,7 @@ class TodoControllerInstance {
             }
       }
 
-      readTodos = async (req: Request, res: Response) => {
+      read = async (req: Request, res: Response) => {
             try {
                   const limit = (req.query.limit as number | undefined) || 10
                   const offset = req.query.offset as number | undefined
@@ -89,7 +89,7 @@ class TodoControllerInstance {
             }
       }
 
-      deleteTodoById = async (req: Request, res: Response) => {
+      deleteById = async (req: Request, res: Response) => {
             try {
                   const { id } = req.params
                   const deletedRecord = await this.todoService.deleteTodoById(id)

@@ -1,6 +1,6 @@
 import { CommandExecutor } from '../CommandBus/commandExecutor'
 import { Todo } from '../../domain/entity/TodoEntity'
-import uuid from '../../infrastructure/utils/uuid'
+import uuid from '../../domain/utility/uuid'
 import 'dotenv/config'
 import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'

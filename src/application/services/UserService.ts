@@ -1,10 +1,10 @@
 import { User } from '../../domain/entity/UserEntity'
-import uuid from '../../infrastructure/utils/uuid'
+import uuid from '../../domain/utility/uuid'
 import config from '../../../config'
-import { Auth } from './bcrypt'
+import { Auth } from '../../infrastructure/services/bcrypt'
 import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
-import { Jwt } from './jwt'
+import { Jwt } from '../../infrastructure/services/jwt'
 
 @injectable()
 class UserService {
