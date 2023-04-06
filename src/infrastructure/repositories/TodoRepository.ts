@@ -2,7 +2,7 @@ import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { PrismaClient } from '@prisma/client'
 import { injectable } from 'inversify'
 import { Todo } from '../../domain/entity/TodoEntity'
-import { Observer } from '../observer/observer'
+import { Observer } from '../../domain/interfaces/ObserverInterface'
 import { slackNotif } from '../utils/slackNotify'
 
 const prisma = new PrismaClient()
