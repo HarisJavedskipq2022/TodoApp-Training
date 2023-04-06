@@ -8,4 +8,12 @@ export class CreateTodoCommand implements Command {
       async execute(repository: TodoRepository) {
             return repository.createTodoItem(this.todo)
       }
+
+      async undo(repository: TodoRepository) {
+            return repository.deleteTodo(this.todo.id)
+      }
+
+      async redo(repository: TodoRepository) {
+            return repository.createTodoItem(this.todo)
+      }
 }

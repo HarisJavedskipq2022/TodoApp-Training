@@ -33,19 +33,6 @@ export class TodoControllerInstance {
             }
       }
 
-      findByCommand = async (req: Request, res: Response) => {
-            try {
-                  const record = await this.todoService.findTodosCommand(req.body)
-                  return res.json({ record, msg: 'Successfully found todos' })
-            } catch (e) {
-                  return res.json({
-                        msg: 'failed to find todos by command',
-                        status: 500,
-                        route: '/findbycommand',
-                  })
-            }
-      }
-
       createByFaker = async (req: Request, res: Response) => {
             try {
                   const record = await this.todoService.createTodoFaker()

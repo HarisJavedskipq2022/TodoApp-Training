@@ -7,7 +7,6 @@ import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 import generateTodo from '../../infrastructure/utils/faker'
 import { CreateTodoCommand } from '../CommandBus/createTodoCommand'
-import { FindTodoCommand } from '../CommandBus/findTodoCommand'
 
 @injectable()
 class TodoService {
@@ -49,12 +48,6 @@ class TodoService {
             } catch (e) {
                   throw new Error('Failed to find all todo items')
             }
-      }
-
-      async findTodosCommand(todo: Todo) {
-            const command = new FindTodoCommand(todo)
-            const commandExecutor = new CommandExecutor(new TodoRepository())
-            return commandExecutor.execute(command)
       }
 
       async readById(id: string) {
