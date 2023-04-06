@@ -3,8 +3,6 @@ import { PrismaClient } from '@prisma/client'
 import { injectable } from 'inversify'
 import { Todo } from '../../domain/entity/TodoEntity'
 import { Observer } from '../observer/observer'
-import SlackNotify from 'slack-notify'
-import config from '../../../config'
 import { slackNotif } from '../utils/slackNotify'
 
 const prisma = new PrismaClient()
