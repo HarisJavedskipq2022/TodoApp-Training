@@ -1,5 +1,5 @@
 import { Todo } from '../../domain/entity/TodoEntity'
-import { Command } from './command'
+import { Command } from '../../domain/interfaces/CommandInterface'
 import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 
 export class CreateTodoCommand implements Command {

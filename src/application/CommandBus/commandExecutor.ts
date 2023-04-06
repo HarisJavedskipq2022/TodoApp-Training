@@ -1,4 +1,4 @@
-import { Command } from './command'
+import { Command } from '../../domain/interfaces/CommandInterface'
 import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 
 export class CommandExecutor {
