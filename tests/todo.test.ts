@@ -4,7 +4,7 @@ import sinon from 'sinon'
 import { Request, Response } from 'express'
 import TodoService from '../src/application/services/TodoService'
 import { TodoRepository } from '../src/infrastructure/repositories/TodoRepository'
-import TodoControllerInstance from '../src/http/controller/TodoController'
+import { TodoControllerInstance } from '../src/http/controller/TodoController'
 import uuid from '../src/domain/utility/uuid'
 
 describe('TodoController', () => {
@@ -35,7 +35,7 @@ describe('TodoController', () => {
 
             todoRepositoryStub.createTodoItem.resolves(mockRecord)
 
-            await todoController.createTodos(req, res)
+            await todoController.create(req, res)
 
             expect(todoRepositoryStub.createTodoItem.calledOnce).to.be.true
             sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
@@ -71,7 +71,7 @@ describe('TodoController', () => {
 
             todoRepositoryStub.deleteTodo.resolves()
 
-            await todoController.deleteTodoById(req, res)
+            await todoController.deleteById(req, res)
 
             expect(todoRepositoryStub.findUniqueTodo.callCount).to.equal(1)
             expect(todoRepositoryStub.findUniqueTodo.calledWith(mockTodoId)).to.be.true
