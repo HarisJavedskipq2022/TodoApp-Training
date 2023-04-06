@@ -33,11 +33,11 @@ describe('TodoController', () => {
                   json: sinon.spy(),
             } as unknown as Response
 
-            todoRepositoryStub.createTodoItem.resolves(mockRecord)
+            todoRepositoryStub.create.resolves(mockRecord)
 
             await todoController.create(req, res)
 
-            expect(todoRepositoryStub.createTodoItem.calledOnce).to.be.true
+            expect(todoRepositoryStub.create.calledOnce).to.be.true
             sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
                   record: mockRecord,
                   msg: 'Successfully created todo',
@@ -61,7 +61,7 @@ describe('TodoController', () => {
                   status: sinon.stub().returnsThis(),
             } as unknown as Response
 
-            todoRepositoryStub.findUniqueTodo.resolves({
+            todoRepositoryStub.findUnique.resolves({
                   id: mockTodoId,
                   title: 'Test Todo',
                   completed: false,
@@ -69,15 +69,15 @@ describe('TodoController', () => {
                   created: new Date(),
             })
 
-            todoRepositoryStub.deleteTodo.resolves()
+            todoRepositoryStub.delete.resolves()
 
             await todoController.deleteById(req, res)
 
-            expect(todoRepositoryStub.findUniqueTodo.callCount).to.equal(1)
-            expect(todoRepositoryStub.findUniqueTodo.calledWith(mockTodoId)).to.be.true
-            expect(todoRepositoryStub.deleteTodo.callCount).to.equal(1)
-            expect(todoRepositoryStub.deleteTodo.calledWith(mockTodoId)).to.be.true
-            sinon.assert.calledWith(todoRepositoryStub.findUniqueTodo, mockTodoId)
-            sinon.assert.calledWith(todoRepositoryStub.deleteTodo, mockTodoId)
+            expect(todoRepositoryStub.findUnique.callCount).to.equal(1)
+            expect(todoRepositoryStub.findUnique.calledWith(mockTodoId)).to.be.true
+            expect(todoRepositoryStub.delete.callCount).to.equal(1)
+            expect(todoRepositoryStub.delete.calledWith(mockTodoId)).to.be.true
+            sinon.assert.calledWith(todoRepositoryStub.findUnique, mockTodoId)
+            sinon.assert.calledWith(todoRepositoryStub.delete, mockTodoId)
       })
 })

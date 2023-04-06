@@ -6,6 +6,6 @@ export class FindTodoCommand implements Command {
       constructor(private todo: Todo) {}
 
       async execute(repository: TodoRepository) {
-            return repository.findManyTodos()
+            return repository.findMany()
       }
 }

@@ -1,3 +1,3 @@
-export abstract class Observer {
-      abstract update(data: any): void
+export interface Observer {
+      update(event: string, data: any): void
 }

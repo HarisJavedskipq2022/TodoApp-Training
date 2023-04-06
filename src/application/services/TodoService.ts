@@ -19,7 +19,7 @@ class TodoService {
             }
             const createdTodos = await Promise.all(
                   todos.map(async (todoItem) => {
-                        return await this.todoRepository.createTodoItem({
+                        return await this.todoRepository.create({
                               title: todoItem.title,
                               completed: todoItem.completed,
                               id: todoItem.id,
@@ -33,7 +33,7 @@ class TodoService {
             const id = uuid()
             const newTodoData = { id, title, completed }
             const newTodo = Todo.todoFactory(newTodoData)
-            return this.todoRepository.createTodoItem({ ...newTodo })
+            return this.todoRepository.create({ ...newTodo })
       }
 
       async createTodoItemCommand(todo: Todo) {
@@ -44,7 +44,7 @@ class TodoService {
 
       async findAllTodos(limit: number = 10, offset: number = 0) {
             try {
-                  return await this.todoRepository.findManyTodos(limit, offset)
+                  return await this.todoRepository.findMany(limit, offset)
             } catch (e) {
                   throw new Error('Failed to find all todo items')
             }
@@ -52,28 +52,28 @@ class TodoService {
 
       async readById(id: string) {
             try {
-                  return await this.todoRepository.findUniqueTodo(id)
+                  return await this.todoRepository.findUnique(id)
             } catch (e) {
                   throw new Error('Failed to read todo')
             }
       }
 
       async deleteTodoById(id: string) {
-            const record = await this.todoRepository.findUniqueTodo(id)
+            const record = await this.todoRepository.findUnique(id)
 
             if (!record) {
                   throw new Error('Record not found')
             }
-            return this.todoRepository.deleteTodo(id)
+            return this.todoRepository.delete(id)
       }
 
       async updateById(id: string) {
-            const record = await this.todoRepository.findUniqueTodo(id)
+            const record = await this.todoRepository.findUnique(id)
 
             if (!record) {
                   throw new Error('Record not found')
             } else {
-                  return await this.todoRepository.updateTodo(id, !record.completed)
+                  return await this.todoRepository.update(id, !record.completed)
             }
       }
 }

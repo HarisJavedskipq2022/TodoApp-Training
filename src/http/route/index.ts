@@ -21,7 +21,7 @@ router.post(
 
 router.post('/createbycommand', todoController.CreateByCommand)
 
-router.post('/createfaker', todoController.create)
+router.post('/createfaker', todoController.createByFaker)
 
 router.post('/signup', userController.signup)
 
@@ -36,8 +36,6 @@ router.get(
 )
 
 router.get('/gettodos', authMiddleware.authorize, todoController.read)
-
-router.get('/findbycommand', todoController.findByCommand)
 
 router.get(
       '/read/:id',
