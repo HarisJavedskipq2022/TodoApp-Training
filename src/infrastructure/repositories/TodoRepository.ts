@@ -3,6 +3,9 @@ import { PrismaClient } from '@prisma/client'
 import { injectable } from 'inversify'
 import { Todo } from '../../domain/entity/TodoEntity'
 import { Observer } from '../observer/observer'
+import SlackNotify from 'slack-notify'
+import config from '../../../config'
+import { slackNotif } from '../utils/slackNotify'
 
 const prisma = new PrismaClient()
 
@@ -21,14 +24,15 @@ export class TodoRepository implements ITodoRepository {
       }
 
       notifyObservers(event: string, data: any): void {
-            console.log('Notifying observers...')
+            console.log(`Event: ${event}`, data)
             this.observers.forEach((observer) => observer.update(event, data))
+            slackNotif(event, data)
       }
 
       async create(todo: Todo) {
             console.log('Creating a new Todo:', todo)
             const createdTodo = await prisma.todo.create({ data: { ...todo } })
-            this.notifyObservers('create', createdTodo)
+            this.notifyObservers('A Todo has been created with ', [createdTodo.title])
             return createdTodo
       }
 
@@ -41,7 +45,9 @@ export class TodoRepository implements ITodoRepository {
       }
 
       async delete(id: string) {
-            return prisma.todo.delete({ where: { id } })
+            const deletedTodo = prisma.todo.delete({ where: { id } })
+            this.notifyObservers('A Todo has been deleted with ', [(await deletedTodo).title])
+            return deletedTodo
       }
 
       async update(id: string, completed: boolean) {
