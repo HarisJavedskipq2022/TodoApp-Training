@@ -30,7 +30,7 @@ export class TodoRepository implements ITodoRepository {
       async create(todo: Todo) {
             console.log('Creating a new Todo:', todo)
             const createdTodo = await prisma.todo.create({ data: { ...todo } })
-            this.notifyObservers('A Todo has been created with ', [createdTodo.title])
+            this.notifyObservers('A Todo has been created with id ', [createdTodo.id])
             return createdTodo
       }
 
@@ -44,7 +44,7 @@ export class TodoRepository implements ITodoRepository {
 
       async delete(id: string) {
             const deletedTodo = prisma.todo.delete({ where: { id } })
-            this.notifyObservers('A Todo has been deleted with ', [(await deletedTodo).title])
+            this.notifyObservers('A Todo has been deleted with id ', [(await deletedTodo).id])
             return deletedTodo
       }
 
