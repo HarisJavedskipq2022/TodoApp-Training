@@ -1,10 +1,11 @@
 import { User } from '../../domain/entity/UserEntity'
 import uuid from '../../domain/utility/uuid'
 import config from '../../../config'
-import { Auth } from '../../infrastructure/services/bcrypt'
+import { comparePassword } from '../../infrastructure/services/bcrypt.comparePassword'
 import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
-import { Jwt } from '../../infrastructure/services/jwt'
+import { sign } from '../../infrastructure/services/jwt.sign'
+import { hashPassword } from '../../infrastructure/services/bcrypt.hashpassword'
 
 @injectable()
 class UserService {
@@ -35,7 +36,7 @@ class UserService {
                   throw new Error('User already exists')
             }
 
-            const hashedPassword = await Auth.hashPassword(createdUser.password)
+            const hashedPassword = await hashPassword(createdUser.password)
 
             return this.userRepository.createUser(createdUser, hashedPassword)
       }
@@ -46,7 +47,7 @@ class UserService {
             if (!user) {
                   throw new Error('User not found')
             }
-            const validatePassword = await Auth.comparePassword(password, user.password)
+            const validatePassword = await comparePassword(password, user.password)
 
             if (!validatePassword) {
                   throw new Error('Invalid credentials')
@@ -54,7 +55,7 @@ class UserService {
 
             const secretKey = config.jwtSecretKey
             const expiresIn = '1h'
-            return Jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn })
+            return sign({ id: user.id, email: user.email }, secretKey, { expiresIn })
       }
 }
 
