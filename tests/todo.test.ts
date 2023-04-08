@@ -15,7 +15,7 @@ describe('TodoController', () => {
 
       it('should create a todo', async () => {
             const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-            const todoService = new TodoService(CommandExecutor as any, todoRepositoryStub as any)
+            const todoService = new TodoService(todoRepositoryStub as any)
             const todoController = new TodoControllerInstance(todoService)
 
             const mockRecord = {
@@ -47,7 +47,7 @@ describe('TodoController', () => {
 
       it('should delete a todo', async () => {
             const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-            const todoService = new TodoService(todoRepositoryStub as any, CommandExecutor as any)
+            const todoService = new TodoService(todoRepositoryStub as any)
             const todoController = new TodoControllerInstance(todoService)
             const mockTodoId = uuid()
 

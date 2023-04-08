@@ -1,18 +1,16 @@
+import { CommandExecutor } from './../CommandBus/commandExecutor'
 import { CreateTodoCommand } from './../CommandBus/createTodoCommand'
-import { CommandExecutor } from '../CommandBus/commandExecutor'
 import { Todo } from '../../domain/entity/TodoEntity'
 import uuid from '../../domain/utility/uuid'
 import 'dotenv/config'
+import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 import generateTodo from '../../infrastructure/utils/faker'
 
 @injectable()
 class TodoService {
-      constructor(
-            @inject('TodoRepository') private todoRepository: ITodoRepository,
-            @inject('CommandExecutor') private commandExecutor: CommandExecutor
-      ) {}
+      constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
       async createTodoFaker() {
             const todos = []
@@ -40,7 +38,8 @@ class TodoService {
 
       async createTodoItemCommand(todo: Todo) {
             const command = new CreateTodoCommand(todo)
-            return this.commandExecutor.execute(command)
+            const commandExecutor = new CommandExecutor(new TodoRepository())
+            return commandExecutor.execute(command)
       }
 
       async findAllTodos(limit: number = 10, offset: number = 0) {
