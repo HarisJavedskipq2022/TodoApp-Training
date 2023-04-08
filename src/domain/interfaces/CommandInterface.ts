@@ -1,5 +1,5 @@
-import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
+import { ITodoRepository } from './TodoInterface'
 
 export interface Command {
-      execute(repository: TodoRepository): Promise<any>
+      execute(repository: ITodoRepository): Promise<any>
 }

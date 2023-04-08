@@ -6,6 +6,7 @@ import TodoService from '../src/application/services/TodoService'
 import { TodoRepository } from '../src/infrastructure/repositories/TodoRepository'
 import { TodoControllerInstance } from '../src/http/controller/TodoController'
 import uuid from '../src/domain/utility/uuid'
+import { CommandExecutor } from '../src/application/CommandBus/commandExecutor'
 
 describe('TodoController', () => {
       afterEach(() => {
@@ -14,7 +15,7 @@ describe('TodoController', () => {
 
       it('should create a todo', async () => {
             const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-            const todoService = new TodoService(todoRepositoryStub as any)
+            const todoService = new TodoService(CommandExecutor as any, todoRepositoryStub as any)
             const todoController = new TodoControllerInstance(todoService)
 
             const mockRecord = {
@@ -46,7 +47,7 @@ describe('TodoController', () => {
 
       it('should delete a todo', async () => {
             const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-            const todoService = new TodoService(todoRepositoryStub as any)
+            const todoService = new TodoService(todoRepositoryStub as any, CommandExecutor as any)
             const todoController = new TodoControllerInstance(todoService)
             const mockTodoId = uuid()
 
