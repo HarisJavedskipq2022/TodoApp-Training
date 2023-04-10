@@ -66,7 +66,7 @@ export class TodoControllerInstance {
             try {
                   const { id } = req.params
                   const record = await this.todoService.readById(id)
-                  return res.json(record)
+                  return res.json({ record })
             } catch (e) {
                   return res.json({
                         msg: 'failed to get todo by Id',

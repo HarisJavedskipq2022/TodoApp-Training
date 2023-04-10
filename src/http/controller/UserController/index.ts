@@ -9,7 +9,7 @@ export class UserControllerInstance {
       read = async (req: Request, res: Response) => {
             try {
                   const record = await this.userService.readUsers()
-                  return res.json(record)
+                  return res.json({ record })
             } catch (e) {
                   return res.status(500).json({
                         msg: 'unable to read users',
