@@ -3,7 +3,7 @@ import Middleware from '../../http/middleware/ValidationError'
 import { authMiddleware } from '../../http/middleware/Auth'
 import { TodoControllerInstance } from '../controller/TodoController'
 import { UserControllerInstance } from '../controller/UserController'
-import { container } from '../../../inversify.config'
+import { container } from '../../infrastructure/config/inversify.config'
 import TodoValidator from '../validator'
 
 const router = express.Router()

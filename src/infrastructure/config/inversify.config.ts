@@ -1,9 +1,10 @@
 import { Container } from 'inversify/lib/container/container'
-import { TodoRepository } from './src/infrastructure/repositories/TodoRepository'
-import { UserRepository } from './src/infrastructure/repositories/UserRepository'
-import TodoService from './src/application/services/TodoService'
-import UserService from './src/application/services/UserService'
-import { CommandExecutor } from './src/application/CommandBus/commandExecutor'
+import { TodoRepository } from '../repositories/TodoRepository'
+import { UserRepository } from '../repositories/UserRepository'
+import TodoService from '../../application/services/TodoService'
+import UserService from '../../application/services/UserService'
+import { CommandExecutor } from '../../application/CommandBus/commandExecutor'
+import { AuthService } from '../../application/services/AuthService'
 
 export const container = new Container({
       autoBindInjectable: true,
@@ -15,3 +16,4 @@ container.bind<TodoRepository>('TodoRepository').to(TodoRepository)
 container.bind<UserRepository>('UserRepository').to(UserRepository)
 container.bind<UserService>('UserService').to(UserService)
 container.bind<CommandExecutor>('CommandExecutor').to(CommandExecutor)
+container.bind<AuthService>('AuthService').to(AuthService)

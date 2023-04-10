@@ -1,7 +1,6 @@
 import { CommandExecutor } from './../CommandBus/commandExecutor'
 import { CreateTodoCommand } from './../CommandBus/createTodoCommand'
 import { Todo } from '../../domain/entity/TodoEntity'
-import uuid from '../../domain/utility/uuid'
 import 'dotenv/config'
 import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
@@ -30,10 +29,9 @@ class TodoService {
       }
 
       async createTodoItem(title: string, completed: boolean) {
-            const id = uuid()
-            const newTodoData = { id, title, completed }
+            const newTodoData = { title, completed }
             const newTodo = Todo.todoFactory(newTodoData)
-            return this.todoRepository.create({ ...newTodo })
+            return this.todoRepository.create(newTodo)
       }
 
       async createTodoItemCommand(todo: Todo) {

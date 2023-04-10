@@ -1,5 +1,5 @@
 import SlackNotify from 'slack-notify'
-import config from '../../../config'
+import config from '../config/config'
 
 const slack = SlackNotify(config.slackWebHookUrl)
 

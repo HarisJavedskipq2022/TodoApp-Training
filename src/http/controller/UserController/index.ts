@@ -1,14 +1,18 @@
+import { AuthService } from './../../../application/services/AuthService'
 import { Request, Response } from 'express'
 import UserService from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 
 @injectable()
 export class UserControllerInstance {
-      constructor(@inject('UserService') private userService: UserService) {}
+      constructor(
+            @inject('UserService') private userService: UserService,
+            @inject('AuthService') private authService: AuthService
+      ) {}
 
       read = async (req: Request, res: Response) => {
             try {
-                  const record = await this.userService.readUsers()
+                  const record = await this.userService.read()
                   return res.json({ record })
             } catch (e) {
                   return res.status(500).json({
@@ -21,7 +25,7 @@ export class UserControllerInstance {
       delete = async (req: Request, res: Response) => {
             try {
                   const { id } = req.params
-                  const deletedUser = await this.userService.deleteUserById(id)
+                  const deletedUser = await this.userService.deleteById(id)
                   return res.json({ user: deletedUser })
             } catch (e) {
                   return res.json({
@@ -46,7 +50,10 @@ export class UserControllerInstance {
             const { email, password }: { email: string; password: string } = req.body
 
             try {
-                  const token = await this.userService.loginUser(email, password)
+                  const token = await this.authService.login(email, password)
+
+                  console.log({ token })
+
                   res.json({ msg: 'successfully logged in' })
             } catch (e) {
                   res.status(401).json({ error: 'invalid credentials' })

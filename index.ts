@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 import express from 'express'
-import config from './config'
+import config from './src/infrastructure/config/config'
 import router from './src/http/route'
 import { Command } from 'commander'
-import { connectionToDb } from './src/infrastructure/utils/connection'
+import { connectionToDb } from './src/infrastructure/config/connection'
 
 const app = express()
 const program = new Command()
