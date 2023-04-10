@@ -6,7 +6,6 @@ import TodoService from '../src/application/services/TodoService'
 import { TodoRepository } from '../src/infrastructure/repositories/TodoRepository'
 import { TodoControllerInstance } from '../src/http/controller/TodoController'
 import uuid from '../src/domain/utility/uuid'
-import { CommandExecutor } from '../src/application/CommandBus/commandExecutor'
 
 describe('TodoController', () => {
       afterEach(() => {
