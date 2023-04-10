@@ -23,7 +23,7 @@ router.post('/createbycommand', todoController.CreateByCommand)
 
 router.post('/createfaker', todoController.createByFaker)
 
-router.post('/signup', userController.signup)
+router.post('/signup', TodoValidator.checkUser(), Middleware.handleValidationError, userController.signup)
 
 router.post('/login', userController.login)
 

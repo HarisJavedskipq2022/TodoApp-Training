@@ -31,6 +31,23 @@ class TodoValidator {
                         .withMessage('The value should be uuid v4'),
             ]
       }
+
+      checkUser() {
+            return [
+                  body('id').optional().isUUID(4).withMessage('The value should be UUID v4'),
+                  body('email')
+                        .notEmpty()
+                        .withMessage('The email value is empty, it should not be empty')
+                        .isEmail()
+                        .withMessage('Invalid email format'),
+                  body('password')
+                        .notEmpty()
+                        .withMessage('The password value is empty, it should not be empty')
+                        .isLength({ min: 8 })
+                        .withMessage('The password should be at least 8 characters long'),
+                  body('isActive').optional().isBoolean().withMessage('Incorrect value, the value should be a boolean'),
+            ]
+      }
 }
 
 export default new TodoValidator()
