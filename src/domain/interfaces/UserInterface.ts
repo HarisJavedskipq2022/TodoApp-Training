@@ -1,5 +1,4 @@
 import { User } from '../entity/UserEntity'
-import { Observer } from './ObserverInterface'
 
 export interface IUserRepository {
       deleteUser(id: string): Promise<User>

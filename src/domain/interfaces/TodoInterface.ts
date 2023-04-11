@@ -1,5 +1,4 @@
 import { Todo } from '../entity/TodoEntity'
-import { Observer } from './ObserverInterface'
 
 export interface ITodoRepository {
       create(todo: Todo): Promise<Todo>

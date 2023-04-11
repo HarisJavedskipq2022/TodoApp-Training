@@ -1,31 +1,28 @@
-import { UserRepository } from '../../infrastructure/repositories/UserRepository'
-import { Encryption } from '../../infrastructure/services/EncryptionService'
-import { sign } from 'jsonwebtoken'
-import config from '../../infrastructure/config/config'
-import { injectable } from 'inversify'
+import { IUserRepository } from './../../domain/interfaces/UserInterface'
+import { IEncryption } from '../../infrastructure/services/EncryptionService'
+import { IJwt } from '../../infrastructure/services/JwtService'
+import { injectable, inject } from 'inversify'
 
 @injectable()
 export class AuthService {
-      private userRepository: UserRepository
+  constructor(
+    @inject('UserRepository') private userRepository: IUserRepository,
+    @inject('Jwt') private jwt: IJwt,
+    @inject('Encryption') private encryption: IEncryption
+  ) {}
 
-      constructor(userRepository: UserRepository) {
-            this.userRepository = userRepository
-      }
+  async login(email: string, password: string) {
+    const user = await this.userRepository.findUserByEmail(email)
 
-      async login(email: string, password: string) {
-            const user = await this.userRepository.findUserByEmail(email)
+    if (!user) {
+      throw new Error('User not found')
+    }
+    const validatePassword = await this.encryption.comparePassword(password, user.password)
 
-            if (!user) {
-                  throw new Error('User not found')
-            }
-            const validatePassword = await Encryption.comparePassword(password, user.password)
+    if (!validatePassword) {
+      throw new Error('Invalid credentials')
+    }
 
-            if (!validatePassword) {
-                  throw new Error('Invalid credentials')
-            }
-
-            const secretKey = config.jwtSecretKey
-            const expiresIn = '1h'
-            return sign({ id: user.id, email: user.email }, secretKey, { expiresIn })
-      }
+    return this.jwt.sign({ id: user.id, email: user.email })
+  }
 }

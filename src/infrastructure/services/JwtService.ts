@@ -1,11 +1,19 @@
 import * as jwt from 'jsonwebtoken'
+import config from '../config'
+import { injectable } from 'inversify'
 
-export class Jwt {
-      static async sign(payload: object, key: string, expiry: any) {
-            return jwt.sign(payload, key, expiry)
-      }
+export interface IJwt {
+  sign(payload: object): string
+  verify(token: string, key: string): any
+}
 
-      static async verify(token: string, key: string) {
-            return jwt.verify(token, key)
-      }
+@injectable()
+export class Jwt implements Jwt {
+  sign(payload: object) {
+    return jwt.sign(payload, config.jwt.jwtSecretKey, { expiresIn: '10h' })
+  }
+
+  verify(token: string, key: string) {
+    return jwt.verify(token, key)
+  }
 }

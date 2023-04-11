@@ -5,58 +5,58 @@ import { injectable, inject } from 'inversify'
 
 @injectable()
 export class UserControllerInstance {
-      constructor(
-            @inject('UserService') private userService: UserService,
-            @inject('AuthService') private authService: AuthService
-      ) {}
+  constructor(
+    @inject('UserService') private userService: UserService,
+    @inject('AuthService') private authService: AuthService
+  ) {}
 
-      read = async (req: Request, res: Response) => {
-            try {
-                  const record = await this.userService.read()
-                  return res.json({ record })
-            } catch (e) {
-                  return res.status(500).json({
-                        msg: 'unable to read users',
-                        route: '/getusers',
-                  })
-            }
-      }
+  read = async (req: Request, res: Response) => {
+    try {
+      const record = await this.userService.getAll()
+      return res.json({ record })
+    } catch (e) {
+      return res.status(500).json({
+        msg: 'unable to read users',
+        route: '/getusers',
+      })
+    }
+  }
 
-      delete = async (req: Request, res: Response) => {
-            try {
-                  const { id } = req.params
-                  const deletedUser = await this.userService.deleteById(id)
-                  return res.json({ user: deletedUser })
-            } catch (e) {
-                  return res.json({
-                        msg: 'User not found',
-                  })
-            }
-      }
+  delete = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params
+      const deletedUser = await this.userService.deleteById(id)
+      return res.json({ user: deletedUser })
+    } catch (e) {
+      return res.json({
+        msg: 'User not found',
+      })
+    }
+  }
 
-      signup = async (req: Request, res: Response) => {
-            const { email, password }: { email: string; password: string } = req.body
+  signup = async (req: Request, res: Response) => {
+    const { id, email, password }: { id: string; email: string; password: string } = req.body
 
-            try {
-                  const newUser = await this.userService.signUp(email, password)
+    try {
+      const newUser = await this.userService.createUser(id, email, password)
 
-                  return res.json({ newUser, msg: 'User successfully signed up' })
-            } catch (error) {
-                  return res.status(400).json({ error: 'user already exists' })
-            }
-      }
+      return res.json({ newUser, msg: 'User successfully signed up' })
+    } catch (error) {
+      return res.status(400).json({ error: 'user already exists' })
+    }
+  }
 
-      login = async (req: Request, res: Response) => {
-            const { email, password }: { email: string; password: string } = req.body
+  login = async (req: Request, res: Response) => {
+    const { email, password }: { email: string; password: string } = req.body
 
-            try {
-                  const token = await this.authService.login(email, password)
+    try {
+      const token = await this.authService.login(email, password)
 
-                  console.log({ token })
+      console.log({ token })
 
-                  res.json({ msg: 'successfully logged in' })
-            } catch (e) {
-                  res.status(401).json({ error: 'invalid credentials' })
-            }
-      }
+      res.json({ msg: 'successfully logged in' })
+    } catch (e) {
+      res.status(401).json({ error: 'invalid credentials' })
+    }
+  }
 }

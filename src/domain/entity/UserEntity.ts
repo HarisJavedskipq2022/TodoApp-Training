@@ -1,18 +1,21 @@
 import uuid from '../utility/uuid'
 
 export class User {
-      id: string
-      email: string
-      password: string
+  id: string
+  email: string
+  password: string
 
-      private constructor(email: string, password: string) {
-            this.id = uuid()
-            this.email = email
-            this.password = password
-      }
+  private constructor(id: string, email: string, password: string) {
+    this.id = id
+    this.email = email
+    this.password = password
+  }
 
-      static userFactory(data: { email: string; password: string }): User {
-            const { email, password } = data
-            return new User(email, password)
-      }
+  static userFactory(data: { id: string; email: string; password: string }): User {
+    const { id, email, password } = data
+    if (data.id) {
+      return new User(id, email, password)
+    }
+    return new User(uuid(), email, password)
+  }
 }
