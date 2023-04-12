@@ -1,20 +1,47 @@
-import { Command, CommandBus, CommandHandler } from '@tshio/command-bus'
+import { Command } from '@tshio/command-bus'
+import { Todo } from '../../domain/entity/TodoEntity'
 
-class TestHandler implements CommandHandler<Command<string>> {
-  public commandType: string = 'test-type'
+class CreateTodoCommand implements Command<Todo> {
+  public type: string = 'create-todo'
+  public payload: Todo
 
-  async execute(command: Command<string>) {
-    return `handler-message ${command.payload}`
+  constructor(payload: Todo) {
+    this.payload = payload
   }
 }
 
-const bus = new CommandBus([new TestHandler()])
+class GetAllTodosCommand implements Command<{ limit: number; offset: number }> {
+  public type: string = 'get-all-todos'
+  public payload: { limit: number; offset: number }
 
-const testCommand: Command<string> = {
-  payload: 'payload-data',
-  type: 'test-type',
+  constructor(payload: { limit: number; offset: number }) {
+    this.payload = payload
+  }
 }
 
-const result = bus.execute(testCommand)
+class GetTodoByIdCommand implements Command<string> {
+  public type: string = 'get-todo-by-id'
+  public payload: string
 
-console.log(result)
+  constructor(payload: string) {
+    this.payload = payload
+  }
+}
+
+class DeleteTodoByIdCommand implements Command<string> {
+  public type: string = 'delete-todo-by-id'
+  public payload: string
+
+  constructor(payload: string) {
+    this.payload = payload
+  }
+}
+
+class UpdateTodoByIdCommand implements Command<string> {
+  public type: string = 'update-todo-by-id'
+  public payload: string
+
+  constructor(payload: string) {
+    this.payload = payload
+  }
+}
