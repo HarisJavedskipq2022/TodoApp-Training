@@ -1,43 +1,26 @@
-import { Command } from '@tshio/command-bus'
-import { Todo } from '../../domain/entity/TodoEntity'
-import { injectable } from 'inversify'
+import { ICommand, ICommandHandler } from './CommandInterface'
+import { injectable, multiInject, optional } from 'inversify'
 
 @injectable()
-class TodoCommands {
-  static createTodo(payload: Todo): Command<Todo> {
-    return {
-      type: 'create-todo',
-      payload,
-    }
+export class CommandBus {
+  private handlers: Map<string, ICommandHandler> = new Map()
+
+  constructor(@multiInject('CommandHandler') @optional() handlers?: ICommandHandler[]) {
+    handlers?.forEach((handler) => {
+      this.register(handler.constructor.name.replace('Handler', 'Command'), handler)
+    })
   }
 
-  static getAllTodos(payload: { limit: number; offset: number }): Command<{ limit: number; offset: number }> {
-    return {
-      type: 'get-all-todos',
-      payload,
-    }
+  register(commandName: string, handler: ICommandHandler) {
+    this.handlers.set(commandName, handler)
   }
 
-  static getTodoById(payload: string): Command<string> {
-    return {
-      type: 'get-todo-by-id',
-      payload,
-    }
-  }
+  async execute(command: ICommand): Promise<any> {
+    const handler = this.handlers.get(command.constructor.name)
 
-  static deleteTodoById(payload: string): Command<string> {
-    return {
-      type: 'delete-todo-by-id',
-      payload,
+    if (!handler) {
+      throw new Error(`No handler found for ${command.constructor.name}`)
     }
-  }
-
-  static updateTodoById(payload: string): Command<string> {
-    return {
-      type: 'update-todo-by-id',
-      payload,
-    }
+    return handler.handle(command)
   }
 }
-
-export default TodoCommands

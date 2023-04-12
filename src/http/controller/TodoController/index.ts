@@ -9,9 +9,11 @@ export class TodoControllerInstance {
   create = async (req: Request, res: Response) => {
     const { id, title, completed }: { id: string; title: string; completed: boolean } = req.body
     try {
-      const record = await this.todoService.create(id, title, completed)
+      const record = await this.todoService.createbyCommand(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
     } catch (e) {
+      console.log('error -------------->', e)
+
       return res.json({
         msg: 'failed to create todo',
         status: 500,
@@ -66,7 +68,7 @@ export class TodoControllerInstance {
   deleteById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params
-      const deletedRecord = await this.todoService.deleteById(id)
+      const deletedRecord = await this.todoService.deleteByCommand(id)
       return res.json({ record: deletedRecord })
     } catch (e) {
       return res.status(500).json({
