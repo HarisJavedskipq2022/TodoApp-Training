@@ -6,7 +6,7 @@ import { injectable, inject } from 'inversify'
 export class GoogleAuthController {
   constructor(@inject('GoogleAuthService') private googleAuthService: GoogleAuthService) {}
 
-  redirectToGoogle = async (req: Request, res: Response) => {
+  redirectToGoogle = (req: Request, res: Response) => {
     const authUrl = this.googleAuthService.generateAuthUrl()
     res.redirect(authUrl)
   }
@@ -16,7 +16,7 @@ export class GoogleAuthController {
     try {
       const userInfo = await this.googleAuthService.getUserInfo(code as string)
       console.log(userInfo)
-      res.send('Google authentication successful!')
+      res.send({ message: 'Google authentication successful!' })
     } catch (error) {
       console.error('Error retrieving access token', error)
       res.status(500).send('Error retrieving access token')
