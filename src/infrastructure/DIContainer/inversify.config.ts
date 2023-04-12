@@ -8,6 +8,7 @@ import { AuthService } from '../../application/services/AuthService'
 import { Jwt } from '../services/JwtService'
 import { Encryption } from '../services/EncryptionService'
 import { AuthMiddleware } from '../../http/middleware/Auth'
+import { GoogleAuthService } from '../../application/services/GoogleAuthService'
 
 export const container = new Container({
   autoBindInjectable: true,
@@ -23,3 +24,4 @@ container.bind<AuthService>('AuthService').to(AuthService)
 container.bind<Jwt>('Jwt').to(Jwt)
 container.bind<Encryption>('Encryption').to(Encryption)
 container.bind<AuthMiddleware>('AuthMiddleware').to(AuthMiddleware)
+container.bind<GoogleAuthService>('GoogleAuthService').to(GoogleAuthService)

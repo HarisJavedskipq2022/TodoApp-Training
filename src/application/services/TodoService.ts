@@ -1,7 +1,4 @@
-import { CommandExecutor } from './../CommandBus/commandExecutor'
-import { CreateTodoCommand } from './../CommandBus/createTodoCommand'
 import { Todo } from '../../domain/entity/TodoEntity'
-import { TodoRepository } from '../../infrastructure/repositories/TodoRepository'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 
@@ -15,11 +12,11 @@ class TodoService {
     return this.todoRepository.create(newTodo)
   }
 
-  async createTodoItemCommand(todo: Todo) {
-    const command = new CreateTodoCommand(todo)
-    const commandExecutor = new CommandExecutor(new TodoRepository())
-    return commandExecutor.execute(command)
-  }
+  // async createTodoItemCommand(todo: Todo) {
+  //   const command = new CreateTodoCommand(todo)
+  //   const commandExecutor = new CommandExecutor(new TodoRepository())
+  //   return commandExecutor.execute(command)
+  // }
 
   async getAll(limit: number = 10, offset: number = 0) {
     try {

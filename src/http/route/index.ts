@@ -5,12 +5,14 @@ import { TodoControllerInstance } from '../controller/TodoController'
 import { UserControllerInstance } from '../controller/UserController'
 import { container } from '../../infrastructure/DIContainer/inversify.config'
 import TodoValidator from '../validator'
+import { GoogleAuthController } from '../controller/GoogleAuthController'
 
 const router = express.Router()
 
 const todoController = container.get<TodoControllerInstance>(TodoControllerInstance)
 const userController = container.get<UserControllerInstance>(UserControllerInstance)
 const authMiddleware = container.get<AuthMiddleware>(AuthMiddleware)
+const googleAuthController = container.get<GoogleAuthController>(GoogleAuthController)
 
 router.post(
   '/create',
@@ -20,7 +22,7 @@ router.post(
   todoController.create
 )
 
-router.post('/createbycommand', todoController.CreateByCommand)
+// router.post('/createbycommand', todoController.CreateByCommand)
 
 router.post('/signup', TodoValidator.checkUser(), Middleware.handleValidationError, userController.signup)
 
@@ -61,5 +63,9 @@ router.delete(
 )
 
 router.delete('/deleteuser/:id', authMiddleware.authorize, userController.delete)
+
+router.get('/auth/google', googleAuthController.redirectToGoogle)
+
+router.get('/auth/google/callback', googleAuthController.handleGoogleCallback)
 
 export default router

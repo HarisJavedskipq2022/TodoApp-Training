@@ -20,18 +20,18 @@ export class TodoControllerInstance {
     }
   }
 
-  CreateByCommand = async (req: Request, res: Response) => {
-    try {
-      const record = await this.todoService.createTodoItemCommand(req.body)
-      return res.json({ record, msg: 'Successfully created todo' })
-    } catch (e) {
-      return res.json({
-        msg: 'failed to create todo by command',
-        status: 500,
-        route: '/createbycommand',
-      })
-    }
-  }
+  // CreateByCommand = async (req: Request, res: Response) => {
+  //   try {
+  //     const record = await this.todoService.createTodoItemCommand(req.body)
+  //     return res.json({ record, msg: 'Successfully created todo' })
+  //   } catch (e) {
+  //     return res.json({
+  //       msg: 'failed to create todo by command',
+  //       status: 500,
+  //       route: '/createbycommand',
+  //     })
+  //   }
+  // }
 
   getAll = async (req: Request, res: Response) => {
     try {
