@@ -2,7 +2,7 @@ import { Todo } from '../../domain/entity/TodoEntity'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 import { CommandBus } from '../CommandBus'
-import { CreateTodoCommand } from '../CommandBus/TodoCommands'
+import { CreateTodoCommand, UpdateTodoCommand } from '../CommandBus/TodoCommands'
 import { FindUniqueTodoCommand } from '../CommandBus/TodoCommands'
 import { FindManyTodosCommand } from '../CommandBus/TodoCommands'
 import { DeleteTodoCommand } from '../CommandBus/TodoCommands'
@@ -17,18 +17,12 @@ export class TodoService {
   async create(id: string, title: string, completed: boolean) {
     const newTodoData = { id, title, completed }
     const newTodo = Todo.todoFactory(newTodoData)
-    return this.todoRepository.create(newTodo)
-  }
-
-  async createbyCommand(id: string, title: string, completed: boolean) {
-    const newTodoData = { id, title, completed }
-    const newTodo = Todo.todoFactory(newTodoData)
     return this.commandBus.execute(new CreateTodoCommand(newTodo))
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
     try {
-      return await this.todoRepository.findMany(limit, offset)
+      return this.commandBus.execute(new FindManyTodosCommand(limit, offset))
     } catch (e) {
       throw new Error('Failed to find all todo items')
     }
@@ -36,22 +30,13 @@ export class TodoService {
 
   async getById(id: string) {
     try {
-      return await this.todoRepository.findUnique(id)
+      return this.commandBus.execute(new FindUniqueTodoCommand(id))
     } catch (e) {
       throw new Error('Failed to read todo')
     }
   }
 
   async deleteById(id: string) {
-    const record = await this.todoRepository.findUnique(id)
-
-    if (!record) {
-      throw new Error('Record not found')
-    }
-    return this.todoRepository.delete(id)
-  }
-
-  async deleteByCommand(id: string) {
     const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
 
     if (!record) {
@@ -61,12 +46,12 @@ export class TodoService {
   }
 
   async updateById(id: string) {
-    const record = await this.todoRepository.findUnique(id)
+    const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
 
     if (!record) {
       throw new Error('Record not found')
     } else {
-      return await this.todoRepository.update(id, !record.completed)
+      return this.commandBus.execute(new UpdateTodoCommand(id, !record.completed))
     }
   }
 }

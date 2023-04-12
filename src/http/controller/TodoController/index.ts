@@ -9,7 +9,7 @@ export class TodoControllerInstance {
   create = async (req: Request, res: Response) => {
     const { id, title, completed }: { id: string; title: string; completed: boolean } = req.body
     try {
-      const record = await this.todoService.createbyCommand(id, title, completed)
+      const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
     } catch (e) {
       console.log('error -------------->', e)
@@ -21,19 +21,6 @@ export class TodoControllerInstance {
       })
     }
   }
-
-  // CreateByCommand = async (req: Request, res: Response) => {
-  //   try {
-  //     const record = await this.todoService.createTodoItemCommand(req.body)
-  //     return res.json({ record, msg: 'Successfully created todo' })
-  //   } catch (e) {
-  //     return res.json({
-  //       msg: 'failed to create todo by command',
-  //       status: 500,
-  //       route: '/createbycommand',
-  //     })
-  //   }
-  // }
 
   getAll = async (req: Request, res: Response) => {
     try {
@@ -68,7 +55,7 @@ export class TodoControllerInstance {
   deleteById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params
-      const deletedRecord = await this.todoService.deleteByCommand(id)
+      const deletedRecord = await this.todoService.deleteById(id)
       return res.json({ record: deletedRecord })
     } catch (e) {
       return res.status(500).json({
