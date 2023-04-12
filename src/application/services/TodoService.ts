@@ -1,5 +1,4 @@
 import { Todo } from '../../domain/entity/TodoEntity'
-import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 import { CommandBus } from '../CommandBus'
 import { CreateTodoCommand, UpdateTodoCommand } from '../CommandBus/TodoCommands'
@@ -9,10 +8,7 @@ import { DeleteTodoCommand } from '../CommandBus/TodoCommands'
 
 @injectable()
 export class TodoService {
-  constructor(
-    @inject('TodoRepository') private todoRepository: ITodoRepository,
-    @inject('CommandBus') private commandBus: CommandBus
-  ) {}
+  constructor(@inject('CommandBus') private commandBus: CommandBus) {}
 
   async create(id: string, title: string, completed: boolean) {
     const newTodoData = { id, title, completed }
