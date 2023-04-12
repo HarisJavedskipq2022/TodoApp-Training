@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import TodoService from '../../../application/services/TodoService'
+import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 
 @injectable()

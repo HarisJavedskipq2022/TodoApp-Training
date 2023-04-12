@@ -6,7 +6,7 @@ import { Observer } from '../../domain/interfaces/ObserverInterface'
 import { slackService } from '../../infrastructure/services/slackNotificationService'
 
 @injectable()
-class UserService {
+export class UserService {
   private observers: Observer[] = []
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
@@ -57,5 +57,3 @@ class UserService {
     return this.userRepository.createUser(createdUser, hashedPassword)
   }
 }
-
-export default UserService

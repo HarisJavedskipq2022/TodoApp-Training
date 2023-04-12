@@ -1,6 +1,6 @@
 import { AuthService } from './../../../application/services/AuthService'
 import { Request, Response } from 'express'
-import UserService from '../../../application/services/UserService'
+import { UserService } from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 
 @injectable()

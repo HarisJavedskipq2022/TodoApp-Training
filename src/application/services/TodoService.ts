@@ -3,7 +3,7 @@ import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 
 @injectable()
-class TodoService {
+export class TodoService {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async create(id: string, title: string, completed: boolean) {
@@ -53,5 +53,3 @@ class TodoService {
     }
   }
 }
-
-export default TodoService
