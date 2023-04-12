@@ -1,12 +1,13 @@
 import 'reflect-metadata'
+import { TodoRepository } from './../src/infrastructure/repositories/TodoRepository'
 import { expect } from 'chai'
 import sinon from 'sinon'
 import { Request, Response } from 'express'
 import { TodoService } from '../src/application/services/TodoService'
-import { TodoRepository } from '../src/infrastructure/repositories/TodoRepository'
 import { TodoControllerInstance } from '../src/http/controller/TodoController'
-import uuid from '../src/domain/utility/uuid'
 import { CommandBus } from '../src/application/CommandBus'
+import { DeleteTodoCommand, FindUniqueTodoCommand } from '../src/application/CommandBus/TodoCommands'
+import uuid from '../src/domain/utility/uuid'
 
 describe('TodoController', () => {
   afterEach(() => {
@@ -15,7 +16,8 @@ describe('TodoController', () => {
 
   it('should create a todo', async () => {
     const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-    const todoService = new TodoService(todoRepositoryStub as any, CommandBus as any)
+    const commandBusStub = sinon.createStubInstance(CommandBus)
+    const todoService = new TodoService(todoRepositoryStub as any, commandBusStub as any)
     const todoController = new TodoControllerInstance(todoService)
 
     const mockRecord = {
@@ -34,11 +36,11 @@ describe('TodoController', () => {
       json: sinon.spy(),
     } as unknown as Response
 
-    todoRepositoryStub.create.resolves(mockRecord)
+    commandBusStub.execute.resolves(mockRecord)
 
     await todoController.create(req, res)
 
-    expect(todoRepositoryStub.create.calledOnce).to.be.true
+    expect(commandBusStub.execute.calledOnce).to.be.true
     sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
       record: mockRecord,
       msg: 'Successfully created todo',
@@ -47,7 +49,8 @@ describe('TodoController', () => {
 
   it('should delete a todo', async () => {
     const todoRepositoryStub = sinon.createStubInstance(TodoRepository)
-    const todoService = new TodoService(todoRepositoryStub as any, CommandBus as any)
+    const commandBusStub = sinon.createStubInstance(CommandBus)
+    const todoService = new TodoService(todoRepositoryStub, commandBusStub as any)
     const todoController = new TodoControllerInstance(todoService)
     const mockTodoId = uuid()
 
@@ -62,23 +65,22 @@ describe('TodoController', () => {
       status: sinon.stub().returnsThis(),
     } as unknown as Response
 
-    todoRepositoryStub.findUnique.resolves({
+    const mockTodo = {
       id: mockTodoId,
       title: 'Test Todo',
       completed: false,
       updated: new Date(),
       created: new Date(),
-    })
+    }
 
-    todoRepositoryStub.delete.resolves()
+    commandBusStub.execute.withArgs(sinon.match.instanceOf(FindUniqueTodoCommand)).resolves(mockTodo)
+
+    commandBusStub.execute.withArgs(sinon.match.instanceOf(DeleteTodoCommand)).resolves()
 
     await todoController.deleteById(req, res)
 
-    expect(todoRepositoryStub.findUnique.callCount).to.equal(1)
-    expect(todoRepositoryStub.findUnique.calledWith(mockTodoId)).to.be.true
-    expect(todoRepositoryStub.delete.callCount).to.equal(1)
-    expect(todoRepositoryStub.delete.calledWith(mockTodoId)).to.be.true
-    sinon.assert.calledWith(todoRepositoryStub.findUnique, mockTodoId)
-    sinon.assert.calledWith(todoRepositoryStub.delete, mockTodoId)
+    expect(commandBusStub.execute.callCount).to.equal(2)
+    sinon.assert.calledWithMatch(commandBusStub.execute, sinon.match.instanceOf(FindUniqueTodoCommand))
+    sinon.assert.calledWithMatch(commandBusStub.execute, sinon.match.instanceOf(DeleteTodoCommand))
   })
 })
