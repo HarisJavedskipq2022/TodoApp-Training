@@ -3,7 +3,7 @@ import { IEncryption } from '../../infrastructure/services/EncryptionService'
 import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
 import { Observer } from '../../domain/interfaces/ObserverInterface'
-import { slackService } from '../../infrastructure/services/slackNotificationService'
+import { slackService } from '../../infrastructure/services/SlackNotificationService'
 
 @injectable()
 export class UserService {
