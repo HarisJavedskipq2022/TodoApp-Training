@@ -20,5 +20,5 @@ const port = Number(a.args[0]) || config.ports.port
 program.option('-p, --port <number>', 'port number')
 
 app.listen(port, () => {
-  console.log(`app is listening on port ${config.ports.port}`)
+  console.log(`app is listening on port ${port}`)
 })
