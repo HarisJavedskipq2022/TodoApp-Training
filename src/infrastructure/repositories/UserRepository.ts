@@ -29,4 +29,11 @@ export class UserRepository implements IUserRepository {
     const createdUser = prisma.user.create({ data: { ...user, password } })
     return createdUser
   }
+
+  async updateUserPassword(id: string, hashedPassword: string) {
+    return prisma.user.update({
+      where: { id },
+      data: { password: hashedPassword },
+    })
+  }
 }

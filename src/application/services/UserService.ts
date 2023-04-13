@@ -1,5 +1,5 @@
 import { User } from '../../domain/entity/UserEntity'
-import { Encryption, IEncryption } from '../../infrastructure/services/EncryptionService'
+import { IEncryption } from '../../infrastructure/services/EncryptionService'
 import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
 import { Observer } from '../../domain/interfaces/ObserverInterface'
@@ -55,5 +55,19 @@ export class UserService {
     const hashedPassword = await this.encryption.hashPassword(createdUser.password)
 
     return this.userRepository.createUser(createdUser, hashedPassword)
+  }
+
+  async updateUserPassword(id: string, newPassword: string) {
+    const user = await this.userRepository.findUserbyId(id)
+
+    if (!user) {
+      throw new Error('User does not exist')
+    }
+
+    const hashedPassword = await this.encryption.hashPassword(newPassword)
+
+    await this.userRepository.updateUserPassword(id, hashedPassword)
+
+    this.notifyObservers('A user password has been updated with id ', [user.id])
   }
 }

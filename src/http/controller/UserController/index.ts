@@ -59,4 +59,16 @@ export class UserControllerInstance {
       res.status(401).json({ error: 'invalid credentials' })
     }
   }
+
+  update = async (req: Request, res: Response) => {
+    try {
+      const { id, newPassword } = req.body
+
+      await this.userService.updateUserPassword(id, newPassword)
+
+      res.status(200).json({ message: 'Password updated successfully' })
+    } catch (error) {
+      res.status(500).json({ message: error })
+    }
+  }
 }

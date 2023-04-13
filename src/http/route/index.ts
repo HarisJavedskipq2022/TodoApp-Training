@@ -66,4 +66,6 @@ router.get('/auth/google', googleAuthController.redirectToGoogle)
 
 router.get('/auth/google/callback', googleAuthController.handleGoogleCallback)
 
+router.post('/updateuser', userController.update)
+
 export default router
