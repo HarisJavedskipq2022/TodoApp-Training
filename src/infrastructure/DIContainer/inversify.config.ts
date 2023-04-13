@@ -7,7 +7,7 @@ import { AuthService } from '../../application/services/AuthService'
 import { Jwt } from '../services/JwtService'
 import { Encryption } from '../services/EncryptionService'
 import { AuthMiddleware } from '../../http/middleware/Auth'
-import { GoogleAuthService } from '../../application/services/GoogleAuthService'
+import { GoogleAuthService } from '../services/GoogleAuthService'
 import { CommandBus } from '../../application/CommandBus'
 import { ICommandHandler } from '../../application/CommandBus/CommandInterface'
 import {

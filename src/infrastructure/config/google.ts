@@ -8,7 +8,7 @@ export interface Google {
 }
 
 export const google: Google = {
-  googleClientId: process.env.CLIENT_ID || '',
-  googleClientSecret: process.env.CLIENT_SECRET || '',
+  googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
   googleCallbackURL: process.env.CALLBACK_URL || '',
 }

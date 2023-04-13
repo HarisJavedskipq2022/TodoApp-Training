@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { GoogleAuthService } from '../../../application/services/GoogleAuthService'
+import { GoogleAuthService } from '../../../infrastructure/services/GoogleAuthService'
 import { injectable, inject } from 'inversify'
 
 @injectable()
