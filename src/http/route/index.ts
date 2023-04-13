@@ -22,8 +22,6 @@ router.post(
   todoController.create
 )
 
-// router.post('/createbycommand', todoController.CreateByCommand)
-
 router.post('/signup', TodoValidator.checkUser(), Middleware.handleValidationError, userController.signup)
 
 router.post('/login', userController.login)

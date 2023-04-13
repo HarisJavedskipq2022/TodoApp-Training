@@ -1,10 +1,11 @@
 import { OAuth2Client } from 'google-auth-library'
 import { injectable } from 'inversify'
+import 'dotenv/config'
 
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:8000/auth/google/callback'
+  process.env.CALLBACK_URL
 )
 
 @injectable()

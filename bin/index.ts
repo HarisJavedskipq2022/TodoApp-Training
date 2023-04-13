@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 import express from 'express'
-import router from './src/http/route'
+import router from '../src/http/route'
 import { Command } from 'commander'
-import { connectionToDb } from './src/infrastructure/database/connection'
+import { connectionToDb } from '../src/infrastructure/database/connection'
 import 'dotenv/config'
-import config from './src/infrastructure/config'
+import config from '../src/infrastructure/config'
 
 const app = express()
 const program = new Command()
