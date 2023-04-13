@@ -5,7 +5,7 @@ import 'dotenv/config'
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  process.env.CALLBACK_URL
+  process.env.CALLBACK_URL as string
 )
 
 @injectable()

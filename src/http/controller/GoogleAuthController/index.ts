@@ -15,8 +15,7 @@ export class GoogleAuthController {
     const { code } = req.query
     try {
       const userInfo = await this.googleAuthService.getUserInfo(code as string)
-      console.log(userInfo)
-      res.send({ message: 'Google authentication successful!' })
+      res.send({ message: 'Success', userInfo })
     } catch (error) {
       console.error('Error retrieving access token', error)
       res.status(500).send('Error retrieving access token')
