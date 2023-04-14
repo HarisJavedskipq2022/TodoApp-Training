@@ -1,4 +1,3 @@
-// application/CommandBus/TodoCommands.ts
 import { ICommand } from './CommandInterface'
 import { Todo } from '../../domain/entity/TodoEntity'
 

@@ -38,7 +38,7 @@ export class UserControllerInstance {
     const { id, email, password }: { id: string; email: string; password: string } = req.body
 
     try {
-      const newUser = await this.userService.createUser(id, email, password)
+      const newUser = await this.userService.create(id, email, password)
 
       return res.json({ newUser, msg: 'User successfully signed up' })
     } catch (error) {

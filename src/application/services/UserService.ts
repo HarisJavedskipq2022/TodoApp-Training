@@ -44,7 +44,7 @@ export class UserService {
     return this.userRepository.deleteUser(id)
   }
 
-  async createUser(id: string, email: string, password: string) {
+  async create(id: string, email: string, password: string) {
     const createdUser = User.userFactory({ id, email, password })
     const finduser = await this.userRepository.findUserByEmail(createdUser.email)
 

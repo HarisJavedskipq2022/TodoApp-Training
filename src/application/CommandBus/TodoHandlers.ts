@@ -1,4 +1,3 @@
-// application/CommandBus/TodoHandlers.ts
 import { ICommandHandler } from './CommandInterface'
 import {
   CreateTodoCommand,
@@ -24,7 +23,7 @@ export class FindManyTodosHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: FindManyTodosCommand): Promise<any> {
-    return this.todoRepository.findMany(command.limit, command.offset)
+    return this.todoRepository.getAll(command.limit, command.offset)
   }
 }
 
@@ -33,7 +32,7 @@ export class FindUniqueTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: FindUniqueTodoCommand): Promise<any> {
-    return this.todoRepository.findUnique(command.id)
+    return this.todoRepository.getById(command.id)
   }
 }
 
