@@ -15,11 +15,11 @@ export class TodoRepository implements ITodoRepository {
     return createdTodo
   }
 
-  async findMany(limit: number = 10, offset: number = 0) {
+  async getAll(limit: number = 10, offset: number = 0) {
     return prisma.todo.findMany({ take: limit, skip: offset })
   }
 
-  async findUnique(id: string) {
+  async getById(id: string) {
     return prisma.todo.findUnique({ where: { id } })
   }
 
