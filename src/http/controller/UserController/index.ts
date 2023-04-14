@@ -10,7 +10,7 @@ export class UserControllerInstance {
     @inject('AuthService') private authService: AuthService
   ) {}
 
-  read = async (req: Request, res: Response) => {
+  getAll = async (req: Request, res: Response) => {
     try {
       const record = await this.userService.getAll()
       return res.json({ record })
@@ -64,7 +64,7 @@ export class UserControllerInstance {
     try {
       const { id, newPassword } = req.body
 
-      await this.userService.updateUserPassword(id, newPassword)
+      await this.userService.updatePassword(id, newPassword)
 
       res.status(200).json({ message: 'Password updated successfully' })
     } catch (error) {

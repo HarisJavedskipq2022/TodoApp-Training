@@ -29,24 +29,24 @@ export class UserService {
 
   async getAll() {
     try {
-      return this.userRepository.findManyUsers()
+      return this.userRepository.getAll()
     } catch (e) {
       throw new Error('Users not found')
     }
   }
 
   async deleteById(id: string) {
-    const user = await this.userRepository.findUserbyId(id)
+    const user = await this.userRepository.getById(id)
     if (!user) {
       throw new Error('User does not exist')
     }
     this.notifyObservers('A Todo has been deleted with id ', [user.id])
-    return this.userRepository.deleteUser(id)
+    return this.userRepository.delete(id)
   }
 
   async create(id: string, email: string, password: string) {
     const createdUser = User.userFactory({ id, email, password })
-    const finduser = await this.userRepository.findUserByEmail(createdUser.email)
+    const finduser = await this.userRepository.getByEmail(createdUser.email)
 
     if (finduser) {
       throw new Error('User already exists')
@@ -54,11 +54,11 @@ export class UserService {
 
     const hashedPassword = await this.encryption.hashPassword(createdUser.password)
 
-    return this.userRepository.createUser(createdUser, hashedPassword)
+    return this.userRepository.create(createdUser, hashedPassword)
   }
 
-  async updateUserPassword(id: string, newPassword: string) {
-    const user = await this.userRepository.findUserbyId(id)
+  async updatePassword(id: string, newPassword: string) {
+    const user = await this.userRepository.getById(id)
 
     if (!user) {
       throw new Error('User does not exist')
@@ -66,7 +66,7 @@ export class UserService {
 
     const hashedPassword = await this.encryption.hashPassword(newPassword)
 
-    await this.userRepository.updateUserPassword(id, hashedPassword)
+    await this.userRepository.updatePassword(id, hashedPassword)
 
     this.notifyObservers('A user password has been updated with id ', [user.id])
   }

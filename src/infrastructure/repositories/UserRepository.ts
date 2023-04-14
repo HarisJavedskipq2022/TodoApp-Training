@@ -9,28 +9,28 @@ const prisma = new PrismaClient()
 export class UserRepository implements IUserRepository {
   constructor() {}
 
-  async deleteUser(id: string) {
+  async delete(id: string) {
     return prisma.user.delete({ where: { id } })
   }
 
-  async findUserByEmail(email: string) {
+  async getByEmail(email: string) {
     return prisma.user.findUnique({ where: { email } })
   }
 
-  async findUserbyId(id: string) {
+  async getById(id: string) {
     return prisma.user.findUnique({ where: { id } })
   }
 
-  async findManyUsers() {
+  async getAll() {
     return prisma.user.findMany()
   }
 
-  async createUser(user: User, password: string) {
+  async create(user: User, password: string) {
     const createdUser = prisma.user.create({ data: { ...user, password } })
     return createdUser
   }
 
-  async updateUserPassword(id: string, hashedPassword: string) {
+  async updatePassword(id: string, hashedPassword: string) {
     return prisma.user.update({
       where: { id },
       data: { password: hashedPassword },

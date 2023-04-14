@@ -31,7 +31,7 @@ router.get(
   authMiddleware.authorize,
   TodoValidator.checkReadTodo(),
   Middleware.handleValidationError,
-  userController.read
+  userController.getAll
 )
 
 router.get('/gettodos', authMiddleware.authorize, todoController.getAll)

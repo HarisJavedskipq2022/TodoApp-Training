@@ -1,10 +1,10 @@
 import { User } from '../entity/UserEntity'
 
 export interface IUserRepository {
-  deleteUser(id: string): Promise<User>
-  findUserByEmail(email: string): Promise<User | null>
-  findUserbyId(id: string): Promise<User | null>
-  findManyUsers(): Promise<User[]>
-  createUser(user: User, password: string): Promise<User>
-  updateUserPassword(id: string, hashedPassword: string): Promise<User>
+  delete(id: string): Promise<User>
+  getByEmail(email: string): Promise<User | null>
+  getById(id: string): Promise<User | null>
+  getAll(): Promise<User[]>
+  create(user: User, password: string): Promise<User>
+  updatePassword(id: string, hashedPassword: string): Promise<User>
 }
