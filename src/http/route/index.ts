@@ -66,8 +66,8 @@ router.get('/auth/google', googleAuthController.redirectToGoogle)
 
 router.get('/auth/google/callback', googleAuthController.handleGoogleCallback)
 
-router.post('/updateuser', userController.update)
+router.post('/updateuser', authMiddleware.authorize, userController.update)
 
-router.post('/populate', todoController.populateByFaker)
+router.post('/populate', authMiddleware.authorize, todoController.populateByFaker)
 
 export default router
