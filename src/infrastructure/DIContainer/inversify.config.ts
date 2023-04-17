@@ -23,6 +23,12 @@ export const container = new Container({
   defaultScope: 'Singleton',
 })
 
+const CreateTodoHandlerIdentifier = Symbol.for('CreateTodoHandler')
+const FindManyTodosHandlerIdentifier = Symbol.for('FindManyTodosHandler')
+const FindUniqueTodoHandlerIdentifier = Symbol.for('FindUniqueTodoHandler')
+const DeleteTodoHandlerIdentifier = Symbol.for('DeleteTodoHandler')
+const UpdateTodoHandlerIdentifier = Symbol.for('UpdateTodoHandler')
+
 container.bind<TodoService>('TodoService').to(TodoService)
 container.bind<TodoRepository>('TodoRepository').to(TodoRepository)
 container.bind<UserRepository>('UserRepository').to(UserRepository)
@@ -38,3 +44,9 @@ container.bind<ICommandHandler>('CommandHandler').to(FindManyTodosHandler)
 container.bind<ICommandHandler>('CommandHandler').to(FindUniqueTodoHandler)
 container.bind<ICommandHandler>('CommandHandler').to(DeleteTodoHandler)
 container.bind<ICommandHandler>('CommandHandler').to(UpdateTodoHandler)
+
+container.bind<ICommandHandler>(CreateTodoHandlerIdentifier).to(CreateTodoHandler)
+container.bind<ICommandHandler>(FindManyTodosHandlerIdentifier).to(FindManyTodosHandler)
+container.bind<ICommandHandler>(FindUniqueTodoHandlerIdentifier).to(FindUniqueTodoHandler)
+container.bind<ICommandHandler>(DeleteTodoHandlerIdentifier).to(DeleteTodoHandler)
+container.bind<ICommandHandler>(UpdateTodoHandlerIdentifier).to(UpdateTodoHandler)
