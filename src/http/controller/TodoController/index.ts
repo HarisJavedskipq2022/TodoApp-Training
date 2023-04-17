@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
+import createTodos from '../../../infrastructure/utility'
 
 @injectable()
 export class TodoControllerInstance {
@@ -73,6 +74,16 @@ export class TodoControllerInstance {
         msg: 'todo not found',
         route: '/update/:id',
       })
+    }
+  }
+
+  populateByFaker = async (req: Request, res: Response) => {
+    try {
+      await createTodos(10)
+      res.status(200).send({ msg: 'Todos populated successfully!' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({ msg: 'Error populating todos.' })
     }
   }
 }
