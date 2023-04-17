@@ -12,8 +12,6 @@ export class TodoControllerInstance {
       const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
     } catch (e) {
-      console.log('error -------------->', e)
-
       return res.json({
         msg: 'failed to create todo',
         status: 500,

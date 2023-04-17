@@ -11,9 +11,6 @@ export class AuthMiddleware {
     try {
       const token = req.header('Authorization')
 
-      // console.log('token -------------------> ', token)
-      // console.log('test ------------> ', this)
-
       const decode = this.jwt.verify(token as string, config.jwt.jwtSecretKey as string)
       req.body.user = decode
 
