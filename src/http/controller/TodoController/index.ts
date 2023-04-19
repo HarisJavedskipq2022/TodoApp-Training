@@ -8,7 +8,7 @@ export class TodoControllerInstance {
   constructor(@inject('TodoService') private todoService: TodoService) {}
 
   create = async (req: Request, res: Response) => {
-    const { id, title, completed }: { id: string; title: string; completed: boolean } = req.body
+    const { id, title, completed } = req.body
     try {
       const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
