@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 import createTodos from '../../../infrastructure/utility'
+import ITodoController from '../../../domain/interfaces/TodoControllerInterface'
 
 @injectable()
-export class TodoControllerInstance {
+export class TodoControllerInstance implements ITodoController {
   constructor(@inject('TodoService') private todoService: TodoService) {}
 
   create = async (req: Request, res: Response) => {
