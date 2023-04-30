@@ -2,9 +2,10 @@ import { AuthService } from './../../../application/services/AuthService'
 import { Request, Response } from 'express'
 import { UserService } from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
+import { IUserController } from '../../../domain/interfaces/UserControllerInterface'
 
 @injectable()
-export class UserControllerInstance {
+export class UserControllerInstance implements IUserController {
   constructor(
     @inject('UserService') private userService: UserService,
     @inject('AuthService') private authService: AuthService
