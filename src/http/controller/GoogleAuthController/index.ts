@@ -1,9 +1,10 @@
+import { IGoogleAuthController } from './../../../domain/interfaces/GoogleAuthControllerInterface'
 import { Request, Response } from 'express'
 import { GoogleAuthService } from '../../../infrastructure/services/GoogleAuthService'
 import { injectable, inject } from 'inversify'
 
 @injectable()
-export class GoogleAuthController {
+export class GoogleAuthController implements IGoogleAuthController {
   constructor(@inject('GoogleAuthService') private googleAuthService: GoogleAuthService) {}
 
   redirectToGoogle = (req: Request, res: Response) => {
