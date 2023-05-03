@@ -13,7 +13,10 @@ export class TodoService {
   async create(id: string, title: string, completed: boolean) {
     const newTodoData = { id, title, completed }
     const newTodo = Todo.todoFactory(newTodoData)
-    return this.commandBus.execute(new CreateTodoCommand(newTodo))
+
+    if (newTodo) return this.commandBus.execute(new CreateTodoCommand(newTodo))
+
+    throw new Error('Failed to create todo')
   }
 
   async getAll(limit: number = 10, offset: number = 0) {

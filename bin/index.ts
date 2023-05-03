@@ -15,8 +15,8 @@ const program = new Command()
 connectionToDb()
 
 app.use(express.json())
-app.use('/api/v1/todos/', todoRouter)
-app.use('/api/v1/users/', userRouter)
+app.use('/api/v1', todoRouter)
+app.use('/api/v1', userRouter)
 
 const a = program.parse(process.argv)
 const port = Number(a.args[0]) || config.ports.port
