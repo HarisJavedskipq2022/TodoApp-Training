@@ -1,45 +1,45 @@
 version: '3.9'
 services:
-      postgres:
-            image: postgres:latest
-            container_name: postgres
-            hostname: postgres
-            ports:
-                  - ${POSTGRES_PORT}:${POSTGRES_PORT}
-            environment:
-                  POSTGRES_USER: ${POSTGRES_USER}
-                  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-                  POSTGRES_DB: ${POSTGRES_DB}
-            volumes:
-                  - postgres-data:/var/lib/postgresql/data
-            restart: unless-stopped
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: postgres
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
-      pgadmin:
-            image: dpage/pgadmin4
-            container_name: pgadmin
-            depends_on:
-                  - postgres
-            ports:
-                  - ${PG_ADMIN_PORT}
-            environment:
-                  PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
-                  PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
-            volumes:
-                  - pgadmin-data:/var/lib/pgadmin
-            restart: unless-stopped
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    depends_on:
+      - postgres
+    ports:
+      - ${PG_ADMIN_PORT}
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
 
-      prisma-postgres-api:
-            stdin_open: true
-            build:
-                  context: .
-                  dockerfile: Dockerfile
-            container_name: prisma-postgres-api
-            depends_on:
-                  - postgres
-            ports:
-                  - '${PORT_DOCKER}:${PORT_DCOKER}'
-            restart: always
+  prisma-postgres-api:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prisma-postgres-api
+    depends_on:
+      - postgres
+    ports:
+      - '${PORT_DOCKER}:${PORT_DOCKER}'
+    restart: always
 
 volumes:
-      postgres-data:
-      pgadmin-data:
+  postgres-data:
+  pgadmin-data:
