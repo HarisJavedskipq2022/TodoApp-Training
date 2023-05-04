@@ -4,6 +4,7 @@ import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
 import { Observer } from '../../domain/interfaces/ObserverInterface'
 import { slackService } from '../../infrastructure/services/SlackNotificationService'
+import logger from '../../infrastructure/config/logger'
 
 @injectable()
 export class UserService {
@@ -22,7 +23,7 @@ export class UserService {
   }
 
   notifyObservers(event: string, data: any): void {
-    console.log(`Event: ${event}`, data)
+    logger.info(`Event: ${event}`, data)
     this.observers.forEach((observer) => observer.update(event, data))
     slackService(event, data)
   }

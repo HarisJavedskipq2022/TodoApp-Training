@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { UserService } from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 import { IUserController } from '../../../domain/interfaces/UserControllerInterface'
+import logger from '../../../infrastructure/config/logger'
 
 @injectable()
 export class UserControllerInstance implements IUserController {
@@ -53,10 +54,11 @@ export class UserControllerInstance implements IUserController {
     try {
       const token = await this.authService.login(email, password)
 
-      console.log({ token })
+      logger.info({ token })
 
       res.json({ msg: 'successfully logged in' })
     } catch (e) {
+      logger.error({ e })
       res.status(401).json({ error: 'invalid credentials' })
     }
   }
