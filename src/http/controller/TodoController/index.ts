@@ -13,7 +13,8 @@ export class TodoControllerInstance implements ITodoController {
     try {
       const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
-    } catch (e) {
+    } catch (error) {
+      console.error({ error })
       return res.json({
         msg: 'failed to create todo',
         status: 500,
@@ -29,7 +30,8 @@ export class TodoControllerInstance implements ITodoController {
 
       const records = await this.todoService.getAll(limit, offset)
       return res.json({ records })
-    } catch (e) {
+    } catch (error) {
+      console.error({ error })
       return res.json({
         msg: 'failed to read todo',
         status: 500,
@@ -43,7 +45,8 @@ export class TodoControllerInstance implements ITodoController {
       const { id } = req.params
       const record = await this.todoService.getById(id)
       return res.json({ record })
-    } catch (e) {
+    } catch (error) {
+      console.error({ error })
       return res.json({
         msg: 'failed to get todo by Id',
         status: 500,
@@ -57,7 +60,8 @@ export class TodoControllerInstance implements ITodoController {
       const { id } = req.params
       const deletedRecord = await this.todoService.deleteById(id)
       return res.json({ record: deletedRecord })
-    } catch (e) {
+    } catch (error) {
+      console.error({ error })
       return res.status(500).json({
         msg: 'fail to read Todo',
         route: '/delete/:id',
@@ -70,7 +74,8 @@ export class TodoControllerInstance implements ITodoController {
       const { id } = req.params
       const updatedRecord = await this.todoService.updateById(id)
       return res.json({ record: updatedRecord })
-    } catch (e) {
+    } catch (error) {
+      console.error({ error })
       return res.status(500).json({
         msg: 'todo not found',
         route: '/update/:id',

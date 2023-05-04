@@ -1,3 +1,4 @@
+import { body } from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import logger from '../../../infrastructure/config/logger'
 
@@ -12,7 +13,7 @@ export const logResponse = (req: Request, res: Response, next: NextFunction) => 
   next()
 }
 
-export const logError = (e: any, req: Request, res: Response, next: NextFunction) => {
-  logger.error('An error occurred', { message: e.message, stack: e.stack })
+export const logError = (err: any, req: Request, res: Response, next: NextFunction) => {
+  logger.error(err, { req })
   res.status(500).send('An error occurred')
 }
