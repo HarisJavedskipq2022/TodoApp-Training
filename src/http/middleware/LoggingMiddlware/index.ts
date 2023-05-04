@@ -1,4 +1,3 @@
-import { body } from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import logger from '../../../infrastructure/config/logger'
 
