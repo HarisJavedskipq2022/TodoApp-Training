@@ -10,9 +10,7 @@ export class TodoRepository implements ITodoRepository {
   constructor() {}
 
   async create(todo: Todo) {
-    console.log('Creating a new Todo:', todo)
-    const createdTodo = await prisma.todo.create({ data: { ...todo } })
-    return createdTodo
+    return await prisma.todo.create({ data: { ...todo } })
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
