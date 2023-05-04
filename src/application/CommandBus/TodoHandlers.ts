@@ -13,7 +13,7 @@ import { inject, injectable } from 'inversify'
 export class CreateTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
-  async handle(command: CreateTodoCommand): Promise<any> {
+  async handle(command: CreateTodoCommand) {
     return this.todoRepository.create(command.todo)
   }
 }
@@ -22,7 +22,7 @@ export class CreateTodoHandler implements ICommandHandler {
 export class FindManyTodosHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
-  async handle(command: FindManyTodosCommand): Promise<any> {
+  async handle(command: FindManyTodosCommand) {
     return this.todoRepository.getAll(command.limit, command.offset)
   }
 }
@@ -31,7 +31,7 @@ export class FindManyTodosHandler implements ICommandHandler {
 export class FindUniqueTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
-  async handle(command: FindUniqueTodoCommand): Promise<any> {
+  async handle(command: FindUniqueTodoCommand) {
     return this.todoRepository.getById(command.id)
   }
 }
@@ -40,7 +40,7 @@ export class FindUniqueTodoHandler implements ICommandHandler {
 export class DeleteTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
-  async handle(command: DeleteTodoCommand): Promise<any> {
+  async handle(command: DeleteTodoCommand) {
     return this.todoRepository.delete(command.id)
   }
 }
@@ -49,7 +49,7 @@ export class DeleteTodoHandler implements ICommandHandler {
 export class UpdateTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
-  async handle(command: UpdateTodoCommand): Promise<any> {
+  async handle(command: UpdateTodoCommand) {
     return this.todoRepository.update(command.id, command.completed)
   }
 }
