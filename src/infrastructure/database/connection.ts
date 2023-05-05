@@ -6,10 +6,10 @@ export async function connectionToDb() {
   prisma
     .$connect()
     .then(() => {
-      console.info('Connected to database')
+      console.log('Connected to database')
     })
     .catch((err) => {
-      console.info(err, 'connection failed')
+      console.log(err, 'connection failed')
     })
     .then(() => {
       prisma.$disconnect()
