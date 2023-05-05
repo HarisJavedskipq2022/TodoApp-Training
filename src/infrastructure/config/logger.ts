@@ -10,6 +10,21 @@ const customOptions = {
       color: 'red',
       label: 'Error',
     },
+    info: {
+      badge: 'ℹ',
+      color: 'blue',
+      label: 'Info',
+    },
+    warn: {
+      badge: '⚠',
+      color: 'yellow',
+      label: 'Warning',
+    },
+    debug: {
+      badge: '🐛',
+      color: 'cyan',
+      label: 'Debug',
+    },
   },
 }
 
@@ -24,5 +39,15 @@ export class Logger {
     this.signale.error(error)
   }
 
-  // Add other log levels as needed (info, warn, debug, etc.)
+  info(message: string): void {
+    this.signale.info(message)
+  }
+
+  warn(message: string): void {
+    this.signale.warn(message)
+  }
+
+  debug(message: string): void {
+    this.signale.debug(message)
+  }
 }

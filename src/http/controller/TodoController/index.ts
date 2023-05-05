@@ -3,26 +3,14 @@ import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 import createTodos from '../../../infrastructure/utility'
 import ITodoController from '../../../domain/interfaces/TodoControllerInterface'
-import { Signale } from 'signale'
-
-const customOptions = {
-  disabled: false,
-  interactive: false,
-  scope: 'TodoController',
-  types: {
-    error: {
-      badge: '!!',
-      color: 'red',
-      label: 'Error',
-    },
-  },
-}
-
-const signale = new Signale(customOptions)
+import { Logger } from '../../../infrastructure/config/logger'
 
 @injectable()
 export class TodoControllerInstance implements ITodoController {
-  constructor(@inject('TodoService') private todoService: TodoService) {}
+  private logger: Logger
+  constructor(@inject('TodoService') private todoService: TodoService) {
+    this.logger = new Logger('TodoController')
+  }
 
   create = async (req: Request, res: Response) => {
     const { id, title, completed } = req.body
@@ -30,7 +18,7 @@ export class TodoControllerInstance implements ITodoController {
       const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
     } catch (error) {
-      signale.error({ error })
+      this.logger.error({ error })
       return res.json({
         msg: 'failed to create todo',
         status: 500,
@@ -47,7 +35,7 @@ export class TodoControllerInstance implements ITodoController {
       const records = await this.todoService.getAll(limit, offset)
       return res.json({ records })
     } catch (error) {
-      console.error({ error })
+      this.logger.error({ error })
       return res.json({
         msg: 'failed to read todo',
         status: 500,
@@ -62,7 +50,7 @@ export class TodoControllerInstance implements ITodoController {
       const record = await this.todoService.getById(id)
       return res.json({ record })
     } catch (error) {
-      console.error({ error })
+      this.logger.error({ error })
       return res.json({
         msg: 'failed to get todo by Id',
         status: 500,
@@ -77,7 +65,7 @@ export class TodoControllerInstance implements ITodoController {
       const deletedRecord = await this.todoService.deleteById(id)
       return res.json({ record: deletedRecord })
     } catch (error) {
-      console.error({ error })
+      this.logger.error({ error })
       return res.status(500).json({
         msg: 'fail to read Todo',
         route: '/delete/:id',
@@ -91,7 +79,7 @@ export class TodoControllerInstance implements ITodoController {
       const updatedRecord = await this.todoService.updateById(id)
       return res.json({ record: updatedRecord })
     } catch (error) {
-      console.error({ error })
+      this.logger.error({ error })
       return res.status(500).json({
         msg: 'todo not found',
         route: '/update/:id',
@@ -104,7 +92,7 @@ export class TodoControllerInstance implements ITodoController {
       await createTodos(10)
       res.status(200).send({ msg: 'Todos populated successfully!' })
     } catch (error) {
-      console.error(error)
+      this.logger.error(error)
       res.status(500).send({ msg: 'Error populating todos.' })
     }
   }
