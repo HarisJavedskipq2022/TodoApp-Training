@@ -60,7 +60,7 @@ export class UserControllerInstance implements IUserController {
     try {
       const token = await this.authService.login(email, password)
 
-      console.log({ token })
+      this.logger.info(`jwt-token:${token}`)
 
       res.json({ msg: 'successfully logged in' })
     } catch (error) {
