@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import config from '../../../infrastructure/config'
 import { inject, injectable } from 'inversify'
 import { IJwt } from '../../../infrastructure/services/JwtService'
-import logger from '../../../infrastructure/config/logger'
 
 @injectable()
 export class AuthMiddleware {
@@ -17,7 +16,7 @@ export class AuthMiddleware {
 
       next()
     } catch (e) {
-      logger.info({ e })
+      console.error({ e })
       res.status(401).send({ msg: 'You need to login' })
     }
   }

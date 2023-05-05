@@ -3,6 +3,22 @@ import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 import createTodos from '../../../infrastructure/utility'
 import ITodoController from '../../../domain/interfaces/TodoControllerInterface'
+import { Signale } from 'signale'
+
+const customOptions = {
+  disabled: false,
+  interactive: false,
+  scope: 'TodoController',
+  types: {
+    error: {
+      badge: '!!',
+      color: 'red',
+      label: 'Error',
+    },
+  },
+}
+
+const signale = new Signale(customOptions)
 
 @injectable()
 export class TodoControllerInstance implements ITodoController {
@@ -14,7 +30,7 @@ export class TodoControllerInstance implements ITodoController {
       const record = await this.todoService.create(id, title, completed)
       return res.json({ record, msg: 'Successfully created todo' })
     } catch (error) {
-      console.error({ error })
+      signale.error({ error })
       return res.json({
         msg: 'failed to create todo',
         status: 500,

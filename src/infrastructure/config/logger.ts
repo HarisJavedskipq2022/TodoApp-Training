@@ -1,30 +1,28 @@
-import winston from 'winston'
+import { Signale } from 'signale'
 
-const customFormat = winston.format.printf(({ timestamp, level, message, stack }) => {
-  return `[${timestamp}] ${level}: ${stack || message}`
-})
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.errors({ stack: true }),
-    winston.format.splat(),
-    winston.format.json()
-  ),
-  defaultMeta: { service: 'your-service-name' },
-  transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
-  ],
-})
-
-if (process.env.NODE_ENV === 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(winston.format.colorize(), customFormat),
-    })
-  )
+const customOptions = {
+  disabled: false,
+  interactive: false,
+  scope: 'UserController',
+  types: {
+    error: {
+      badge: '!!',
+      color: 'red',
+      label: 'Error',
+    },
+  },
 }
 
-export default logger
+export class Logger {
+  private signale: Signale
+
+  constructor(scope: string) {
+    this.signale = new Signale({ ...customOptions, scope })
+  }
+
+  error(error: any): void {
+    this.signale.error(error)
+  }
+
+  // Add other log levels as needed (info, warn, debug, etc.)
+}
