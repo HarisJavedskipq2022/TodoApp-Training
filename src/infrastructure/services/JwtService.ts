@@ -7,7 +7,7 @@ import * as jwt from 'jsonwebtoken'
 
 export interface IJwt {
   sign(payload: object): string
-  verify(token: string, key: string): any
+  verify(token: string, key: string): Promise<User>
 }
 
 @injectable()
@@ -28,11 +28,11 @@ export class Jwt implements IJwt {
     )
   }
 
-  sign(payload: object) {
+  sign(payload: object): string {
     return jwt.sign(payload, config.jwt.jwtSecretKey, { expiresIn: '10h' })
   }
 
-  verify(token: string, key: string): any {
+  verify(token: string): Promise<User> {
     return new Promise((resolve, reject) => {
       passport.authenticate('jwt', { session: false }, (err: any, user: User) => {
         if (err) {
