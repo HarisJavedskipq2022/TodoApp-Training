@@ -23,7 +23,7 @@ export class TodoControllerInstance implements ITodoController {
   }
 
   getAll = async (req: Request, res: Response) => {
-    const limit = (req.query.limit as number | undefined) || 25
+    const limit = (req.query.limit as number | undefined) || 10
     const offset = req.query.offset as number | undefined
 
     const records = await this.todoService.getAll(limit, offset)
