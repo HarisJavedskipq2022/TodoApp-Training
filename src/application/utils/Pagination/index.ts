@@ -5,22 +5,16 @@ interface PaginationOptions {
   getCurrentPage: () => number
 }
 
-class PaginationData<T> {
-  paginationOptions: PaginationOptions
-  itemCount: number
-  items: T[]
+class PaginationData {
+  items: any[] = []
 
-  constructor(paginationOptions: PaginationOptions, itemCount: number) {
-    this.paginationOptions = paginationOptions
-    this.itemCount = itemCount
-    this.items = []
-  }
+  constructor(public paginationOptions: PaginationOptions, public itemCount: number) {}
 
   totalPages(): number {
     return Math.ceil(this.itemCount / this.paginationOptions.limit())
   }
 
-  addItem(item: T): void {
+  addItem(item: any): void {
     this.items.push(item)
   }
 
@@ -40,7 +34,11 @@ class PaginationData<T> {
     return this.paginationOptions.getCurrentPage() - 1
   }
 
-  getPaginatedData(): { status: string; paginationInfo: PaginationInfo; data: T[] } {
+  getPaginatedData(): {
+    status: 'success'
+    paginationInfo: PaginationInfo
+    data: any[]
+  } {
     const paginationInfo = new PaginationInfo(
       this.itemCount,
       this.totalPages(),

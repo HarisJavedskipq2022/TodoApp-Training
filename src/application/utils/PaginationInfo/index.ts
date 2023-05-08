@@ -1,26 +1,12 @@
 class PaginationInfo {
-  totalItems: number
-  totalPages: number
-  currentPage: number
-  perPage: number
-  nextPage: number | null
-  prevPage: number | null
-
   constructor(
-    totalItems: number,
-    totalPages: number,
-    currentPage: number,
-    perPage: number,
-    nextPage: number | null,
-    prevPage: number | null
-  ) {
-    this.totalItems = totalItems
-    this.totalPages = totalPages
-    this.currentPage = currentPage
-    this.perPage = perPage
-    this.nextPage = nextPage
-    this.prevPage = prevPage
-  }
+    public totalItems: number,
+    public totalPages: number,
+    public currentPage: number,
+    public perPage: number,
+    public nextPage: number | null,
+    public prevPage: number | null
+  ) {}
 }
 
 export default PaginationInfo

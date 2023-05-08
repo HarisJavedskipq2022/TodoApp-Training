@@ -1,11 +1,5 @@
 class PaginationOptions {
-  currentPage: number
-  perPage: number
-
-  constructor(currentPage: number = 1, perPage: number = 20) {
-    this.currentPage = currentPage
-    this.perPage = perPage
-  }
+  constructor(public currentPage = 1, public perPage = 20) {}
 
   limit(): number {
     return this.perPage
