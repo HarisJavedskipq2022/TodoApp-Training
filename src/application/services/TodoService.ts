@@ -8,6 +8,9 @@ import {
   FindManyTodosCommand,
   DeleteTodoCommand,
 } from '../CommandBus/TodoCommands'
+import PaginationData from '../utils/Pagination'
+import PaginationOptions from '../utils/PaginationOptions'
+import PaginationInfo from '../utils/PaginationInfo'
 
 @injectable()
 export class TodoService {
@@ -34,7 +37,28 @@ export class TodoService {
   async getAll(limit: number = 10, offset: number = 0) {
     try {
       const result = await this.commandBus.execute(new FindManyTodosCommand(limit, offset))
-      return { error: null, result }
+
+      if (!result || !Array.isArray(result.items)) {
+        console.error('Unexpected result format:', result)
+        return { error: 'Failed to find all todo items', result: null }
+      }
+
+      // Calculate the current page
+      const currentPage = Math.floor(offset / limit) + 1
+
+      // Create a new instance of PaginationOptions
+      const paginationOptions = new PaginationOptions(currentPage, limit)
+
+      // Create a new instance of PaginationData, using the totalItemCount from the result
+      const paginationData = new PaginationData<Todo>(paginationOptions, result.totalItemCount)
+
+      // Add each item to the PaginationData instance
+      result.items.forEach((item: Todo) => paginationData.addItem(item))
+
+      // Get the paginated data
+      const paginatedData = paginationData.getPaginatedData()
+
+      return { error: null, result: paginatedData }
     } catch (e) {
       console.error('Failed to find all todo items:', e)
       return { error: 'Failed to find all todo items', result: null }

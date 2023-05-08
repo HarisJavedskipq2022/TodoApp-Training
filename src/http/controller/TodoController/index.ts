@@ -23,15 +23,20 @@ export class TodoControllerInstance implements ITodoController {
   }
 
   getAll = async (req: Request, res: Response) => {
-    const limit = (req.query.limit as number | undefined) || 10
-    const offset = req.query.offset as number | undefined
+    // Get the limit and offset from the query parameters (if provided)
+    const limit = parseInt(req.query.limit as string) || 10
+    const offset = parseInt(req.query.offset as string) || 0
 
-    const records = await this.todoService.getAll(limit, offset)
+    // Call the getAll method of the TodoService
+    const { error, result } = await this.todoService.getAll(limit, offset)
 
-    if (!records) {
-      res.status(404).json({ msg: 'No todos found' })
+    if (error) {
+      // If there was an error, send a 500 status code and the error message
+      res.status(500).json({ message: error })
+    } else {
+      // If successful, send the paginated data
+      res.status(200).json(result)
     }
-    return res.json({ records })
   }
 
   getById = async (req: Request, res: Response) => {

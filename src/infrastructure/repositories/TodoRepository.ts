@@ -14,7 +14,10 @@ export class TodoRepository implements ITodoRepository {
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
-    return prisma.todo.findMany({ take: limit, skip: offset })
+    const items = await prisma.todo.findMany({ take: limit, skip: offset })
+    const totalItemCount = await prisma.todo.count()
+
+    return { items, totalItemCount }
   }
 
   async getById(id: string) {
