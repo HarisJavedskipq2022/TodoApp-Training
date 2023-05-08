@@ -20,7 +20,7 @@ userRouter.get(
   userController.getAll
 )
 
-userRouter.post('/users', TodoValidator.checkUser(), Middleware.handleValidationError, userController.signup)
+userRouter.post('/signup', TodoValidator.checkUser(), Middleware.handleValidationError, userController.signup)
 
 userRouter.post('/login', userController.login)
 

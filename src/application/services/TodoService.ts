@@ -1,10 +1,13 @@
 import { Todo } from '../../domain/entity/TodoEntity'
 import { inject, injectable } from 'inversify'
 import { CommandBus } from '../CommandBus'
-import { CreateTodoCommand, UpdateTodoCommand } from '../CommandBus/TodoCommands'
-import { FindUniqueTodoCommand } from '../CommandBus/TodoCommands'
-import { FindManyTodosCommand } from '../CommandBus/TodoCommands'
-import { DeleteTodoCommand } from '../CommandBus/TodoCommands'
+import {
+  CreateTodoCommand,
+  UpdateTodoCommand,
+  FindUniqueTodoCommand,
+  FindManyTodosCommand,
+  DeleteTodoCommand,
+} from '../CommandBus/TodoCommands'
 
 @injectable()
 export class TodoService {
@@ -14,43 +17,71 @@ export class TodoService {
     const newTodoData = { id, title, completed }
     const newTodo = Todo.todoFactory(newTodoData)
 
-    if (newTodo) return this.commandBus.execute(new CreateTodoCommand(newTodo))
+    if (newTodo) {
+      try {
+        const result = await this.commandBus.execute(new CreateTodoCommand(newTodo))
+        return { error: null, result }
+      } catch (e) {
+        console.error('Failed to create todo:', e)
+        return { error: 'Failed to create todo', result: null }
+      }
+    }
 
-    throw new Error('Failed to create todo')
+    console.error('Failed to create todo')
+    return { error: 'Failed to create todo', result: null }
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
     try {
-      return this.commandBus.execute(new FindManyTodosCommand(limit, offset))
+      const result = await this.commandBus.execute(new FindManyTodosCommand(limit, offset))
+      return { error: null, result }
     } catch (e) {
-      throw new Error('Failed to find all todo items')
+      console.error('Failed to find all todo items:', e)
+      return { error: 'Failed to find all todo items', result: null }
     }
   }
 
   async getById(id: string) {
     try {
-      return this.commandBus.execute(new FindUniqueTodoCommand(id))
+      const result = await this.commandBus.execute(new FindUniqueTodoCommand(id))
+      return { error: null, result }
     } catch (e) {
-      throw new Error('Failed to read todo')
+      console.error('Failed to find todo by ID:', e)
+      return { error: 'Failed to find todo by ID', result: null }
     }
   }
 
   async deleteById(id: string) {
-    const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
+    try {
+      const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
 
-    if (!record) {
-      throw new Error('Record not found')
+      if (!record) {
+        console.error('Record not found')
+        return { error: 'Record not found', result: null }
+      }
+
+      const result = await this.commandBus.execute(new DeleteTodoCommand(id))
+      return { error: null, result }
+    } catch (e) {
+      console.error('Failed to delete todo by ID:', e)
+      return { error: 'Failed to delete todo by ID', result: null }
     }
-    return this.commandBus.execute(new DeleteTodoCommand(id))
   }
 
   async updateById(id: string) {
-    const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
+    try {
+      const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
 
-    if (!record) {
-      throw new Error('Record not found')
-    } else {
-      return this.commandBus.execute(new UpdateTodoCommand(id, !record.completed))
+      if (!record) {
+        console.error('Record not found')
+        return { error: 'Record not found', result: null }
+      }
+
+      const result = await this.commandBus.execute(new UpdateTodoCommand(id, !record.completed))
+      return { error: null, result }
+    } catch (e) {
+      console.error('Failed to update todo by ID:', e)
+      return { error: 'Failed to update todo by ID', result: null }
     }
   }
 }

@@ -14,86 +14,58 @@ export class TodoControllerInstance implements ITodoController {
 
   create = async (req: Request, res: Response) => {
     const { id, title, completed } = req.body
-    try {
-      const record = await this.todoService.create(id, title, completed)
-      return res.json({ record, msg: 'Successfully created todo' })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.json({
-        msg: 'failed to create todo',
-        status: 500,
-        route: '/create',
-      })
+    const record = await this.todoService.create(id, title, completed)
+
+    if (!record) {
+      res.status(400).json({ msg: 'Todo not created' })
     }
+    return res.json({ record, msg: 'Successfully created todo' })
   }
 
   getAll = async (req: Request, res: Response) => {
-    try {
-      const limit = (req.query.limit as number | undefined) || 10
-      const offset = req.query.offset as number | undefined
+    const limit = (req.query.limit as number | undefined) || 25
+    const offset = req.query.offset as number | undefined
 
-      const records = await this.todoService.getAll(limit, offset)
-      return res.json({ records })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.json({
-        msg: 'failed to read todo',
-        status: 500,
-        route: '/read',
-      })
+    const records = await this.todoService.getAll(limit, offset)
+
+    if (!records) {
+      res.status(404).json({ msg: 'No todos found' })
     }
+    return res.json({ records })
   }
 
   getById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const record = await this.todoService.getById(id)
-      return res.json({ record })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.json({
-        msg: 'failed to get todo by Id',
-        status: 500,
-        route: '/read/:id',
-      })
+    const { id } = req.params
+    const record = await this.todoService.getById(id)
+
+    if (!record) {
+      res.status(404).json({ msg: 'Todo not found' })
     }
+    return res.json({ record })
   }
 
   deleteById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const deletedRecord = await this.todoService.deleteById(id)
-      return res.json({ record: deletedRecord })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.status(500).json({
-        msg: 'fail to read Todo',
-        route: '/delete/:id',
-      })
+    const { id } = req.params
+    const deletedRecord = await this.todoService.deleteById(id)
+
+    if (!deletedRecord) {
+      res.status(404).json({ msg: 'Todo not found' })
     }
+    return res.json({ record: deletedRecord })
   }
 
   updateById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const updatedRecord = await this.todoService.updateById(id)
-      return res.json({ record: updatedRecord })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.status(500).json({
-        msg: 'todo not found',
-        route: '/update/:id',
-      })
+    const { id } = req.params
+    const updatedRecord = await this.todoService.updateById(id)
+
+    if (!updatedRecord) {
+      res.status(404).json({ msg: 'Todo not found' })
     }
+    return res.json({ record: updatedRecord })
   }
 
   populateByFaker = async (req: Request, res: Response) => {
-    try {
-      await createTodos(10)
-      res.status(200).send({ msg: 'Todos populated successfully!' })
-    } catch (error) {
-      this.logger.error(error)
-      res.status(500).send({ msg: 'Error populating todos.' })
-    }
+    await createTodos(10)
+    res.status(200).send({ msg: 'Todos populated successfully!' })
   }
 }

@@ -12,17 +12,40 @@ export class AuthService {
   ) {}
 
   async login(email: string, password: string) {
-    const user = await this.userRepository.getByEmail(email)
+    let user
+    try {
+      user = await this.userRepository.getByEmail(email)
+    } catch (e) {
+      console.error('Error during user retrieval:', e)
+      return null
+    }
 
     if (!user) {
-      throw new Error('User not found')
+      console.error('User not found')
+      return null
     }
-    const validatePassword = await this.encryption.comparePassword(password, user.password)
+
+    let validatePassword
+    try {
+      validatePassword = await this.encryption.comparePassword(password, user.password)
+    } catch (e) {
+      console.error('Error during password validation:', e)
+      return null
+    }
 
     if (!validatePassword) {
-      throw new Error('Invalid credentials')
+      console.error(Error, 'Invalid credentials')
+      return null
     }
 
-    return this.jwt.sign({ id: user.id, email: user.email })
+    let token
+    try {
+      token = this.jwt.sign({ id: user.id, email: user.email })
+    } catch (e) {
+      console.error('Error during token generation:', e)
+      return null
+    }
+
+    return token
   }
 }

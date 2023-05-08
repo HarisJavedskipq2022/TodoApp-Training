@@ -16,69 +16,53 @@ export class UserControllerInstance implements IUserController {
   }
 
   getAll = async (req: Request, res: Response) => {
-    try {
-      const record = await this.userService.getAll()
-      return res.json({ record })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.status(500).json({
-        msg: 'unable to read users',
-        route: '/getusers',
-      })
+    const { error, result } = await this.userService.getAll()
+    if (error) {
+      res.status(404).json({ msg: error })
+    } else {
+      res.json({ record: result })
     }
   }
 
   delete = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const deletedUser = await this.userService.deleteById(id)
-      return res.json({ user: deletedUser })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.json({
-        msg: 'User not found',
-      })
+    const { id } = req.params
+    const { error, result } = await this.userService.deleteById(id)
+    if (error) {
+      res.status(404).json({ msg: error })
+    } else {
+      res.json({ user: result })
     }
   }
 
   signup = async (req: Request, res: Response) => {
     const { id, email, password }: { id: string; email: string; password: string } = req.body
+    const { error, result } = await this.userService.create(id, email, password)
 
-    try {
-      const newUser = await this.userService.create(id, email, password)
-
-      return res.json({ newUser, msg: 'User successfully signed up' })
-    } catch (error) {
-      this.logger.error({ error })
-      return res.status(400).json({ error: 'user already exists' })
+    if (error) {
+      res.status(400).json({ msg: error })
+    } else {
+      res.json({ newUser: result, msg: 'User successfully signed up' })
     }
   }
 
   login = async (req: Request, res: Response) => {
     const { email, password }: { email: string; password: string } = req.body
-
-    try {
-      const token = await this.authService.login(email, password)
-
-      this.logger.info(`jwt-token:${token}`)
-
-      res.json({ msg: 'successfully logged in' })
-    } catch (error) {
-      this.logger.error({ error })
-      res.status(401).json({ error: 'invalid credentials' })
+    const token = await this.authService.login(email, password)
+    if (!token) {
+      res.status(401).json({ msg: 'Invalid credentials' })
+      return
     }
+    this.logger.info(`jwt-token:${token}`)
+    res.json({ msg: 'successfully logged in' })
   }
 
   update = async (req: Request, res: Response) => {
-    try {
-      const { id, newPassword } = req.body
-
-      await this.userService.updatePassword(id, newPassword)
-
+    const { id, newPassword } = req.body
+    const { error, result } = await this.userService.updatePassword(id, newPassword)
+    if (error) {
+      res.status(400).json({ msg: error })
+    } else {
       res.status(200).json({ message: 'Password updated successfully' })
-    } catch (error) {
-      this.logger.error({ error })
-      res.status(500).json({ message: error })
     }
   }
 }

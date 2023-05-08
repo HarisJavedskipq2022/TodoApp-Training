@@ -29,45 +29,58 @@ export class UserService {
 
   async getAll() {
     try {
-      return this.userRepository.getAll()
+      const result = await this.userRepository.getAll()
+      return { error: null, result }
     } catch (e) {
-      throw new Error('Users not found')
+      return { error: 'Users not found', result: null }
     }
   }
 
   async deleteById(id: string) {
-    const user = await this.userRepository.getById(id)
-    if (!user) {
-      throw new Error('User does not exist')
+    try {
+      const user = await this.userRepository.getById(id)
+      if (!user) {
+        return { error: 'User does not exist', result: null }
+      }
+      this.notifyObservers('A Todo has been deleted with id ', [user.id])
+      const result = await this.userRepository.delete(id)
+      return { error: null, result }
+    } catch (e) {
+      return { error: 'Error deleting user', result: null }
     }
-    this.notifyObservers('A Todo has been deleted with id ', [user.id])
-    return this.userRepository.delete(id)
   }
 
   async create(id: string, email: string, password: string) {
-    const createdUser = User.userFactory({ id, email, password })
-    const finduser = await this.userRepository.getByEmail(createdUser.email)
+    try {
+      const createdUser = User.userFactory({ id, email, password })
+      const finduser = await this.userRepository.getByEmail(createdUser.email)
 
-    if (finduser) {
-      throw new Error('User already exists')
+      if (finduser) {
+        return { error: 'User already exists', result: null }
+      }
+
+      const hashedPassword = await this.encryption.hashPassword(createdUser.password)
+      const result = await this.userRepository.create(createdUser, hashedPassword)
+      return { error: null, result }
+    } catch (e) {
+      return { error: 'Error creating user', result: null }
     }
-
-    const hashedPassword = await this.encryption.hashPassword(createdUser.password)
-
-    return this.userRepository.create(createdUser, hashedPassword)
   }
 
   async updatePassword(id: string, newPassword: string) {
-    const user = await this.userRepository.getById(id)
+    try {
+      const user = await this.userRepository.getById(id)
 
-    if (!user) {
-      throw new Error('User does not exist')
+      if (!user) {
+        return { error: 'User does not exist', result: null }
+      }
+
+      const hashedPassword = await this.encryption.hashPassword(newPassword)
+      await this.userRepository.updatePassword(id, hashedPassword)
+      this.notifyObservers('A user password has been updated with id ', [user.id])
+      return { error: null, result: true }
+    } catch (e) {
+      return { error: 'Error updating password', result: null }
     }
-
-    const hashedPassword = await this.encryption.hashPassword(newPassword)
-
-    await this.userRepository.updatePassword(id, hashedPassword)
-
-    this.notifyObservers('A user password has been updated with id ', [user.id])
   }
 }
