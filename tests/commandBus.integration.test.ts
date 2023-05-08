@@ -31,23 +31,20 @@ describe('TodoController Integration Test', () => {
 
     const res = {
       json: sinon.spy(),
+      status: sinon.stub().returnsThis(),
     } as unknown as Response
 
-    const createStub = sinon.stub(todoService, 'create').resolves(mockRecord)
+    const createStub = sinon.stub(todoService, 'create').resolves({ result: mockRecord, error: null })
 
     await todoController.create(req, res)
 
-    it('should create a todo', async () => {
-      await todoController.create(req, res)
-
-      expect(createStub.calledOnce).to.be.true
-      const [calledWithCommand] = createStub.getCall(0).args
-      expect(calledWithCommand).to.be.instanceOf(CreateTodoCommand)
-      expect((calledWithCommand as unknown as CreateTodoCommand).todo).to.deep.equal(mockRecord)
-      sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
-        record: mockRecord,
-        msg: 'Successfully created todo',
-      })
+    expect(createStub.calledOnce).to.be.true
+    const [calledWithCommand] = createStub.getCall(0).args
+    expect(calledWithCommand).to.be.instanceOf(CreateTodoCommand)
+    expect((calledWithCommand as unknown as CreateTodoCommand).todo).to.deep.equal(mockRecord)
+    sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
+      record: mockRecord,
+      msg: 'Successfully created todo',
     })
   })
 })
