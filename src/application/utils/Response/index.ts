@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { statusCode as StatusCode } from '../Status'
+import { statusCode } from '../Status'
 
 interface Body {
   message?: string
@@ -7,18 +7,22 @@ interface Body {
 }
 
 class HttpResponse {
-  statusCode: (typeof StatusCode)[keyof typeof StatusCode]
+  statusCode: statusCode
   body: Body
 
-  constructor(statusCode: (typeof StatusCode)[keyof typeof StatusCode], body: Body) {
+  constructor(statusCode: statusCode, body: Body) {
     this.statusCode = statusCode
     this.body = body
   }
 
-  static create(responseCode: (typeof StatusCode)[keyof typeof StatusCode], body: any): HttpResponse {
-    const responseBody: Body = [StatusCode.SERVER_ERROR, StatusCode.NOT_FOUND, StatusCode.UNAUTHORIZED].includes(
-      responseCode
-    )
+  static create(responseCode: statusCode, body: any): HttpResponse {
+    const responseBody: Body = [
+      statusCode.SERVER_ERROR,
+      statusCode.NOT_FOUND,
+      statusCode.UNAUTHORIZED,
+      statusCode.ERROR,
+      statusCode.ALREADY_TAKEN,
+    ].includes(responseCode)
       ? { message: body }
       : { data: body }
 
