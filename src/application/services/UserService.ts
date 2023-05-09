@@ -35,6 +35,7 @@ export class UserService {
       const result = await this.userRepository.getAll()
       return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
+      console.error({ e })
       return HttpResponse.create(statusCode.NOT_FOUND, { message: responseMessage.NOT_FOUND[1] })
     }
   }
@@ -49,6 +50,7 @@ export class UserService {
       const result = await this.userRepository.delete(id)
       return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[1], result })
     } catch (e) {
+      console.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
@@ -66,6 +68,7 @@ export class UserService {
       const result = await this.userRepository.create(createdUser, hashedPassword)
       return HttpResponse.create(statusCode.CREATED, { message: responseMessage.Success[0], result })
     } catch (e) {
+      console.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
@@ -83,6 +86,7 @@ export class UserService {
       this.notifyObservers('A user password has been updated with id ', [user.id])
       return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[2] })
     } catch (e) {
+      console.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
