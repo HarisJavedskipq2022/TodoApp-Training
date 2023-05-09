@@ -3,74 +3,45 @@ import { TodoService } from '../../../application/services/TodoService'
 import { inject, injectable } from 'inversify'
 import createTodos from '../../../infrastructure/utility'
 import ITodoController from '../../../domain/interfaces/TodoControllerInterface'
-import { Logger } from '../../../infrastructure/config/logger'
+import HttpResponse from '../../../application/utils/Response'
+import { statusCode } from '../../../application/utils/Status'
 
 @injectable()
 export class TodoControllerInstance implements ITodoController {
-  private logger: Logger
-  constructor(@inject('TodoService') private todoService: TodoService) {
-    this.logger = new Logger('TodoController')
-  }
+  constructor(@inject('TodoService') private todoService: TodoService) {}
 
   create = async (req: Request, res: Response) => {
-    const { id, title, completed } = req.body
-    const record = await this.todoService.create(id, title, completed)
-
-    if (!record) {
-      res.status(400).json({ msg: 'Todo not created' })
-    }
-    return res.json({ record, msg: 'Successfully created todo' })
+    const httpResponse = await this.todoService.create(req.body.id, req.body.title, req.body.completed)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   getAll = async (req: Request, res: Response) => {
-    // Get the limit and offset from the query parameters (if provided)
-    const limit = parseInt(req.query.limit as string) || 10
+    const limit = parseInt(req.query.limit as string) || 20
     const offset = parseInt(req.query.offset as string) || 0
-
-    // Call the getAll method of the TodoService
-    const { error, result } = await this.todoService.getAll(limit, offset)
-
-    if (error) {
-      // If there was an error, send a 500 status code and the error message
-      res.status(500).json({ message: error })
-    } else {
-      // If successful, send the paginated data
-      res.status(200).json(result)
-    }
+    const httpResponse = await this.todoService.getAll(limit, offset)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   getById = async (req: Request, res: Response) => {
-    const { id } = req.params
-    const record = await this.todoService.getById(id)
-
-    if (!record) {
-      res.status(404).json({ msg: 'Todo not found' })
-    }
-    return res.json({ record })
+    const httpResponse = await this.todoService.getById(req.body.params)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   deleteById = async (req: Request, res: Response) => {
-    const { id } = req.params
-    const deletedRecord = await this.todoService.deleteById(id)
-
-    if (!deletedRecord) {
-      res.status(404).json({ msg: 'Todo not found' })
-    }
-    return res.json({ record: deletedRecord })
+    const httpResponse = await this.todoService.deleteById(req.body.params)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   updateById = async (req: Request, res: Response) => {
-    const { id } = req.params
-    const updatedRecord = await this.todoService.updateById(id)
-
-    if (!updatedRecord) {
-      res.status(404).json({ msg: 'Todo not found' })
-    }
-    return res.json({ record: updatedRecord })
+    const httpResponse = await this.todoService.updateById(req.params.id)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   populateByFaker = async (req: Request, res: Response) => {
-    await createTodos(10)
-    res.status(200).send({ msg: 'Todos populated successfully!' })
+    const todos = await createTodos(10)
+    const httpResponse = HttpResponse.create(statusCode.OK, { message: 'Todos populated successfully!', todos })
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 }
+
+export default TodoControllerInstance

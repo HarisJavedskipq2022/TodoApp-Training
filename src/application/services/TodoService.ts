@@ -10,7 +10,8 @@ import {
 } from '../CommandBus/TodoCommands'
 import PaginationData from '../utils/Pagination'
 import PaginationOptions from '../utils/PaginationOptions'
-import PaginationInfo from '../utils/PaginationInfo'
+import HttpResponse from '../utils/Response'
+import { statusCode } from '../utils/Status'
 
 @injectable()
 export class TodoService {
@@ -20,92 +21,67 @@ export class TodoService {
     const newTodoData = { id, title, completed }
     const newTodo = Todo.todoFactory(newTodoData)
 
-    if (newTodo) {
-      try {
-        const result = await this.commandBus.execute(new CreateTodoCommand(newTodo))
-        return { error: null, result }
-      } catch (e) {
-        console.error('Failed to create todo:', e)
-        return { error: 'Failed to create todo', result: null }
-      }
-    }
+    if (!newTodo) return HttpResponse.create(statusCode.ERROR, 'Failed to create todo')
 
-    console.error('Failed to create todo')
-    return { error: 'Failed to create todo', result: null }
+    try {
+      const result = await this.commandBus.execute(new CreateTodoCommand(newTodo))
+      return HttpResponse.create(statusCode.CREATED, result)
+    } catch (e) {
+      console.error({ e })
+      return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to create todo')
+    }
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
     try {
       const result = await this.commandBus.execute(new FindManyTodosCommand(limit, offset))
 
-      if (!result || !Array.isArray(result.items)) {
-        console.error('Unexpected result format:', result)
-        return { error: 'Failed to find all todo items', result: null }
-      }
+      if (!result || !Array.isArray(result.items))
+        return HttpResponse.create(statusCode.NOT_FOUND, 'Failed to find all todo items')
 
-      // Calculate the current page
       const currentPage = Math.floor(offset / limit) + 1
-
-      // Create a new instance of PaginationOptions
       const paginationOptions = new PaginationOptions(currentPage, limit)
-
-      // Create a new instance of PaginationData, using the totalItemCount from the result
-      const paginationData = new PaginationData<Todo>(paginationOptions, result.totalItemCount)
-
-      // Add each item to the PaginationData instance
+      const paginationData = new PaginationData(paginationOptions, result.totalItemCount)
       result.items.forEach((item: Todo) => paginationData.addItem(item))
-
-      // Get the paginated data
       const paginatedData = paginationData.getPaginatedData()
-
-      return { error: null, result: paginatedData }
+      return HttpResponse.create(statusCode.OK, paginatedData)
     } catch (e) {
-      console.error('Failed to find all todo items:', e)
-      return { error: 'Failed to find all todo items', result: null }
+      console.error({ e })
+      return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to find all todo items')
     }
   }
 
   async getById(id: string) {
     try {
       const result = await this.commandBus.execute(new FindUniqueTodoCommand(id))
-      return { error: null, result }
+      return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error('Failed to find todo by ID:', e)
-      return { error: 'Failed to find todo by ID', result: null }
+      console.error({ e })
+      return HttpResponse.create(statusCode.NOT_FOUND, 'Failed to find todo by ID')
     }
   }
 
   async deleteById(id: string) {
     try {
       const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
-
-      if (!record) {
-        console.error('Record not found')
-        return { error: 'Record not found', result: null }
-      }
-
+      if (!record) return HttpResponse.create(statusCode.NOT_FOUND, 'Record not found')
       const result = await this.commandBus.execute(new DeleteTodoCommand(id))
-      return { error: null, result }
+      return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error('Failed to delete todo by ID:', e)
-      return { error: 'Failed to delete todo by ID', result: null }
+      console.error({ e })
+      return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to delete todo by ID')
     }
   }
 
   async updateById(id: string) {
     try {
       const record = await this.commandBus.execute(new FindUniqueTodoCommand(id))
-
-      if (!record) {
-        console.error('Record not found')
-        return { error: 'Record not found', result: null }
-      }
-
+      if (!record) return HttpResponse.create(statusCode.NOT_FOUND, 'Record not found')
       const result = await this.commandBus.execute(new UpdateTodoCommand(id, !record.completed))
-      return { error: null, result }
+      return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error('Failed to update todo by ID:', e)
-      return { error: 'Failed to update todo by ID', result: null }
+      console.error({ e })
+      return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to update todo by ID')
     }
   }
 }

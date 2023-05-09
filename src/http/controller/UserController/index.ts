@@ -4,10 +4,13 @@ import { UserService } from '../../../application/services/UserService'
 import { injectable, inject } from 'inversify'
 import { IUserController } from '../../../domain/interfaces/UserControllerInterface'
 import { Logger } from '../../../infrastructure/config/logger'
+import HttpResponse from '../../../application/utils/Response'
+import { statusCode } from '../../../application/utils/Status'
 
 @injectable()
 export class UserControllerInstance implements IUserController {
   private logger: Logger
+
   constructor(
     @inject('UserService') private userService: UserService,
     @inject('AuthService') private authService: AuthService
@@ -15,54 +18,39 @@ export class UserControllerInstance implements IUserController {
     this.logger = new Logger('UserController')
   }
 
-  getAll = async (req: Request, res: Response) => {
-    const { error, result } = await this.userService.getAll()
-    if (error) {
-      res.status(404).json({ msg: error })
-    } else {
-      res.json({ record: result })
-    }
-  }
-
-  delete = async (req: Request, res: Response) => {
-    const { id } = req.params
-    const { error, result } = await this.userService.deleteById(id)
-    if (error) {
-      res.status(404).json({ msg: error })
-    } else {
-      res.json({ user: result })
-    }
-  }
-
   signup = async (req: Request, res: Response) => {
     const { id, email, password }: { id: string; email: string; password: string } = req.body
-    const { error, result } = await this.userService.create(id, email, password)
-
-    if (error) {
-      res.status(400).json({ msg: error })
-    } else {
-      res.json({ newUser: result, msg: 'User successfully signed up' })
-    }
+    const httpResponse = await this.userService.create(id, email, password)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   login = async (req: Request, res: Response) => {
     const { email, password }: { email: string; password: string } = req.body
     const token = await this.authService.login(email, password)
     if (!token) {
-      res.status(401).json({ msg: 'Invalid credentials' })
+      const httpResponse = HttpResponse.create(statusCode.UNAUTHORIZED, { msg: 'Invalid credentials' })
+      HttpResponse.applyToExpressResponse(res, httpResponse)
       return
     }
     this.logger.info(`jwt-token:${token}`)
-    res.json({ msg: 'successfully logged in' })
+    const httpResponse = HttpResponse.create(statusCode.OK, { msg: 'successfully logged in' })
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
-  update = async (req: Request, res: Response) => {
+  updatePassword = async (req: Request, res: Response) => {
     const { id, newPassword } = req.body
-    const { error, result } = await this.userService.updatePassword(id, newPassword)
-    if (error) {
-      res.status(400).json({ msg: error })
-    } else {
-      res.status(200).json({ message: 'Password updated successfully' })
-    }
+    const httpResponse = await this.userService.updatePassword(id, newPassword)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
+  }
+
+  delete = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const httpResponse = await this.userService.deleteById(id)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
+  }
+
+  getAll = async (req: Request, res: Response) => {
+    const httpResponse = await this.userService.getAll()
+    HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 }

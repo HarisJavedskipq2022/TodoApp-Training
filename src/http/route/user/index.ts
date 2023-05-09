@@ -30,6 +30,6 @@ userRouter.get('/auth/google', googleAuthController.redirectToGoogle)
 
 userRouter.get('/auth/google/callback', googleAuthController.handleGoogleCallback)
 
-userRouter.put('/users', authMiddleware.authorize, userController.update)
+userRouter.put('/users', authMiddleware.authorize, userController.updatePassword)
 
 export default userRouter

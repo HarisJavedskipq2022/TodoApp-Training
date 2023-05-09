@@ -5,9 +5,8 @@ import sinon from 'sinon'
 import { Request, Response } from 'express'
 import { TodoService } from '../src/application/services/TodoService'
 import { TodoControllerInstance } from '../src/http/controller/TodoController'
-import { CommandBus } from '../src/application/CommandBus'
-import { DeleteTodoCommand, FindUniqueTodoCommand } from '../src/application/CommandBus/TodoCommands'
-import uuid from '../src/domain/utility/uuid'
+import { statusCode } from '../src/application/utils/Status'
+import HttpResponse from '../src/application/utils/Response'
 
 describe('TodoController', () => {
   afterEach(() => {
@@ -15,16 +14,13 @@ describe('TodoController', () => {
   })
 
   it('should create a todo', async () => {
-    const commandBusStub = sinon.createStubInstance(CommandBus)
-    const todoService = new TodoService(commandBusStub as any)
-    const todoController = new TodoControllerInstance(todoService)
+    const todoServiceStub = sinon.createStubInstance(TodoService)
+    const todoController = new TodoControllerInstance(todoServiceStub as any)
 
     const mockRecord = {
-      id: uuid(),
+      id: '1',
       title: 'Test Todo',
       completed: false,
-      updated: new Date(),
-      created: new Date(),
     }
 
     const req = {
@@ -33,24 +29,25 @@ describe('TodoController', () => {
 
     const res = {
       json: sinon.spy(),
+      status: sinon.stub().returnsThis(),
     } as unknown as Response
 
-    commandBusStub.execute.resolves(mockRecord)
+    todoServiceStub.create.resolves(
+      HttpResponse.create(statusCode.OK, { message: 'Successfully created todo', data: mockRecord })
+    )
 
     await todoController.create(req, res)
 
-    expect(commandBusStub.execute.calledOnce).to.be.true
-    sinon.assert.calledWithMatch(res.json as sinon.SinonSpy, {
-      record: mockRecord,
-      msg: 'Successfully created todo',
-    })
+    expect(todoServiceStub.create.calledOnce).to.be.true
+    sinon.assert.calledOnceWithExactly(res.status as any, statusCode.OK)
+    sinon.assert.calledOnceWithExactly(res.json as any, { message: 'Successfully created todo', data: mockRecord })
   })
 
   it('should delete a todo', async () => {
-    const commandBusStub = sinon.createStubInstance(CommandBus)
-    const todoService = new TodoService(commandBusStub as any)
-    const todoController = new TodoControllerInstance(todoService)
-    const mockTodoId = uuid()
+    const todoServiceStub = sinon.createStubInstance(TodoService)
+    const todoController = new TodoControllerInstance(todoServiceStub as any)
+
+    const mockTodoId = '1'
 
     const req = {
       params: {
@@ -63,22 +60,12 @@ describe('TodoController', () => {
       status: sinon.stub().returnsThis(),
     } as unknown as Response
 
-    const mockTodo = {
-      id: mockTodoId,
-      title: 'Test Todo',
-      completed: false,
-      updated: new Date(),
-      created: new Date(),
-    }
-
-    commandBusStub.execute.withArgs(sinon.match.instanceOf(FindUniqueTodoCommand)).resolves(mockTodo)
-
-    commandBusStub.execute.withArgs(sinon.match.instanceOf(DeleteTodoCommand)).resolves()
+    todoServiceStub.deleteById.resolves(HttpResponse.create(statusCode.OK, { message: 'Successfully deleted todo' }))
 
     await todoController.deleteById(req, res)
 
-    expect(commandBusStub.execute.callCount).to.equal(2)
-    sinon.assert.calledWithMatch(commandBusStub.execute, sinon.match.instanceOf(FindUniqueTodoCommand))
-    sinon.assert.calledWithMatch(commandBusStub.execute, sinon.match.instanceOf(DeleteTodoCommand))
+    expect(todoServiceStub.deleteById.calledOnce).to.be.true
+    sinon.assert.calledOnceWithExactly(res.status as any, statusCode.OK)
+    sinon.assert.calledOnceWithExactly(res.json as any, { message: 'Successfully deleted todo' })
   })
 })

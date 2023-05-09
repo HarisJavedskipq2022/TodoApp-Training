@@ -4,7 +4,7 @@ class TodoValidator {
   checkCreateTodo() {
     return [
       body('id').optional().isUUID(4).withMessage('The value should be UUID v4'),
-      body('title').notEmpty().withMessage('The title value is empty, it should not be empty'),
+      body('title').notEmpty().withMessage('The title value is empty, it should not be empty but a string'),
       body('completed')
         .optional()
         .isBoolean()

@@ -4,6 +4,9 @@ import { IUserRepository } from '../../domain/interfaces/UserInterface'
 import { inject, injectable } from 'inversify'
 import { Observer } from '../../domain/interfaces/ObserverInterface'
 import { slackService } from '../../infrastructure/services/SlackNotificationService'
+import { statusCode } from '../utils/Status'
+import HttpResponse from '../utils/Response'
+import { responseMessage } from '../utils/Status'
 
 @injectable()
 export class UserService {
@@ -30,9 +33,9 @@ export class UserService {
   async getAll() {
     try {
       const result = await this.userRepository.getAll()
-      return { error: null, result }
+      return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      return { error: 'Users not found', result: null }
+      return HttpResponse.create(statusCode.NOT_FOUND, { message: responseMessage.NOT_FOUND[1] })
     }
   }
 
@@ -40,13 +43,13 @@ export class UserService {
     try {
       const user = await this.userRepository.getById(id)
       if (!user) {
-        return { error: 'User does not exist', result: null }
+        return HttpResponse.create(statusCode.NOT_FOUND, { message: responseMessage.NOT_FOUND[0] })
       }
       this.notifyObservers('A Todo has been deleted with id ', [user.id])
       const result = await this.userRepository.delete(id)
-      return { error: null, result }
+      return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[1], result })
     } catch (e) {
-      return { error: 'Error deleting user', result: null }
+      return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
 
@@ -56,14 +59,14 @@ export class UserService {
       const finduser = await this.userRepository.getByEmail(createdUser.email)
 
       if (finduser) {
-        return { error: 'User already exists', result: null }
+        return HttpResponse.create(statusCode.ALREADY_TAKEN, { message: responseMessage.ALREADY_TAKEN })
       }
 
       const hashedPassword = await this.encryption.hashPassword(createdUser.password)
       const result = await this.userRepository.create(createdUser, hashedPassword)
-      return { error: null, result }
+      return HttpResponse.create(statusCode.CREATED, { message: responseMessage.Success[0], result })
     } catch (e) {
-      return { error: 'Error creating user', result: null }
+      return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
 
@@ -72,15 +75,15 @@ export class UserService {
       const user = await this.userRepository.getById(id)
 
       if (!user) {
-        return { error: 'User does not exist', result: null }
+        return HttpResponse.create(statusCode.NOT_FOUND, { message: responseMessage.NOT_FOUND[0] })
       }
 
       const hashedPassword = await this.encryption.hashPassword(newPassword)
       await this.userRepository.updatePassword(id, hashedPassword)
       this.notifyObservers('A user password has been updated with id ', [user.id])
-      return { error: null, result: true }
+      return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[2] })
     } catch (e) {
-      return { error: 'Error updating password', result: null }
+      return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
 }
