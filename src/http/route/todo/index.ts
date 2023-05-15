@@ -13,8 +13,8 @@ const authMiddleware = container.get<AuthMiddleware>(AuthMiddleware)
 todoRouter.post(
   '/todos',
   authMiddleware.authorize,
-  TodoValidator.checkCreateTodo(),
-  Middleware.handleValidationError,
+  // TodoValidator.checkCreateTodo(),
+  // Middleware.handleValidationError,
   todoController.create
 )
 

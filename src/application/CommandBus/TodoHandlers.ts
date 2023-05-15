@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import { ICommandHandler } from './CommandInterface'
 import {
   CreateTodoCommand,
@@ -6,6 +7,13 @@ import {
   DeleteTodoCommand,
   UpdateTodoCommand,
 } from './TodoCommands'
+import {
+  CreateTodoCommandSchema,
+  FindManyTodosCommandSchema,
+  FindUniqueTodoCommandSchema,
+  DeleteTodoCommandSchema,
+  UpdateTodoCommandSchema,
+} from './TodoCommandSchemas'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
 
@@ -14,7 +22,8 @@ export class CreateTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: CreateTodoCommand) {
-    return this.todoRepository.create(command.todo)
+    const validCommand = CreateTodoCommandSchema.parse(command)
+    return this.todoRepository.create(validCommand.todo)
   }
 }
 
@@ -23,7 +32,8 @@ export class FindManyTodosHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: FindManyTodosCommand) {
-    return this.todoRepository.getAll(command.limit, command.offset)
+    const validCommand = FindManyTodosCommandSchema.parse(command)
+    return this.todoRepository.getAll(validCommand.limit, validCommand.offset)
   }
 }
 
@@ -32,7 +42,8 @@ export class FindUniqueTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: FindUniqueTodoCommand) {
-    return this.todoRepository.getById(command.id)
+    const validCommand = FindUniqueTodoCommandSchema.parse(command)
+    return this.todoRepository.getById(validCommand.id)
   }
 }
 
@@ -41,7 +52,8 @@ export class DeleteTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: DeleteTodoCommand) {
-    return this.todoRepository.delete(command.id)
+    const validCommand = DeleteTodoCommandSchema.parse(command)
+    return this.todoRepository.delete(validCommand.id)
   }
 }
 
@@ -50,6 +62,7 @@ export class UpdateTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: UpdateTodoCommand) {
-    return this.todoRepository.update(command.id, command.completed)
+    const validCommand = UpdateTodoCommandSchema.parse(command)
+    return this.todoRepository.update(validCommand.id, validCommand.completed)
   }
 }
