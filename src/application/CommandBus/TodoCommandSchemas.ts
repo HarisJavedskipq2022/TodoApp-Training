@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const CreateTodoCommandSchema = z.object({
   todo: z.object({
     id: z.string().uuid(),
-    title: z.string().nonempty().min(15),
+    title: z.string().nonempty().min(10),
     completed: z.boolean().default(false),
   }),
 })
