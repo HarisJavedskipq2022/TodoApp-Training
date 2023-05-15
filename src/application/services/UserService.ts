@@ -61,12 +61,17 @@ export class UserService {
       const finduser = await this.userRepository.getByEmail(createdUser.email)
 
       if (finduser) {
-        return HttpResponse.create(statusCode.ALREADY_TAKEN, { message: responseMessage.ALREADY_TAKEN })
+        return HttpResponse.create(statusCode.ALREADY_TAKEN, {
+          message: responseMessage.ALREADY_TAKEN
+        })
       }
 
       const hashedPassword = await this.encryption.hashPassword(createdUser.password)
       const result = await this.userRepository.create(createdUser, hashedPassword)
-      return HttpResponse.create(statusCode.CREATED, { message: responseMessage.Success[0], result })
+      return HttpResponse.create(statusCode.CREATED, {
+        message: responseMessage.Success[0],
+        result
+      })
     } catch (e) {
       console.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })

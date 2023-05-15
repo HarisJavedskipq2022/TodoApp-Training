@@ -4,14 +4,14 @@ import {
   FindManyTodosCommand,
   FindUniqueTodoCommand,
   DeleteTodoCommand,
-  UpdateTodoCommand,
+  UpdateTodoCommand
 } from './TodoCommands'
 import {
   CreateTodoCommandSchema,
   FindManyTodosCommandSchema,
   FindUniqueTodoCommandSchema,
   DeleteTodoCommandSchema,
-  UpdateTodoCommandSchema,
+  UpdateTodoCommandSchema
 } from './TodoCommandSchemas'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'

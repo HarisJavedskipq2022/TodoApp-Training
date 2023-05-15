@@ -6,7 +6,7 @@ import {
   UpdateTodoCommand,
   FindUniqueTodoCommand,
   FindManyTodosCommand,
-  DeleteTodoCommand,
+  DeleteTodoCommand
 } from '../CommandBus/TodoCommands'
 import PaginationData from '../utils/Pagination'
 import PaginationOptions from '../utils/PaginationOptions'
