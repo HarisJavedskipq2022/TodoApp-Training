@@ -12,6 +12,7 @@ import PaginationData from '../utils/Pagination'
 import PaginationOptions from '../utils/PaginationOptions'
 import HttpResponse from '../utils/Response'
 import { statusCode } from '../utils/Status'
+import signale from 'signale'
 
 @injectable()
 export class TodoService {
@@ -28,7 +29,7 @@ export class TodoService {
       const result = await this.commandBus.execute(new CreateTodoCommand(newTodo))
       return HttpResponse.create(statusCode.CREATED, result)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to create todo')
     }
   }
@@ -47,7 +48,7 @@ export class TodoService {
       const paginatedData = paginationData.getPaginatedData()
       return HttpResponse.create(statusCode.OK, paginatedData)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to find all todo items')
     }
   }
@@ -57,7 +58,7 @@ export class TodoService {
       const result = await this.commandBus.execute(new FindUniqueTodoCommand(id))
       return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.NOT_FOUND, 'Failed to find todo by ID')
     }
   }
@@ -69,7 +70,7 @@ export class TodoService {
       const result = await this.commandBus.execute(new DeleteTodoCommand(id))
       return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to delete todo by ID')
     }
   }
@@ -81,7 +82,7 @@ export class TodoService {
       const result = await this.commandBus.execute(new UpdateTodoCommand(id, !record.completed))
       return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to update todo by ID')
     }
   }
