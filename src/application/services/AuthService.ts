@@ -2,6 +2,7 @@ import { IUserRepository } from './../../domain/interfaces/UserInterface'
 import { IEncryption } from '../../infrastructure/services/EncryptionService'
 import { IJwt } from '../../infrastructure/services/JwtService'
 import { injectable, inject } from 'inversify'
+import signale from 'signale'
 
 @injectable()
 export class AuthService {
@@ -16,12 +17,12 @@ export class AuthService {
     try {
       user = await this.userRepository.getByEmail(email)
     } catch (e) {
-      console.error('Error during user retrieval:', e)
+      signale.error('Error during user retrieval:', e)
       return null
     }
 
     if (!user) {
-      console.error('User not found')
+      signale.error('User not found')
       return null
     }
 
@@ -29,12 +30,12 @@ export class AuthService {
     try {
       validatePassword = await this.encryption.comparePassword(password, user.password)
     } catch (e) {
-      console.error('Error during password validation:', e)
+      signale.error('Error during password validation:', e)
       return null
     }
 
     if (!validatePassword) {
-      console.error(Error, 'Invalid credentials')
+      signale.error(Error, 'Invalid credentials')
       return null
     }
 
@@ -42,7 +43,7 @@ export class AuthService {
     try {
       token = this.jwt.sign({ id: user.id, email: user.email })
     } catch (e) {
-      console.error('Error during token generation:', e)
+      signale.error('Error during token generation:', e)
       return null
     }
 
