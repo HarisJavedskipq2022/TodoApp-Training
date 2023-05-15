@@ -14,14 +14,14 @@ export const FindManyTodosCommandSchema = z.object({
 })
 
 export const FindUniqueTodoCommandSchema = z.object({
-  id: z.string().uuid({ message: 'ID must be a valid UUID' })
+  id: z.string().uuid()
 })
 
 export const DeleteTodoCommandSchema = z.object({
-  id: z.string().uuid({ message: 'ID must be a valid UUID' })
+  id: z.string().uuid()
 })
 
 export const UpdateTodoCommandSchema = z.object({
-  id: z.string().uuid({ message: 'ID must be a valid UUID' }),
+  id: z.string().uuid(),
   completed: z.boolean()
 })

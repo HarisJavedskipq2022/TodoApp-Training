@@ -11,7 +11,11 @@ export class TodoControllerInstance implements ITodoController {
   constructor(@inject('TodoService') private todoService: TodoService) {}
 
   create = async (req: Request, res: Response) => {
-    const httpResponse = await this.todoService.create(req.body.id, req.body.title, req.body.completed)
+    const httpResponse = await this.todoService.create(
+      req.body.id,
+      req.body.title,
+      req.body.completed
+    )
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
@@ -23,12 +27,12 @@ export class TodoControllerInstance implements ITodoController {
   }
 
   getById = async (req: Request, res: Response) => {
-    const httpResponse = await this.todoService.getById(req.body.params)
+    const httpResponse = await this.todoService.getById(req.params.id)
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
   deleteById = async (req: Request, res: Response) => {
-    const httpResponse = await this.todoService.deleteById(req.body.params)
+    const httpResponse = await this.todoService.deleteById(req.params.id)
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
@@ -39,7 +43,10 @@ export class TodoControllerInstance implements ITodoController {
 
   populateByFaker = async (req: Request, res: Response) => {
     const todos = await createTodos(10)
-    const httpResponse = HttpResponse.create(statusCode.OK, { message: 'Todos populated successfully!', todos })
+    const httpResponse = HttpResponse.create(statusCode.OK, {
+      message: 'Todos populated successfully!',
+      todos
+    })
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 }
