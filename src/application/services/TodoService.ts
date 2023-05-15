@@ -19,11 +19,12 @@ export class TodoService {
 
   async create(id: string, title: string, completed: boolean) {
     const newTodoData = { id, title, completed }
-    const newTodo = Todo.todoFactory(newTodoData)
-
-    if (!newTodo) return HttpResponse.create(statusCode.ERROR, 'Failed to create todo')
 
     try {
+      const newTodo = Todo.todoFactory(newTodoData)
+
+      if (!newTodo) return HttpResponse.create(statusCode.ERROR, 'Failed to create todo')
+
       const result = await this.commandBus.execute(new CreateTodoCommand(newTodo))
       return HttpResponse.create(statusCode.CREATED, result)
     } catch (e) {
