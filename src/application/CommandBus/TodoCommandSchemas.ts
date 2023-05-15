@@ -4,7 +4,7 @@ export const CreateTodoCommandSchema = z.object({
   todo: z.object({
     id: z.string().uuid(),
     title: z.string().nonempty().min(15),
-    completed: z.boolean(),
+    completed: z.boolean().default(false),
   }),
 })
 

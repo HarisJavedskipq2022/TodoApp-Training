@@ -23,24 +23,24 @@ todoRouter.get('/todos', authMiddleware.authorize, todoController.getAll)
 todoRouter.get(
   '/todos/:id',
   authMiddleware.authorize,
-  TodoValidator.checkIdParam(),
-  Middleware.handleValidationError,
+  // TodoValidator.checkIdParam(),
+  // Middleware.handleValidationError,
   todoController.getById
 )
 
 todoRouter.put(
   '/todos/:id',
   authMiddleware.authorize,
-  TodoValidator.checkIdParam(),
-  Middleware.handleValidationError,
+  // TodoValidator.checkIdParam(),
+  // Middleware.handleValidationError,
   todoController.updateById
 )
 
 todoRouter.delete(
   '/todos/:id',
   authMiddleware.authorize,
-  TodoValidator.checkIdParam(),
-  Middleware.handleValidationError,
+  // TodoValidator.checkIdParam(),
+  // Middleware.handleValidationError,
   todoController.deleteById
 )
 
