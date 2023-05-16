@@ -18,10 +18,6 @@ export class Todo {
       throw new Error('The title must be a non-empty string.')
     }
 
-    if (typeof completed !== 'boolean') {
-      throw new Error('The completed flag must be a boolean.')
-    }
-
     if (data.id) {
       return new Todo(id, title, completed)
     }
