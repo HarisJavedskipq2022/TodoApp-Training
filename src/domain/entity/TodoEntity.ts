@@ -17,7 +17,6 @@ export class Todo {
     if (!title || title.length === 0) {
       throw new Error('The title must be a non-empty string.')
     }
-
     if (data.id) {
       return new Todo(id, title, completed)
     }
