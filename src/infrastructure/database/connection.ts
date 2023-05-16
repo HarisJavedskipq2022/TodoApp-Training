@@ -10,7 +10,7 @@ export async function connectionToDb() {
       signale.info('Connected to database')
     })
     .catch((err) => {
-      signale.info(err, 'connection failed')
+      signale.error(err, 'connection failed')
     })
     .then(() => {
       prisma.$disconnect()
