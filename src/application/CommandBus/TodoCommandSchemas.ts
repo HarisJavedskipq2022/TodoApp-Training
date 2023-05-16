@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const CreateTodoCommandSchema = z.object({
   todo: z.object({
     id: z.string().uuid(),
-    title: z.string().nonempty().min(10, { message: 'Title must be at least 10 characters long' }),
+    title: z.string().nonempty().min(15, { message: 'Title must be at least 15 characters long' }),
     completed: z.boolean().default(false)
   })
 })
