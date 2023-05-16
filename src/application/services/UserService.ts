@@ -7,6 +7,7 @@ import { slackService } from '../../infrastructure/services/SlackNotificationSer
 import { statusCode } from '../utils/Status'
 import HttpResponse from '../utils/Response'
 import { responseMessage } from '../utils/Status'
+import signale from 'signale'
 
 @injectable()
 export class UserService {
@@ -35,7 +36,7 @@ export class UserService {
       const result = await this.userRepository.getAll()
       return HttpResponse.create(statusCode.OK, result)
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.NOT_FOUND, { message: responseMessage.NOT_FOUND[1] })
     }
   }
@@ -50,7 +51,7 @@ export class UserService {
       const result = await this.userRepository.delete(id)
       return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[1], result })
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
@@ -73,7 +74,7 @@ export class UserService {
         result
       })
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
@@ -91,7 +92,7 @@ export class UserService {
       this.notifyObservers('A user password has been updated with id ', [user.id])
       return HttpResponse.create(statusCode.OK, { message: responseMessage.Success[2] })
     } catch (e) {
-      console.error({ e })
+      signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, { message: responseMessage.SERVER_ERROR })
     }
   }
