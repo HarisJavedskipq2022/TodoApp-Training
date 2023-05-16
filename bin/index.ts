@@ -7,6 +7,7 @@ import { connectionToDb } from '../src/infrastructure/database/connection'
 import 'dotenv/config'
 import config from '../src/infrastructure/config'
 import cors from 'cors'
+import signale from 'signale'
 
 const app = express()
 app.use(cors())
@@ -24,5 +25,5 @@ const port = Number(a.args[0]) || config.ports.port
 program.option('-p, --port <number>', 'port number')
 
 app.listen(port, () => {
-  console.log(`app is listening on port ${port}`)
+  signale.info(`app is listening on port ${port}`)
 })

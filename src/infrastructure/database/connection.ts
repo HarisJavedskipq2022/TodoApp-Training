@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import signale from 'signale'
 
 const prisma = new PrismaClient()
 
@@ -6,10 +7,10 @@ export async function connectionToDb() {
   prisma
     .$connect()
     .then(() => {
-      console.log('Connected to database')
+      signale.info('Connected to database')
     })
     .catch((err) => {
-      console.log(err, 'connection failed')
+      signale.info(err, 'connection failed')
     })
     .then(() => {
       prisma.$disconnect()
