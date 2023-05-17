@@ -11,7 +11,7 @@ export class CommandBus {
     })
   }
 
-  register(commandName: string, handler: ICommandHandler) {
+  async register(commandName: string, handler: ICommandHandler) {
     this.handlers.set(commandName, handler)
   }
 
