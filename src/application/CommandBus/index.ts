@@ -15,7 +15,7 @@ export class CommandBus {
     this.handlers.set(commandName, handler)
   }
 
-  async execute(command: ICommand): Promise<any> {
+  async execute(command: ICommand) {
     const handler = this.handlers.get(command.constructor.name)
 
     if (!handler) {
