@@ -27,7 +27,7 @@ export class User {
     }
 
     if (password.length < 8) {
-      throw new Error('The password must be at least 6 characters long.')
+      throw new Error('The password must be at least 8 characters long.')
     }
 
     if (data.id) {
