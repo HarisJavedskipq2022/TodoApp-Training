@@ -8,10 +8,12 @@ import { statusCode } from '../utils/Status'
 import HttpResponse from '../utils/Response'
 import { responseMessage } from '../utils/Status'
 import signale from 'signale'
+import { CreateUserSchema, UpdatePasswordSchema } from '../utils/ValidationSchemas'
 
 @injectable()
 export class UserService {
   private observers: Observer[] = []
+
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
     @inject('Encryption') private encryption: IEncryption
@@ -58,6 +60,8 @@ export class UserService {
 
   async create(id: string, email: string, password: string) {
     try {
+      CreateUserSchema.parse({ id, email, password })
+
       const createdUser = User.userFactory({ id, email, password })
       const finduser = await this.userRepository.getByEmail(createdUser.email)
 
@@ -81,6 +85,8 @@ export class UserService {
 
   async updatePassword(id: string, newPassword: string) {
     try {
+      UpdatePasswordSchema.parse({ id, newPassword })
+
       const user = await this.userRepository.getById(id)
 
       if (!user) {
