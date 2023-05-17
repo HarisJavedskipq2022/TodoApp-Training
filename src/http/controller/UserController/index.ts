@@ -19,8 +19,11 @@ export class UserControllerInstance implements IUserController {
   }
 
   signup = async (req: Request, res: Response) => {
-    const { id, email, password }: { id: string; email: string; password: string } = req.body
-    const httpResponse = await this.userService.create(id, email, password)
+    const httpResponse = await this.userService.create(
+      req.body.id,
+      req.body.email,
+      req.body.password
+    )
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
@@ -28,7 +31,9 @@ export class UserControllerInstance implements IUserController {
     const { email, password }: { email: string; password: string } = req.body
     const token = await this.authService.login(email, password)
     if (!token) {
-      const httpResponse = HttpResponse.create(statusCode.UNAUTHORIZED, { msg: 'Invalid credentials' })
+      const httpResponse = HttpResponse.create(statusCode.UNAUTHORIZED, {
+        msg: 'Invalid credentials'
+      })
       HttpResponse.applyToExpressResponse(res, httpResponse)
       return
     }
