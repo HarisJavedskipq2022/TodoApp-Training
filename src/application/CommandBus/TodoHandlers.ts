@@ -42,7 +42,7 @@ export class DeleteTodoHandler implements ICommandHandler {
   constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
 
   async handle(command: DeleteTodoCommand) {
-    return this.todoRepository.delete(command.id)
+    return this.todoRepository.softDelete(command.id)
   }
 }
 

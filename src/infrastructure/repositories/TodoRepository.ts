@@ -32,7 +32,7 @@ export class TodoRepository implements ITodoRepository {
     })
   }
 
-  async delete(id: string) {
+  async softDelete(id: string) {
     return await prisma.todo.update({
       where: { id },
       data: { deletedAt: new Date() }
