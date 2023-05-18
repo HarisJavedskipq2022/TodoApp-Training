@@ -35,7 +35,14 @@ export class TodoRepository implements ITodoRepository {
   async delete(id: string) {
     return await prisma.todo.update({
       where: { id },
-      data: { deletedAt: new Date() } // Set the current date/time to "delete" the record
+      data: { deletedAt: new Date() }
+    })
+  }
+
+  async undelete(id: string) {
+    return await prisma.todo.update({
+      where: { id },
+      data: { deletedAt: null }
     })
   }
 
