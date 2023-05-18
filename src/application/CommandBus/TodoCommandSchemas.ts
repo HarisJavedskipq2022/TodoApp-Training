@@ -1,27 +1,21 @@
 import { z } from 'zod'
 
-export const CreateTodoCommandSchema = z.object({
-  todo: z.object({
-    id: z.string().uuid(),
-    title: z.string().nonempty().min(15, { message: 'Title must be at least 15 characters long' }),
-    completed: z.boolean().default(false)
-  })
+export const TodoSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(10),
+  completed: z.boolean()
 })
 
-export const FindManyTodosCommandSchema = z.object({
-  limit: z.number().int().positive().optional(),
-  offset: z.number().int().nonnegative().optional()
+export const FindManySchema = z.object({
+  limit: z.number().min(1),
+  offset: z.number().min(0)
 })
 
-export const FindUniqueTodoCommandSchema = z.object({
-  id: z.string().uuid()
+export const StringIdSchema = z.object({
+  id: z.string()
 })
 
-export const DeleteTodoCommandSchema = z.object({
-  id: z.string().uuid()
-})
-
-export const UpdateTodoCommandSchema = z.object({
+export const UpdateTodoSchema = z.object({
   id: z.string().uuid(),
   completed: z.boolean()
 })
