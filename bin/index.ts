@@ -8,23 +8,12 @@ import 'dotenv/config'
 import config from '../src/infrastructure/config'
 import cors from 'cors'
 import signale from 'signale'
-const { PrismaClient } = require('@prisma/client')
-
-const prisma = new PrismaClient()
 
 const app = express()
 app.use(cors())
 const program = new Command()
 
 connectionToDb()
-
-async function resetDeletedAt() {
-  await prisma.todo.updateMany({
-    data: { deletedAt: null }
-  })
-}
-
-resetDeletedAt().catch((e) => console.error(e))
 
 app.use(express.json())
 app.use('/api/v1', todoRouter)

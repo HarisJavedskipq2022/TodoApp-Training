@@ -19,7 +19,9 @@ export class TodoRepository implements ITodoRepository {
       skip: offset,
       where: { deletedAt: null }
     })
-    const totalItemCount = await prisma.todo.count({ where: { deletedAt: null } })
+    const totalItemCount = await prisma.todo.count({
+      where: { deletedAt: null }
+    })
 
     return { items, totalItemCount }
   }
@@ -31,11 +33,10 @@ export class TodoRepository implements ITodoRepository {
   }
 
   async delete(id: string) {
-    const deletedTodo = prisma.todo.update({
+    return await prisma.todo.update({
       where: { id },
-      data: { deletedAt: new Date() }
+      data: { deletedAt: new Date() } // Set the current date/time to "delete" the record
     })
-    return deletedTodo
   }
 
   async update(id: string, completed: boolean) {
