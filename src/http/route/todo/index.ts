@@ -18,6 +18,8 @@ todoRouter.put('/todos/:id', authMiddleware.authorize, todoController.updateById
 
 todoRouter.delete('/todos/:id', authMiddleware.authorize, todoController.deleteById)
 
+todoRouter.put('/todos/undelete/:id', authMiddleware.authorize, todoController.undeleteById)
+
 todoRouter.post('/populate', authMiddleware.authorize, todoController.populateByFaker)
 
 export default todoRouter

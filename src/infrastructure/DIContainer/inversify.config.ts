@@ -16,11 +16,12 @@ import {
   FindUniqueTodoHandler,
   DeleteTodoHandler,
   UpdateTodoHandler,
+  UndeleteTodoHandler
 } from '../../application/CommandBus/TodoHandlers'
 
 export const container = new Container({
   autoBindInjectable: true,
-  defaultScope: 'Singleton',
+  defaultScope: 'Singleton'
 })
 
 const CreateTodoHandlerIdentifier = Symbol.for('CreateTodoHandler')
@@ -28,6 +29,7 @@ const FindManyTodosHandlerIdentifier = Symbol.for('FindManyTodosHandler')
 const FindUniqueTodoHandlerIdentifier = Symbol.for('FindUniqueTodoHandler')
 const DeleteTodoHandlerIdentifier = Symbol.for('DeleteTodoHandler')
 const UpdateTodoHandlerIdentifier = Symbol.for('UpdateTodoHandler')
+const UndeleteTodoHandlerIdentifier = Symbol.for('UndeleteTodoHandler')
 
 container.bind<TodoService>('TodoService').to(TodoService)
 container.bind<TodoRepository>('TodoRepository').to(TodoRepository)
@@ -44,9 +46,11 @@ container.bind<ICommandHandler>('CommandHandler').to(FindManyTodosHandler)
 container.bind<ICommandHandler>('CommandHandler').to(FindUniqueTodoHandler)
 container.bind<ICommandHandler>('CommandHandler').to(DeleteTodoHandler)
 container.bind<ICommandHandler>('CommandHandler').to(UpdateTodoHandler)
+container.bind<ICommandHandler>('CommandHandler').to(UndeleteTodoHandler)
 
 container.bind<ICommandHandler>(CreateTodoHandlerIdentifier).to(CreateTodoHandler)
 container.bind<ICommandHandler>(FindManyTodosHandlerIdentifier).to(FindManyTodosHandler)
 container.bind<ICommandHandler>(FindUniqueTodoHandlerIdentifier).to(FindUniqueTodoHandler)
 container.bind<ICommandHandler>(DeleteTodoHandlerIdentifier).to(DeleteTodoHandler)
 container.bind<ICommandHandler>(UpdateTodoHandlerIdentifier).to(UpdateTodoHandler)
+container.bind<ICommandHandler>(UndeleteTodoHandlerIdentifier).to(UndeleteTodoHandler)

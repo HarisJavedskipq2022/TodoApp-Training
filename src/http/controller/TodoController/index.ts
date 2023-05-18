@@ -36,6 +36,11 @@ export class TodoControllerInstance implements ITodoController {
     HttpResponse.applyToExpressResponse(res, httpResponse)
   }
 
+  undeleteById = async (req: Request, res: Response) => {
+    const httpResponse = await this.todoService.undeleteById(req.params.id)
+    HttpResponse.applyToExpressResponse(res, httpResponse)
+  }
+
   updateById = async (req: Request, res: Response) => {
     const httpResponse = await this.todoService.updateById(req.params.id)
     HttpResponse.applyToExpressResponse(res, httpResponse)
