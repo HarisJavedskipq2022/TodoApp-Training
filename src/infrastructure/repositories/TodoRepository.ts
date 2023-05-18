@@ -14,25 +14,34 @@ export class TodoRepository implements ITodoRepository {
   }
 
   async getAll(limit: number = 10, offset: number = 0) {
-    const items = await prisma.todo.findMany({ take: limit, skip: offset })
-    const totalItemCount = await prisma.todo.count()
+    const items = await prisma.todo.findMany({
+      take: limit,
+      skip: offset,
+      where: { deletedAt: null }
+    })
+    const totalItemCount = await prisma.todo.count({ where: { deletedAt: null } })
 
     return { items, totalItemCount }
   }
 
   async getById(id: string) {
-    return prisma.todo.findUnique({ where: { id } })
+    return prisma.todo.findFirst({
+      where: { id, deletedAt: null }
+    })
   }
 
   async delete(id: string) {
-    const deletedTodo = prisma.todo.delete({ where: { id } })
+    const deletedTodo = prisma.todo.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
     return deletedTodo
   }
 
   async update(id: string, completed: boolean) {
     return prisma.todo.update({
       where: { id },
-      data: { completed },
+      data: { completed }
     })
   }
 }
