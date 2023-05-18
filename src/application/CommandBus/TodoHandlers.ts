@@ -4,7 +4,8 @@ import {
   FindManyTodosCommand,
   FindUniqueTodoCommand,
   DeleteTodoCommand,
-  UpdateTodoCommand
+  UpdateTodoCommand,
+  UndeleteTodoCommand
 } from './TodoCommands'
 import { ITodoRepository } from '../../domain/interfaces/TodoInterface'
 import { inject, injectable } from 'inversify'
@@ -51,5 +52,14 @@ export class UpdateTodoHandler implements ICommandHandler {
 
   async handle(command: UpdateTodoCommand) {
     return this.todoRepository.update(command.id, command.completed)
+  }
+}
+
+@injectable()
+export class UndeleteTodoHandler implements ICommandHandler {
+  constructor(@inject('TodoRepository') private todoRepository: ITodoRepository) {}
+
+  async handle(command: UndeleteTodoCommand) {
+    return this.todoRepository.undelete(command.id)
   }
 }

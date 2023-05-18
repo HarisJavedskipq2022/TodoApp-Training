@@ -6,7 +6,8 @@ import {
   UpdateTodoCommand,
   FindUniqueTodoCommand,
   FindManyTodosCommand,
-  DeleteTodoCommand
+  DeleteTodoCommand,
+  UndeleteTodoCommand
 } from '../CommandBus/TodoCommands'
 import PaginationData from '../utils/Pagination'
 import PaginationOptions from '../utils/PaginationOptions'
@@ -84,6 +85,18 @@ export class TodoService {
     } catch (e) {
       signale.error({ e })
       return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to update todo by ID')
+    }
+  }
+
+  async undeleteById(id: string) {
+    try {
+      const record = await this.commandBus.execute(new UndeleteTodoCommand(id))
+      if (!record) return HttpResponse.create(statusCode.NOT_FOUND, 'Record not found')
+      const result = await this.commandBus.execute(new UndeleteTodoCommand(id))
+      return HttpResponse.create(statusCode.OK, result)
+    } catch (e) {
+      signale.error({ e })
+      return HttpResponse.create(statusCode.SERVER_ERROR, 'Failed to undelete todo by ID')
     }
   }
 }

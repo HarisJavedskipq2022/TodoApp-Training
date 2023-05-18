@@ -31,3 +31,9 @@ export class UpdateTodoCommand implements ICommand {
     UpdateTodoSchema.parse({ id, completed })
   }
 }
+
+export class UndeleteTodoCommand implements ICommand {
+  constructor(public id: string) {
+    StringIdSchema.parse({ id })
+  }
+}

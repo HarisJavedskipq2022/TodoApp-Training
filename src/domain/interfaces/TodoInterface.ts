@@ -6,4 +6,5 @@ export interface ITodoRepository {
   getById(id: string): Promise<Todo | null>
   delete(id: string): Promise<Todo>
   update(id: string, completed: boolean): Promise<Todo>
+  undelete(id: string): Promise<Todo>
 }
