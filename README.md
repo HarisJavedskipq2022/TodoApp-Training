@@ -1,7 +1,7 @@
 
 # Todo-App
 
-It is based on the domain driven design and has layered architecture.
+It is based on the domain driven design and has layered/clean architecture.
 
 ## Acknowledgements
 
