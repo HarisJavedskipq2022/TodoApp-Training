@@ -1,7 +1,7 @@
 
 # Todo-App
 
-It is based on the domain driven design (DDD) and has layered/clean architecture with different design patterns, OOP based.
+It is based on the domain driven design (DDD) and has layered/clean architecture with different design patterns, OOP based application.
 
 ## Acknowledgements
 
