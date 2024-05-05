@@ -6,7 +6,6 @@ It is based on the domain driven design (DDD) and has layered/clean architecture
 ## Acknowledgements
 
  - [Awesome Learning resources](https://dev-portal.carbonteq.com/docs/intro)
- - [Thumbs up for Carbonteq]
 
 
 ## Directory Structure
