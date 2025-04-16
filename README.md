@@ -1,7 +1,7 @@
 
 # Todo-App
 
-It is based on the domain driven design (DDD) and has layered/clean architecture with different design patterns. Training I guess.
+It is based on the domain driven design (DDD) and has layered/clean architecture with different design patterns. Training I guess. shikun.
 ## Acknowledgements
 
  - [Awesome Learning resources](https://dev-portal.carbonteq.com/docs/intro)
