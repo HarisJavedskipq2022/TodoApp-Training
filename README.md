@@ -4,7 +4,7 @@
 It is based on the domain driven design (DDD) and has layered/clean architecture with different design patterns.
 ## Acknowledgements
 
- - [Awesome Learning resources](https://dev-portal.carbonteq.com/docs/intro)
+ - [Awesome Learning resources](https://dev-portal.carbonteq.com/docs/intro) lao maal
 
 
 ## Directory Structure
